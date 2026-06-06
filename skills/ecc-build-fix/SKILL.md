@@ -6,7 +6,7 @@ origin: ECC
 
 # /build-fix — Build Error Resolution
 
-## When to Use
+## When to Activate
 
 - Build fails (TypeScript, Webpack, Vite, etc.)
 - Type errors appear

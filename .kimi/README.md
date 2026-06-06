@@ -50,8 +50,9 @@ This installs hooks into `~/.kimi-code/config.toml`:
 For project-level rules (applied to current project only):
 
 ```bash
-# Copy relevant rules into AGENTS.md
-cat rules/common/coding-style.md rules/common/testing.md rules/common/security.md > AGENTS.md
+# Append ECC rules to AGENTS.md (preserves existing content)
+echo -e "\n\n# ECC Rules\n" >> AGENTS.md
+cat rules/common/coding-style.md rules/common/testing.md rules/common/security.md >> AGENTS.md
 
 # Add language-specific rules
 cat rules/typescript/*.md >> AGENTS.md

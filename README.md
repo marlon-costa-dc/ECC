@@ -1539,8 +1539,9 @@ This installs ECC hooks into `~/.kimi-code/config.toml` for dangerous command de
 ### Install Rules to Project
 
 ```bash
-# Copy relevant rules into AGENTS.md
-cat rules/common/coding-style.md rules/common/testing.md rules/common/security.md > AGENTS.md
+# Append ECC rules to AGENTS.md (preserves existing content)
+echo -e "\n\n# ECC Rules\n" >> AGENTS.md
+cat rules/common/coding-style.md rules/common/testing.md rules/common/security.md >> AGENTS.md
 ```
 
 ### Using ECC with Kimi Code CLI

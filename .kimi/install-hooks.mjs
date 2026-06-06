@@ -239,10 +239,10 @@ process.stdin.on('end', () => {
 // Install hook scripts
 console.log('📦 Installing ECC hook scripts...\n');
 for (const hook of HOOK_DEFINITIONS) {
-  const scriptPath = path.join(HOOKS_DIR, `${hook.id}.mjs`);
+  const scriptPath = path.join(HOOKS_DIR, `${hook.id}.cjs`);
   fs.writeFileSync(scriptPath, hook.script);
   fs.chmodSync(scriptPath, 0o755);
-  console.log(`  ✓ ${hook.id}.mjs`);
+  console.log(`  ✓ ${hook.id}.cjs`);
 }
 
 // Read existing config
@@ -273,7 +273,8 @@ for (const hook of HOOK_DEFINITIONS) {
   if (hook.matcher) {
     tomlHooks += `matcher = "${hook.matcher}"\n`;
   }
-  tomlHooks += `command = "node ${path.join(HOOKS_DIR, `${hook.id}.mjs`)}"\n`;
+  const scriptPath = path.join(HOOKS_DIR, `${hook.id}.cjs`);
+  tomlHooks += `command = 'node "${scriptPath}"'\n`;
   tomlHooks += `timeout = ${hook.timeout}\n\n`;
 }
 tomlHooks += `${eccEndMarker}\n`;

@@ -6,7 +6,7 @@ origin: ECC
 
 # /plan — Implementation Planning
 
-## When to Use
+## When to Activate
 
 - Starting a new feature
 - Complex refactoring

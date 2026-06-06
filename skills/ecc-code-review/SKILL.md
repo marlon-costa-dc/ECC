@@ -6,7 +6,7 @@ origin: ECC
 
 # /code-review — Code Review Workflow
 
-## When to Use
+## When to Activate
 
 - After writing or modifying code
 - Before committing changes

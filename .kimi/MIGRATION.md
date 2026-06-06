@@ -153,10 +153,10 @@ If you have project-level rules in `.claude/rules/`:
 
 ```bash
 # Copy to AGENTS.md
-cat rules/common/*.md > AGENTS.md
+cat .claude/rules/common/*.md > AGENTS.md
 
 # Add language-specific rules
-cat rules/typescript/*.md >> AGENTS.md
+cat .claude/rules/typescript/*.md >> AGENTS.md
 ```
 
 ### 5. Update Your Workflow

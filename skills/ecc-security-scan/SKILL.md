@@ -6,7 +6,7 @@ origin: ECC
 
 # /security-scan — Security Review
 
-## When to Use
+## When to Activate
 
 - After writing code that handles user input
 - After modifying authentication/authorization code

@@ -12,6 +12,14 @@ This is a **production-ready AI coding plugin** providing 64 specialized agents,
 4. **Immutability** — Always create new objects, never mutate existing ones
 5. **Plan Before Execute** — Plan complex features before writing code
 
+## Tool Invocation
+
+Tools must be **invoked**, not described. When any skill, agent, or context instructs you to ask the user a question, present multiple-choice options, wait for a choice, or use `AskUserQuestion`, you MUST call Kimi Code's native `AskUserQuestion` tool.
+
+- NEVER render `<invoke>`, `<parameter>`, XML markup, or pseudo-code as assistant text.
+- NEVER describe a tool call instead of executing it.
+- Only if `AskUserQuestion` is unavailable and the session is not in auto permission mode may you render the choices as plain text.
+
 ## Available Agents
 
 | Agent | Purpose | When to Use |

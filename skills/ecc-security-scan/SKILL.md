@@ -84,13 +84,13 @@ Use coder agent to run security scan on: [files/changes]
 ### Risk Summary
 | Severity | Count |
 |----------|-------|
-| 🔴 Critical | N |
-| 🟡 High | N |
-| 🟢 Medium | N |
-| ℹ️ Low | N |
+|  Critical | N |
+|  High | N |
+|  Medium | N |
+|  Low | N |
 
 ### Findings
-#### 🔴 Critical
+#### Critical
 1. **[Title]** (`file.ts:line`)
    - **Issue**: Description
    - **Fix**: Recommended fix

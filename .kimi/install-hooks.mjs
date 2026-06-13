@@ -237,12 +237,12 @@ process.stdin.on('end', () => {
 ];
 
 // Install hook scripts
-console.log('📦 Installing ECC hook scripts...\n');
+console.log('[Package] Installing ECC hook scripts...\n');
 for (const hook of HOOK_DEFINITIONS) {
   const scriptPath = path.join(HOOKS_DIR, `${hook.id}.cjs`);
   fs.writeFileSync(scriptPath, hook.script);
   fs.chmodSync(scriptPath, 0o755);
-  console.log(`  ✓ ${hook.id}.cjs`);
+  console.log(`  [OK] ${hook.id}.cjs`);
 }
 
 // Read existing config
@@ -260,7 +260,7 @@ if (config.includes(eccStartMarker)) {
   const endIdx = config.indexOf(eccEndMarker);
   if (startIdx !== -1 && endIdx !== -1) {
     config = config.slice(0, startIdx) + config.slice(endIdx + eccEndMarker.length);
-    console.log('\n🔄 Updated existing ECC hooks');
+    console.log('\n[Updated] existing ECC hooks');
   }
 }
 
@@ -282,14 +282,14 @@ tomlHooks += `${eccEndMarker}\n`;
 config += tomlHooks;
 fs.writeFileSync(CONFIG_PATH, config);
 
-console.log(`\n✅ ECC hooks installed to ${CONFIG_PATH}`);
-console.log(`📁 Hook scripts: ${HOOKS_DIR}`);
+console.log(`\n[OK] ECC hooks installed to ${CONFIG_PATH}`);
+console.log(`[DIR] Hook scripts: ${HOOKS_DIR}`);
 console.log(`\nInstalled hooks:`);
 for (const hook of HOOK_DEFINITIONS) {
   console.log(`  • ${hook.event}${hook.matcher ? ` (${hook.matcher})` : ''} — ${hook.description}`);
 }
 
-console.log(`\n⚙️  Hook runtime controls:`);
+console.log(`\n[Settings] Hook runtime controls:`);
 console.log(`  export ECC_HOOK_PROFILE=minimal|standard|strict`);
 console.log(`  export ECC_DISABLED_HOOKS="id1,id2"`);
-console.log(`\n🚀 Start a new Kimi session to activate: kimi /new`);
+console.log(`\n[Launch] Start a new Kimi session to activate: kimi /new`);

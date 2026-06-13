@@ -23,12 +23,12 @@ Kimi Code CLI is a Node.js-based AI coding agent that supports plugins, hooks, s
 
 | Claude Code Hook | Kimi CLI Hook Event | Blockable? |
 |------------------|---------------------|------------|
-| `PreToolUse` | `PreToolUse` | ✅ Yes |
+| `PreToolUse` | `PreToolUse` | PASS: Yes |
 | `PostToolUse` | `PostToolUse` | — No (observation) |
-| `Stop` | `Stop` | ✅ Yes |
+| `Stop` | `Stop` | PASS: Yes |
 | `SessionStart` | `SessionStart` | — No (observation) |
 | `SessionEnd` | `SessionEnd` | — No (observation) |
-| `UserPromptSubmit` | `UserPromptSubmit` | ✅ Yes |
+| `UserPromptSubmit` | `UserPromptSubmit` | PASS: Yes |
 | `SubagentStart` | `SubagentStart` | — No (observation) |
 | `SubagentStop` | `SubagentStop` | — No (observation) |
 | `PreCompact` | `PreCompact` | — No (observation) |
@@ -217,7 +217,7 @@ process.stdin.on('data', chunk => input += chunk);
 process.stdin.on('end', () => {
   const payload = JSON.parse(input);
   // payload.hook_event_name, payload.tool_name, payload.tool_input, etc.
-  
+
   if (shouldBlock(payload)) {
     console.error('Blocking reason');
     process.exit(2);
@@ -230,12 +230,12 @@ process.stdin.on('end', () => {
 
 | Variable | Claude Code | Kimi CLI | Notes |
 |----------|-------------|----------|-------|
-| `ECC_HOOK_PROFILE` | ✅ | ✅ | minimal/standard/strict |
-| `ECC_DISABLED_HOOKS` | ✅ | ✅ | Comma-separated IDs |
-| `ECC_SESSION_START_MAX_CHARS` | ✅ | ✅ | Context cap |
-| `ECC_SESSION_START_CONTEXT` | ✅ | ✅ | `off` to disable |
-| `ECC_CONTEXT_MONITOR_COST_WARNINGS` | ✅ | ✅ | Toggle cost warnings |
-| `ECC_GOVERNANCE_CAPTURE` | ✅ | ✅ | Enable governance |
+| `ECC_HOOK_PROFILE` | PASS: | PASS: | minimal/standard/strict |
+| `ECC_DISABLED_HOOKS` | PASS: | PASS: | Comma-separated IDs |
+| `ECC_SESSION_START_MAX_CHARS` | PASS: | PASS: | Context cap |
+| `ECC_SESSION_START_CONTEXT` | PASS: | PASS: | `off` to disable |
+| `ECC_CONTEXT_MONITOR_COST_WARNINGS` | PASS: | PASS: | Toggle cost warnings |
+| `ECC_GOVERNANCE_CAPTURE` | PASS: | PASS: | Enable governance |
 
 ## Reverting to Claude Code
 

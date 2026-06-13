@@ -90,9 +90,9 @@ Use coder agent to review: [description of changes]
 ### Issues Found
 | Severity | File:Line | Issue | Suggestion |
 |----------|-----------|-------|------------|
-| 🔴 Critical | `auth.ts:42` | SQL injection risk | Use parameterized query |
-| 🟡 Medium | `utils.ts:88` | Missing null check | Add `if (!data)` guard |
-| 🟢 Low | `types.ts:12` | Typo in comment | Fix spelling |
+|  Critical | `auth.ts:42` | SQL injection risk | Use parameterized query |
+|  Medium | `utils.ts:88` | Missing null check | Add `if (!data)` guard |
+|  Low | `types.ts:12` | Typo in comment | Fix spelling |
 
 ### Positive Notes
 - [What's done well]
@@ -104,6 +104,6 @@ Use coder agent to review: [description of changes]
 
 ## Severity Definitions
 
-- **🔴 Critical**: Security vulnerability, data loss risk, crash, or major bug
-- **🟡 Medium**: Bug risk, performance issue, or maintainability concern
-- **🟢 Low**: Style, documentation, or minor improvement
+- ** Critical**: Security vulnerability, data loss risk, crash, or major bug
+- ** Medium**: Bug risk, performance issue, or maintainability concern
+- ** Low**: Style, documentation, or minor improvement

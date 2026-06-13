@@ -292,13 +292,31 @@ npx ecc consult "mlops training model deployment" --target claude
 npx ecc install --profile minimal --target claude --with capability:machine-learning
 ```
 
+### Local AI sync automation
+
+If you run Claude, Codex, and Kimi from a centralized local AI tool setup, use
+ECC's AI sync command instead of copying this repository into each tool home:
+
+```bash
+node scripts/ecc.js ai-sync --json
+node scripts/ecc.js ai-sync --apply --target kimi --skip-mcp
+node scripts/ecc.js ai-sync --apply --target codex
+```
+
+This generates audit artifacts under `~/.ai-hub/ecc/generated/`, keeps Kimi
+pointing at this checkout through generated symlinks, and invokes Codex through
+the existing `scripts/sync-ecc-to-codex.sh` flow. MCP stays owned by your
+central registry: `~/.agents/mcp/servers.json` plus `mcp-sync` /
+`mcp-sync-apply`. This fork's canonical sync source is
+`https://github.com/marlon-costa-dc/ECC`.
+
 ### Step 1: Install the Plugin (Recommended)
 
 > NOTE: The plugin is convenient, but the OSS installer below is still the most reliable path if your Claude Code build has trouble resolving self-hosted marketplace entries.
 
 ```bash
 # Add marketplace
-/plugin marketplace add https://github.com/affaan-m/ECC
+/plugin marketplace add https://github.com/marlon-costa-dc/ECC
 
 # Install plugin
 /plugin install ecc@ecc
@@ -308,7 +326,7 @@ npx ecc install --profile minimal --target claude --with capability:machine-lear
 
 ECC now has three public identifiers, and they are not interchangeable:
 
-- GitHub source repo: `affaan-m/ECC`
+- GitHub source repo: `marlon-costa-dc/ECC`
 - Claude marketplace/plugin identifier: `ecc@ecc`
 - npm package: `ecc-universal`
 

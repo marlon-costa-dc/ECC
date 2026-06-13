@@ -365,5 +365,6 @@ module.exports = {
   createNamespacedFlatRuleOperations,
   createRemappedOperation,
   isForeignPlatformPath,
+  listRelativeFiles,
   normalizeRelativePath,
 };

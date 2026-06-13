@@ -18,7 +18,6 @@ const __dirname = path.dirname(__filename);
 const KIMI_HOME = path.join(os.homedir(), '.kimi-code');
 const CONFIG_PATH = path.join(KIMI_HOME, 'config.toml');
 const HOOKS_DIR = path.join(KIMI_HOME, 'hooks');
-const ECC_ROOT = path.resolve(__dirname, '..');
 
 // Ensure directories exist
 fs.mkdirSync(KIMI_HOME, { recursive: true });
@@ -142,8 +141,8 @@ const EXCLUDED = [
   /\\.test\\.[jt]sx?$/,
   /\\.spec\\.[jt]sx?$/,
   /\\.config\\.[jt]s$/,
-  /scripts\//,
-  /__tests__\//,
+  /scripts\\//,
+  /__tests__\\//,
 ];
 
 process.stdin.on('data', chunk => {

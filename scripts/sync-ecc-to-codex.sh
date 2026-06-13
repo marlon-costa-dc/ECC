@@ -12,10 +12,12 @@ set -euo pipefail
 
 MODE="apply"
 UPDATE_MCP=""
+SKIP_MCP="false"
 for arg in "$@"; do
   case "$arg" in
     --dry-run)    MODE="dry-run" ;;
     --update-mcp) UPDATE_MCP="--update-mcp" ;;
+    --skip-mcp)   SKIP_MCP="true" ;;
   esac
 done
 
@@ -492,11 +494,15 @@ if [[ "$MODE" == "apply" ]]; then
   sort -u "$extension_manifest" -o "$extension_manifest"
 fi
 
-log "Merging ECC MCP servers into $CONFIG_FILE (add-only, preserving user config)"
-if [[ "$MODE" == "dry-run" ]]; then
-  node "$MCP_MERGE_SCRIPT" "$CONFIG_FILE" --dry-run $UPDATE_MCP
+if [[ "$SKIP_MCP" == "true" ]]; then
+  log "Skipping ECC MCP merge because central MCP sync owns Codex MCP config"
 else
-  node "$MCP_MERGE_SCRIPT" "$CONFIG_FILE" $UPDATE_MCP
+  log "Merging ECC MCP servers into $CONFIG_FILE (add-only, preserving user config)"
+  if [[ "$MODE" == "dry-run" ]]; then
+    node "$MCP_MERGE_SCRIPT" "$CONFIG_FILE" --dry-run $UPDATE_MCP
+  else
+    node "$MCP_MERGE_SCRIPT" "$CONFIG_FILE" $UPDATE_MCP
+  fi
 fi
 
 log "Installing global git safety hooks"

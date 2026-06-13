@@ -33,11 +33,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/affaan-m/ECC.git"
+    "url": "git+https://github.com/marlon-costa-dc/ECC.git"
   },
-  "homepage": "https://github.com/affaan-m/ECC#readme",
+  "homepage": "https://github.com/marlon-costa-dc/ECC#readme",
   "bugs": {
-    "url": "https://github.com/affaan-m/ECC/issues"
+    "url": "https://github.com/marlon-costa-dc/ECC/issues"
   },
   "files": [
     ".agents/",
@@ -77,6 +77,7 @@
     "scripts/catalog.js",
     "scripts/ci/scan-supply-chain-iocs.js",
     "scripts/ci/supply-chain-advisory-sources.js",
+    "scripts/ai-sync-ecc.js",
     "scripts/consult.js",
     "scripts/auto-update.js",
     "scripts/claw.js",
@@ -323,12 +324,13 @@
     "ecc-install": "scripts/install-apply.js"
   },
   "scripts": {
-    "postinstall": "echo '\\n  ecc-universal installed!\\n  Run: npx ecc typescript\\n  Compat: npx ecc-install typescript\\n  Docs: https://github.com/affaan-m/ECC\\n'",
+    "postinstall": "echo '\\n  ecc-universal installed!\\n  Run: npx ecc typescript\\n  Compat: npx ecc-install typescript\\n  Docs: https://github.com/marlon-costa-dc/ECC\\n'",
     "catalog:check": "node scripts/ci/catalog.js --text",
     "catalog:sync": "node scripts/ci/catalog.js --write --text",
     "command-registry:generate": "node scripts/ci/generate-command-registry.js",
     "command-registry:write": "node scripts/ci/generate-command-registry.js --write",
     "command-registry:check": "node scripts/ci/generate-command-registry.js --check",
+    "ai-sync": "node scripts/ai-sync-ecc.js",
     "lint": "eslint . && markdownlint '**/*.md' --ignore node_modules",
     "harness:adapters": "node scripts/harness-adapter-compliance.js",
     "harness:audit": "node scripts/harness-audit.js",

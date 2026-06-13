@@ -21,6 +21,10 @@ const COMMANDS = {
     script: 'consult.js',
     description: 'Recommend ECC components and profiles from a natural language query',
   },
+  'ai-sync': {
+    script: 'ai-sync-ecc.js',
+    description: 'Generate or apply ECC assets through the local AI sync automation',
+  },
   'control-pane': {
     script: 'control-pane.js',
     description: 'Run the local ECC2 operator control pane',
@@ -84,6 +88,7 @@ const PRIMARY_COMMANDS = [
   'plan',
   'catalog',
   'consult',
+  'ai-sync',
   'control-pane',
   'list-installed',
   'doctor',
@@ -123,6 +128,8 @@ Examples:
   ecc catalog components --family language
   ecc catalog show framework:nextjs
   ecc consult "security reviews"
+  ecc ai-sync --json
+  ecc ai-sync --apply --target kimi --skip-mcp
   ecc control-pane --port 8765
   ecc list-installed --json
   ecc doctor --target cursor

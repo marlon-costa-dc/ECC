@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "target": "cursor",
+  "profile": "core",
+  "include": [
+    "capability:security"
+  ]
+}

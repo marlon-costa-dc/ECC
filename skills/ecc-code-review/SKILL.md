@@ -104,6 +104,6 @@ Use coder agent to review: [description of changes]
 
 ## Severity Definitions
 
-- ** Critical**: Security vulnerability, data loss risk, crash, or major bug
-- ** Medium**: Bug risk, performance issue, or maintainability concern
-- ** Low**: Style, documentation, or minor improvement
+- **Critical**: Security vulnerability, data loss risk, crash, or major bug
+- **Medium**: Bug risk, performance issue, or maintainability concern
+- **Low**: Style, documentation, or minor improvement

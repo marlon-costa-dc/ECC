@@ -13,7 +13,6 @@ Use this skill when reviewing Cisco IOS or IOS-XE snippets, building a change-wi
 - Reviewing IOS or IOS-XE configuration before a planned change.
 - Choosing read-only `show` commands for troubleshooting.
 - Checking ACL wildcard masks and interface direction.
-- Explaining global, interface, routing process, and line configuration modes.
 - Verifying that a change landed in running config and was saved intentionally.
 
 ## Operating Rules
@@ -26,13 +25,7 @@ Prefer this workflow: capture current state with read-only commands, review the 
 
 ## Read-Only Collection
 
-Collect the specific section you need instead of dumping full config into a ticket when the config may contain secrets, customer names, or private topology.
-
-Use `show version`, `show inventory`, `show processes cpu sorted`, `show memory statistics`, `show logging`, `show running-config | section line vty|interface|router bgp`, `show ip interface brief`, `show interfaces`, `show interfaces status`, `show vlan brief`, `show mac address-table`, `show spanning-tree`, `show ip route`, `show ip protocols`, `show ip access-lists`, `show route-map`, and `show ip prefix-list`.
-
-## Wildcard Masks
-
-IOS ACL and many routing statements use wildcard masks, not subnet masks. Common mappings: `255.255.255.255 -> 0.0.0.0`, `255.255.255.252 -> 0.0.0.3`, `255.255.255.0 -> 0.0.0.255`, `255.255.0.0 -> 0.0.255.255`. Review wildcard masks before deployment; a subnet mask accidentally used as a wildcard can match far more traffic than intended. Every ACL has an implicit deny at the end; add an explicit logged deny only when logging volume is safe.
+Collect the specific section you need instead of dumping full config into a ticket when the config may contain secrets, customer names, or private topology. See [references/ios-commands.md](references/ios-commands.md) for the full command list, wildcard mask reference, interface hygiene example, and change-window verification commands.
 
 ## ACL Placement Review
 
@@ -50,18 +43,9 @@ Do not test reachability by removing firewall or ACL protections. Read counters,
 
 Use clear descriptions, explicit switchport mode, and documented native VLANs. On routed interfaces, confirm the mask, peer addressing, and routing process before assuming link state means forwarding is correct.
 
-```text
-interface GigabitEthernet0/1
- description UPLINK-TO-CORE
- switchport mode trunk
- switchport trunk allowed vlan 10,20,30
- switchport trunk native vlan 999
- no shutdown
-```
-
 ## Change-Window Verification
 
-Use before/after checks that match the actual change: `show running-config | section interface <name>`, `show interfaces <name>`, `show logging | include <name>|changed state|line protocol`, `show ip route <prefix>`, and `show ip access-lists <name>`. For routing changes, capture neighbor state and route tables before and after. For ACL changes, compare hit counters from a planned test source rather than relying on a generic ping.
+Use before/after checks that match the actual change. For routing changes, capture neighbor state and route tables before and after. For ACL changes, compare hit counters from a planned test source rather than relying on a generic ping.
 
 ## Anti-Patterns
 

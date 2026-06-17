@@ -22,9 +22,9 @@ Use this skill when a BGP session is down, flapping, established with missing ro
 2. Capture summary state and last reset reason with `show bgp summary` and `show bgp neighbors <peer>`.
 3. Prove reachability to the peer source address with `ping`/`traceroute` sourced from the update source and `show ip route <peer>`.
 4. Check route policy references with `show ip prefix-list`, `show route-map`, and `show running-config | section router bgp`.
-5. Compare advertised, received, and installed routes where supported with `show bgp neighbors <peer> advertised-routes` and `show bgp neighbors <peer> routes`.
+5. Compare advertised, received, and installed routes where supported.
 
-Use platform-specific address-family commands when the device uses VRFs, IPv6, VPNv4, or EVPN. Do not assume global IPv4 unicast. Some platforms require extra configuration before `received-routes` is available; do not add that during incident triage unless approved.
+Use platform-specific address-family commands when the device uses VRFs, IPv6, VPNv4, or EVPN. Do not assume global IPv4 unicast. See [references/bgp-commands.md](references/bgp-commands.md) for the full command list.
 
 ## State Interpretation
 
@@ -35,24 +35,9 @@ Use platform-specific address-family commands when the device uses VRFs, IPv6, V
 - **OpenSent/OpenConfirm**: TCP works; check ASN, auth, timers, capabilities, and logs.
 - **Idle**: neighbor disabled, missing config, blocked by policy, or in backoff.
 
-## Transport And Policy Checks
+## Guidance
 
-If the peer is sourced from a loopback, confirm both directions route to the loopback addresses and that the neighbor config uses the expected update source. Avoid disabling ACLs or firewall policy as a diagnostic shortcut. Read `show bgp neighbors <peer> | include BGP state|Last reset|Local host|Foreign host`, `show tcp brief | include <peer>|:179`, and `show logging | include BGP|<peer>`.
-
-## AS Path And Prefix Review
-
-Use `show bgp regexp _65001_`, `show bgp regexp ^65001$`, `show bgp <prefix>`, and `show bgp neighbors <peer> advertised-routes | include Network|Path|<prefix>`. Use AS-path regex carefully: `_65001_` matches AS 65001 as a token, while plain `65001` can match longer ASNs or unrelated text.
-
-## Change-Window Only
-
-These actions can affect routing and should not be suggested as automatic diagnostics:
-
-- Clearing a BGP session.
-- Changing neighbor authentication, timers, update source, route-maps, or prefix-lists.
-- Enabling additional received-route storage.
-- Relaxing firewall, ACL, or control-plane policy.
-
-If a reset is approved, prefer the least disruptive soft or route-refresh option and document exactly why it is safe.
+If the peer is sourced from a loopback, confirm both directions route to the loopback addresses and that the neighbor config uses the expected update source. Avoid disabling ACLs or firewall policy as a diagnostic shortcut. Use AS-path regex carefully: `_65001_` matches AS 65001 as a token, while plain `65001` can match longer ASNs or unrelated text. Do not suggest clearing BGP sessions, changing neighbor configuration, enabling received-route storage, or relaxing firewall/ACL policy as automatic diagnostics; those belong in an approved change window with the least disruptive soft or route-refresh option.
 
 ## Anti-Patterns
 

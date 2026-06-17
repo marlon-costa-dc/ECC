@@ -22,27 +22,21 @@ Treat config validation as layered evidence, not as a complete parser. Regex che
 
 Validate in this order: destructive commands, credential and management-plane exposure, duplicate addresses and overlapping subnets, stale references, and operational hygiene such as NTP, timestamps, logging, and banners.
 
+## Validation Areas
+
+**Dangerous commands**: flag `reload`, `erase startup-config|nvram|flash`, `format`, `no router bgp|ospf|eigrp`, `no interface <name>`, `aaa new-model`, and `crypto key zeroize|generate`.
+
+**Duplicate IPs and subnet overlaps**: extract `ip address <addr> <mask>` lines per interface block, count IPs for duplicates, and test pairwise `ipaddress.ip_network.overlaps()`.
+
+**Management plane**: parse `line vty` blocks as sections and confirm each allows SSH only, has an inbound `access-class`, and sets an explicit `exec-timeout`.
+
+**Security hygiene**: reject default SNMP communities, SNMPv2 strings, SSH version 1, `enable password`, and local usernames with `password` instead of `secret`. Verify NTP, timestamps, logging, SNMPv3 priv group, and login banner are present.
+
 Concrete Python helpers live in [references/api.md](references/api.md).
-
-## Dangerous Command Detection
-
-Flag commands that can cause downtime or break access: `reload`, `erase startup-config|nvram|flash`, `format`, `no router bgp|ospf|eigrp`, `no interface <name>`, `aaa new-model`, and `crypto key zeroize|generate`.
-
-## Duplicate IPs And Subnet Overlaps
-
-Extract `ip address <addr> <mask>` lines per interface block. Count each IP and report duplicates. Build `ipaddress.ip_network` objects and test pairwise `overlaps()`.
-
-## Management-Plane Checks
-
-Parse `line vty` blocks as sections so checks do not spill across unrelated lines. Confirm each block allows SSH only, has an inbound `access-class`, and sets an explicit `exec-timeout`.
-
-## Security Hygiene Checks
-
-Reject or warn on default SNMP communities, SNMPv2 community strings, SSH version 1, `enable password`, and local usernames with `password` instead of `secret`. Verify presence of NTP, timestamps, logging, SNMPv3 priv group, and login banner.
 
 ## Preflight Workflow
 
-Run dangerous-command checks on the snippet, run duplicate IP and subnet overlap checks on the full candidate config, confirm every referenced ACL/route-map/prefix-list exists, confirm rollback commands and out-of-band access before management-plane changes, and use validation as a blocking gate before automation pushes generated config. Fail closed on dangerous commands and credentials; warn on best-practice gaps outside scope.
+Run dangerous-command checks on the snippet, duplicate IP and overlap checks on the full candidate config, confirm every referenced ACL/route-map/prefix-list exists, confirm rollback and out-of-band access before management-plane changes, and use validation as a blocking gate before automation pushes generated config. Fail closed on dangerous commands and credentials; warn on best-practice gaps outside scope.
 
 ## Anti-Patterns
 

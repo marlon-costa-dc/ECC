@@ -5,7 +5,7 @@ description: Use when designing or modifying Prisma schema models and relations,
 
 # Prisma Patterns
 
-Production patterns and non-obvious traps for Prisma ORM in TypeScript backends. For detailed anti-patterns, code examples, and extended guidance, see `references/prisma-patterns-extended.md`.
+Production patterns and non-obvious traps for Prisma ORM. For detailed anti-patterns, code examples, and extended guidance, see `references/prisma-patterns-extended.md`.
 
 ## When to Activate
 
@@ -79,4 +79,3 @@ const post = await prisma.$transaction(async (tx) => {
 - Skill: `nestjs-patterns`
 - Skill: `postgres-patterns`
 - Skill: `database-migrations`
-- Skill: `backend-patterns`

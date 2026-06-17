@@ -42,7 +42,7 @@ PARTITION BY toYYYYMM(hour) ORDER BY (hour, market_id);
 
 ## Query Optimization
 
-Filter on indexed/partitioned columns first. Use ClickHouse-specific aggregations such as `sum`, `count`, `uniq`, and `quantile`. Batch inserts; avoid individual inserts and small frequent writes.
+Filter on indexed/partitioned columns first. Use `sum`, `count`, `uniq`, and `quantile`. Batch inserts; avoid individual inserts and small frequent writes.
 
 ```sql
 SELECT
@@ -69,4 +69,3 @@ ORDER BY day DESC, total_volume DESC;
 - Reference: `references/clickhouse-analytics-queries.md`
 - Skill: `postgres-patterns`
 - Skill: `mysql-patterns`
-- Agent: `database-reviewer`

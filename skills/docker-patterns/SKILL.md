@@ -6,8 +6,6 @@ origin: ECC
 
 # Docker Patterns
 
-Best practices for Docker images and Docker Compose.
-
 ## When to Activate
 
 - Writing or reviewing Dockerfiles and docker-compose.yml
@@ -19,14 +17,12 @@ Best practices for Docker images and Docker Compose.
 
 1. Pin image tags (`node:22-alpine`, never `:latest`).
 2. Run containers as non-root with explicit UID/GID.
-3. Use multi-stage builds to separate build dependencies from production images.
-4. Keep secrets out of image layers; inject at runtime via env vars or Docker secrets.
+3. Use multi-stage builds to separate build and production images.
+4. Keep secrets out of image layers; inject at runtime.
 5. Use `.dockerignore` to exclude `.git`, `node_modules`, `.env`, and build artifacts.
 6. Prefer named volumes for persistence; bind mounts only for development.
 
-## Quick Examples
-
-### Multi-Stage Dockerfile
+## Quick Example
 
 ```dockerfile
 FROM node:22-alpine AS deps
@@ -44,32 +40,6 @@ ENV NODE_ENV=production
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -qO- http://localhost:3000/health || exit 1
 CMD ["node", "dist/server.js"]
-```
-
-### Compose Service with Healthcheck
-
-```yaml
-services:
-  app:
-    build:
-      context: .
-      target: production
-    environment:
-      - DATABASE_URL
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: postgres:16-alpine
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-volumes:
-  pgdata:
 ```
 
 ## References

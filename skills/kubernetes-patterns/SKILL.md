@@ -6,8 +6,6 @@ origin: ECC
 
 # Kubernetes Patterns
 
-Production-grade Kubernetes patterns.
-
 ## When to Activate
 
 - Writing or reviewing K8s YAML (Deployments, Services, Ingress, Jobs, CronJobs)
@@ -17,15 +15,13 @@ Production-grade Kubernetes patterns.
 
 ## Core Rules
 
-| Area | Rule |
-|------|------|
-| Images | Pin immutable tags; never use `:latest` |
-| Security | Non-root, read-only rootfs, drop ALL capabilities, dedicated SA |
-| RBAC | `automountServiceAccountToken: false` unless the app calls K8s API |
-| Resources | Always set requests AND limits on every container |
-| Probes | Use startup + liveness + readiness together |
-| Scaling | `minReplicas: 2+`, HPA for variable load, PDB for critical services |
-| Secrets | Prefer External Secrets Operator or Sealed Secrets; never store plaintext in ConfigMaps |
+- Pin immutable image tags; never use `:latest`.
+- Run non-root with `readOnlyRootFilesystem: true` and drop ALL capabilities.
+- Set resource requests AND limits on every container.
+- Configure startup + liveness + readiness probes together.
+- Use `automountServiceAccountToken: false` unless the app calls the K8s API.
+- Run production workloads with `minReplicas: 2+`, HPA for variable load, and PDB for critical services.
+- Manage secrets with External Secrets Operator or Sealed Secrets.
 
 ## Example Deployment
 
@@ -55,10 +51,6 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities: { drop: [ALL] }
-          startupProbe:
-            httpGet: { path: /health, port: 8080 }
-            failureThreshold: 30
-            periodSeconds: 5
           livenessProbe:
             httpGet: { path: /health, port: 8080 }
             periodSeconds: 30

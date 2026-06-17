@@ -1,6 +1,18 @@
 # PostgreSQL Patterns — Extended Reference
 
-Extended quick reference for PostgreSQL best practices. The SKILL.md file contains the essential quick-reference; this file preserves additional diagnostic queries, anti-pattern detection, and context.
+Extended quick reference for PostgreSQL best practices. The SKILL.md file contains the essential quick-reference; this file preserves additional diagnostic queries, anti-pattern detection, configuration template, and context.
+
+## Configuration Template
+
+```sql
+ALTER SYSTEM SET max_connections = 100;
+ALTER SYSTEM SET work_mem = '8MB';
+ALTER SYSTEM SET idle_in_transaction_session_timeout = '30s';
+ALTER SYSTEM SET statement_timeout = '30s';
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+REVOKE ALL ON SCHEMA public FROM public;
+SELECT pg_reload_conf();
+```
 
 ## Anti-Pattern Detection
 

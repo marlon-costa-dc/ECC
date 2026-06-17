@@ -20,20 +20,7 @@ Use this skill when a network symptom might be caused by a physical link, switch
 
 Interface counters are evidence, but the trend matters more than the absolute number. Capture a baseline, wait a measurement interval, capture again, then compare increments.
 
-Use `show interfaces <interface>`, `show interfaces <interface> status`, and `show logging | include <interface>|changed state|line protocol` on IOS. On Linux use `ip -s link show <interface>`, `ethtool <interface>`, and `ethtool -S <interface>`.
-
-## Counter Reference
-
-| Counter | Meaning | Common cause |
-| --- | --- | --- |
-| CRC | Received checksum failed | Bad cable, dirty fiber, bad optic, duplex mismatch |
-| input errors | Aggregate receive errors | Check sub-counters |
-| runts | Frames below min size | Duplex mismatch, collision domain, faulty NIC |
-| giants | Frames over MTU | MTU mismatch or jumbo boundary |
-| input drops | Could not accept inbound | Burst, oversubscription, CPU path, queue pressure |
-| output drops | Egress discard | Congestion, QoS policy, undersized uplink |
-| resets | Hardware reset | Flapping, keepalive, driver, optic, power |
-| collisions | Collision counter | Half duplex or negotiation mismatch |
+On IOS use `show interfaces <interface>`, `show interfaces <interface> status`, and `show logging | include <interface>|changed state|line protocol`. On Linux use `ip -s link show <interface>`, `ethtool <interface>`, and `ethtool -S <interface>`. See [references/counter-reference.md](references/counter-reference.md) for counter meanings and common causes.
 
 ## Diagnosis Flow
 

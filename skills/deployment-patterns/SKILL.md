@@ -6,8 +6,6 @@ origin: ECC
 
 # Deployment Patterns
 
-Production deployment workflows and CI/CD best practices.
-
 ## When to Activate
 
 - Setting up CI/CD pipelines
@@ -21,9 +19,9 @@ Production deployment workflows and CI/CD best practices.
 
 | Strategy | How It Works | Best For |
 |----------|--------------|----------|
-| Rolling | Replace instances gradually | Standard deployments, backward-compatible changes |
-| Blue-Green | Run two identical environments, switch traffic atomically | Critical services needing instant rollback |
-| Canary | Route small traffic percentage to new version first | High-traffic services, risky changes |
+| Rolling | Replace instances gradually | Standard deployments |
+| Blue-Green | Run two environments, switch traffic atomically | Critical services |
+| Canary | Route small traffic percentage to new version first | High-traffic or risky changes |
 
 ## Core Rules
 
@@ -34,29 +32,7 @@ Production deployment workflows and CI/CD best practices.
 5. Keep database migrations backward-compatible for rollback safety.
 6. Document and test rollback plans before every production release.
 
-## Quick Examples
-
-### Health Check Endpoint
-
-```typescript
-app.get("/health", (req, res) => {
-  res.status(200).json({ status: "ok" });
-});
-
-app.get("/health/detailed", async (req, res) => {
-  const checks = {
-    database: await checkDatabase(),
-    redis: await checkRedis(),
-  };
-  const allHealthy = Object.values(checks).every(c => c.status === "ok");
-  res.status(allHealthy ? 200 : 503).json({
-    status: allHealthy ? "ok" : "degraded",
-    checks,
-  });
-});
-```
-
-### Kubernetes Probes
+## Quick Example
 
 ```yaml
 livenessProbe:

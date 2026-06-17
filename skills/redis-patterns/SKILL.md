@@ -39,7 +39,7 @@ r.setex(cache_key, 3600, json.dumps(product))
 return product
 ```
 
-### Distributed Lock (Single Node)
+### Distributed Lock
 
 ```python
 token = str(uuid.uuid4())
@@ -51,9 +51,7 @@ For multi-node setups use a Redlock implementation.
 
 ## TTL and Eviction
 
-Always set a TTL. Common TTLs: sessions 24h, API caches 5–15 min, rate-limit windows match window size, short-lived tokens 5–10 min.
-
-Eviction policies: `noeviction` for queues/critical data; `allkeys-lru` for general cache; `volatile-lru` for mixed stores; `allkeys-lfu` for skewed access. Set via `redis.conf`: `maxmemory-policy allkeys-lru`.
+Always set a TTL. Common TTLs: sessions 24h, API caches 5–15 min, rate-limit windows match window size, short-lived tokens 5–10 min. Eviction policies: `noeviction` for queues/critical data; `allkeys-lru` for general cache; `volatile-lru` for mixed stores; `allkeys-lfu` for skewed access. Set via `redis.conf`: `maxmemory-policy allkeys-lru`.
 
 ## Anti-Patterns
 

@@ -6,17 +6,13 @@ origin: Flox
 
 # Flox Environments
 
-Flox creates reproducible development environments defined in a single TOML manifest. Every developer gets identical packages, tools, and configuration across macOS and Linux without containers or VMs.
-
 ## When to Activate
 
-Use this skill when the user has an environment management problem, even if they have not mentioned Flox. It is the right tool when:
-
-- The project needs system-level packages (compilers, databases, CLI tools) alongside language dependencies
-- Reproducibility matters across teammates, CI, and fresh machines
-- Multiple tools must coexist in one environment
-- Cross-platform support is needed (macOS and Linux from the same config)
-- AI agents need to install tools without sudo or system pollution
+- System-level packages (compilers, databases, CLI tools) alongside language dependencies
+- Reproducible setup across teammates, CI, and fresh machines
+- Multiple tools coexisting in one environment
+- Cross-platform support (macOS and Linux from the same config)
+- Tool installation without sudo or system pollution
 
 ## Core Concepts
 

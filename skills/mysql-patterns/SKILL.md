@@ -42,7 +42,7 @@ CREATE TABLE orders (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-Default choices: use `BIGINT UNSIGNED AUTO_INCREMENT` for surrogate PKs, `BINARY(16)` for UUID lookups, `DECIMAL` for money, `utf8mb4` for text, `deleted_at` for soft deletes, and a lookup table or constrained `VARCHAR` instead of `ENUM` when values change often.
+Default choices: `BIGINT UNSIGNED AUTO_INCREMENT` for surrogate PKs, `BINARY(16)` for UUID lookups, `DECIMAL` for money, `utf8mb4` for text, `deleted_at` for soft deletes, and a lookup table or constrained `VARCHAR` instead of `ENUM` when values change often.
 
 ## Indexing
 
@@ -53,7 +53,7 @@ CREATE INDEX idx_orders_account_status_created
     ON orders (account_id, status, created_at);
 ```
 
-Use `EXPLAIN` before adding or changing an index. Each index increases write cost, migration time, backup size, and buffer-pool pressure.
+Use `EXPLAIN` before adding or changing an index.
 
 ## Related
 

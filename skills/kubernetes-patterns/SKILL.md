@@ -20,7 +20,7 @@ origin: ECC
 - Set resource requests AND limits on every container.
 - Configure startup + liveness + readiness probes together.
 - Use `automountServiceAccountToken: false` unless the app calls the K8s API.
-- Run production workloads with `minReplicas: 2+`, HPA for variable load, and PDB for critical services.
+- Run production workloads with `minReplicas: 2+`, HPA, and PDB where needed.
 - Manage secrets with External Secrets Operator or Sealed Secrets.
 
 ## Example Deployment
@@ -28,17 +28,13 @@ origin: ECC
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
-metadata:
-  name: my-app
+metadata: { name: my-app }
 spec:
   replicas: 3
-  selector:
-    matchLabels: { app: my-app }
+  selector: { matchLabels: { app: my-app } }
   template:
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1001
+      securityContext: { runAsNonRoot: true, runAsUser: 1001 }
       serviceAccountName: my-app-sa
       containers:
         - name: app

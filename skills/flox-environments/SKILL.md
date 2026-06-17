@@ -58,9 +58,9 @@ systems = ["x86_64-linux", "aarch64-linux", "x86_64-darwin", "aarch64-darwin"]
 
 ## Core Rules
 
-1. Commit `.flox/` so collaborators reproduce the environment instantly.
-2. Keep hooks fast and idempotent; use `[profile]` for interactive helpers.
-3. Use `$FLOX_ENV_CACHE` for caches and generated data, never absolute paths.
+1. Commit `.flox/` so collaborators reproduce the environment.
+2. Keep hooks fast and idempotent; use `[profile]` for helpers.
+3. Use `$FLOX_ENV_CACHE` for caches, never absolute paths.
 4. Pin versions with `version = "..."` for reproducibility.
 5. Never store secrets in `manifest.toml`; pass them at runtime.
 6. Use `return` in hooks, not `exit`, to avoid killing the shell.

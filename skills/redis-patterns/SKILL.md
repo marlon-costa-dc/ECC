@@ -55,11 +55,7 @@ Always set a TTL. Common TTLs: sessions 24h, API caches 5–15 min, rate-limit w
 
 ## Anti-Patterns
 
-- Keys with no TTL — always set TTL.
-- `KEYS *` in production — use `SCAN` cursor.
-- Storing large blobs (>100KB) — store reference + fetch from object store.
-- Single Redis for everything — use separate DBs or instances.
-- `FLUSHALL` without thought — scope deletes by key pattern.
+- Keys with no TTL; use `SCAN` instead of `KEYS *`; storing large blobs (>100KB); single Redis for everything; unscoped `FLUSHALL`.
 
 ## Related
 

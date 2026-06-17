@@ -1,9 +1,16 @@
 ---
 name: beads
-description: Use when working in a repository that uses bd or Beads for durable project task tracking, dependencies, blocker management, handoff, or shared work memory.
+description: 'Use this skill to use when working in a repository that uses bd or Beads
+  for durable project task tracking, dependencies, blocker management, handoff, or
+  shared work memory. DO NOT USE FOR: questions unrelated to beads creating projects
+  or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # beads
+
+**UTILITY SKILL**
 
 ## Quando usar
 - User asks to find ready work, claim or close tasks, create follow-up work, inspect blockers, or recover project context.
@@ -25,3 +32,35 @@ description: Use when working in a repository that uses bd or Beads for durable 
 - Never use `bd edit` (interactive); prefer `bd update` flags or `--json` for programmatic parsing.
 - Do not auto-close or mutate tasks unless the work is actually complete.
 - Keep agent-local plans scoped to the current turn; persist shared state in Beads.
+
+## USE FOR
+
+- Requests about beads.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to beads.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

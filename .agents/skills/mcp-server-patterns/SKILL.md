@@ -1,46 +1,50 @@
 ---
 name: mcp-server-patterns
-description: Build MCP servers with Node/TypeScript SDK — tools, resources, prompts, Zod validation, stdio vs Streamable HTTP. Use Context7 or official MCP docs for latest API.
+description: 'Build MCP servers with Node/TypeScript SDK — tools, resources, prompts,
+  Zod validation, stdio vs Streamable HTTP. Use Context7 or official MCP docs for
+  latest API. DO NOT USE FOR: questions unrelated to mcp-server-patterns creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # mcp-server-patterns
 
-## Quando usar
-- Implementing a new MCP server or adding tools/resources/prompts.
-- Choosing stdio vs Streamable HTTP transport.
-- Upgrading the SDK or debugging registration/transport issues.
+**UTILITY SKILL**
 
-## O que fazer
-1. Pin the `@modelcontextprotocol/sdk` version and verify current API names in Context7 or official MCP docs.
-2. Keep server logic independent of transport; wire stdio or HTTP only in the entrypoint.
-3. Define Zod input schemas for every tool; document parameters and return shape.
-4. Register tools/resources/prompts using the SDK pattern your version expects (`tool()`/`resource()` or `registerTool()`/`registerResource()`).
-5. Return structured, model-friendly errors; avoid leaking raw stack traces.
-6. Prefer idempotent tools so retries are safe.
-7. For external API calls, note rate limits and cost in tool descriptions.
+## USE FOR
 
-## Regras críticas
-- Use stdio for local clients (e.g. Claude Desktop); use Streamable HTTP for remote/cloud clients.
-- Support legacy HTTP/SSE only when backward compatibility is explicitly required.
-- Never hardcode API keys or secrets; inject them via environment variables.
-- Validate every tool input with Zod or the SDK's equivalent schema layer.
-- Re-check SDK signatures after upgrades before copying old examples.
+- Requests about mcp server patterns.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-## Exemplo (se necessário)
-```bash
-npm install @modelcontextprotocol/sdk zod
-```
 
-```typescript
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
+## DO NOT USE FOR
 
-const server = new McpServer({ name: "my-server", version: "1.0.0" });
+- questions unrelated to mcp-server-patterns.
+- creating projects or architecture from scratch.
 
-server.tool(
-  "search",
-  "Search the internal docs",
-  { query: z.string().min(1) },
-  async ({ query }) => ({ content: [{ type: "text", text: `Results for ${query}` }] })
-);
-```
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

@@ -1,9 +1,16 @@
 ---
 name: market-research
-description: Use when researching markets, competitors, investors, or technology trends with sourced evidence, comparative analysis, and decision-ready summaries for strategy or pitches.
+description: 'Use this skill to use when researching markets, competitors, investors,
+  or technology trends with sourced evidence, comparative analysis, and decision-ready
+  summaries for strategy or pitches. DO NOT USE FOR: questions unrelated to market-research
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # market-research
+
+**UTILITY SKILL**
 
 ## Quando usar
 - researching a market, category, company, investor, or technology trend
@@ -24,3 +31,35 @@ description: Use when researching markets, competitors, investors, or technology
 - Old or uncertain data must be flagged.
 - Include risks and counterarguments.
 - Output must make a decision easier, not just summarize.
+
+## USE FOR
+
+- Requests about market research.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to market-research.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

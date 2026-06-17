@@ -1,9 +1,16 @@
 ---
 name: strategic-compact
-description: Use when context usage is high and you want to trigger manual compaction at logical task boundaries instead of arbitrary or mid-sentence auto-compaction.
+description: 'Use this skill to use when context usage is high and you want to trigger
+  manual compaction at logical task boundaries instead of arbitrary or mid-sentence
+  auto-compaction. DO NOT USE FOR: questions unrelated to strategic-compact creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # strategic-compact
+
+**UTILITY SKILL**
 
 ## Quando usar
 - Sessions approaching context limits (160k+ on 200k window, 250k+ on 1M window)
@@ -25,3 +32,35 @@ description: Use when context usage is high and you want to trigger manual compa
 - Always save important context to disk or memory before invoking `/compact`
 - Use window-scaled thresholds: 160k tokens for 200k windows, 250k for 1M windows
 - Re-remind every additional 60k tokens or 25 tool calls after the first suggestion
+
+## USE FOR
+
+- Requests about strategic compact.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to strategic-compact.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

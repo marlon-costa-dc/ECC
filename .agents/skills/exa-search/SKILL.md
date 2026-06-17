@@ -1,23 +1,18 @@
 ---
 name: exa-search
-description: Use when performing neural web, code, company, or people search via the Exa MCP and synthesizing findings with source attribution and decision-ready summaries.
+description: 'Use this skill to use when performing neural web, code, company, or
+  people search via the Exa MCP and synthesizing findings with source attribution
+  and decision-ready summaries. DO NOT USE FOR: questions unrelated to exa-search
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # exa-search
 
+**UTILITY SKILL**
+
 ## When to use
-- Current web info, news, or facts
-- Code examples, API docs, or technical references
-- Company or competitor research
-- People lookup in a domain
-
-## What to do
-1. Ensure the Exa MCP server is configured (`exa-web-search` in `~/.claude.json`).
-2. Pick the right tool for the job.
-3. Refine with filters/domain/date when results are too broad.
-4. Use `crawling_exa` to extract full content from specific URLs.
-5. For deep synthesis, start `deep_researcher_start`, then poll `deep_researcher_check`.
-
 ## Core tools
 - `web_search_exa(query, numResults)` — general web search.
 - `web_search_advanced_exa(query, numResults, includeDomains, excludeDomains, startPublishedDate, endPublishedDate)` — filtered search.
@@ -31,11 +26,29 @@ description: Use when performing neural web, code, company, or people search via
 - Use `web_search_exa` for broad queries; `web_search_advanced_exa` for domain/date filters.
 - Keep `tokensNum` low (1000–2000) for focused snippets, high (5000+) for broad context.
 - Combine `company_research_exa` + `web_search_advanced_exa` for thorough company analysis.
-- Prefer `deep_researcher_start` only for topics needing AI synthesis.
 
 ## Example
-```text
-web_search_exa(query: "Node.js 22 new features", numResults: 3)
-get_code_context_exa(query: "Rust error handling patterns Result type", tokensNum: 3000)
-company_research_exa(companyName: "Vercel", numResults: 5)
-```
+**Input:** a request.
+**Output:** a concise response.
+
+## USE FOR
+
+- Requests about exa search.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to exa-search.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

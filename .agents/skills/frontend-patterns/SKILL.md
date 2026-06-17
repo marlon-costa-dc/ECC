@@ -1,18 +1,18 @@
 ---
 name: frontend-patterns
-description: Use when building or reviewing React, Next.js, state management, performance optimization, accessibility, and UI best practices for frontend applications.
+description: 'Use this skill to use when building or reviewing React, Next.js, state
+  management, performance optimization, accessibility, and UI best practices for frontend
+  applications. DO NOT USE FOR: questions unrelated to frontend-patterns creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # frontend-patterns
 
-## When to use
-- Building React components, custom hooks, or compound components
-- Managing state with hooks, Context, reducers, or external stores
-- Fetching data in client components or React Server Components
-- Optimizing render performance, list virtualization, or code splitting
-- Implementing forms, validation, error boundaries, or animations
-- Ensuring accessibility (keyboard navigation, focus management)
+**UTILITY SKILL**
 
+## When to use
 ## What to do
 1. Prefer composition; expose small, focused components.
 2. Encapsulate reusable logic in custom hooks with stable references.
@@ -26,23 +26,29 @@ description: Use when building or reviewing React, Next.js, state management, pe
 - Never log/display credentials, tokens, PII, or payment data.
 - Avoid third-party analytics/tracking without approval.
 - Do not pass inline objects/functions to memoized children without stabilizing.
-- Keep side effects inside `useEffect` or data-fetching libraries.
-- Return early for loading/error states before accessing nullable data.
-- Restore/trap focus for modals and dropdowns.
-- Respect motion preferences.
 
 ## Example
-```typescript
-function useToggle(initial = false) {
-  const [value, setValue] = useState(initial)
-  const toggle = useCallback(() => setValue(v => !v), [])
-  return [value, toggle] as const
-}
+**Input:** a request.
+**Output:** a concise response.
 
-function Card({ children, variant = 'default' }: { children: React.ReactNode; variant?: 'default' | 'outlined' }) {
-  return <div className={`card card-${variant}`}>{children}</div>
-}
+## USE FOR
 
-const [isOpen, toggleOpen] = useToggle()
-<Card variant="outlined"><button onClick={toggleOpen}>Toggle</button>{isOpen && <p>Details</p>}</Card>
-```
+- Requests about frontend patterns.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to frontend-patterns.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

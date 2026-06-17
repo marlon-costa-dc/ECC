@@ -1,16 +1,18 @@
 ---
 name: agent-sort
-description: Build an evidence-backed ECC install plan by sorting skills, commands, rules, hooks, and extras into DAILY vs LIBRARY buckets using repo-aware parallel review passes.
+description: 'Build an evidence-backed ECC install plan by sorting skills, commands,
+  rules, hooks, and extras into DAILY vs LIBRARY buckets using repo-aware parallel
+  review passes. DO NOT USE FOR: questions unrelated to agent-sort creating projects
+  or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # agent-sort
 
-## Quando usar
-- A project needs a trimmed ECC surface instead of the full bundle
-- The repo stack is clear but manual skill curation is unwanted
-- A team wants install decisions backed by repo evidence, not opinion
-- The repo has drifted into the wrong language, rule, or hook set
+**UTILITY SKILL**
 
+## Quando usar
 ## O que fazer
 1. **Read the repo** — identify languages, frameworks, package manager, test/lint/deploy stack, and existing operator surfaces
 2. **Build an evidence table** — for each candidate, record path, type, proposed bucket, repo evidence, and short justification
@@ -28,11 +30,37 @@ description: Build an evidence-backed ECC install plan by sorting skills, comman
 - Prefer ECC-native surfaces; do not introduce a second install system
 
 ## Exemplo
-```text
-skills/frontend-patterns | skill | DAILY  | 84 .tsx files, next.config.ts present | core frontend stack
-skills/django-patterns   | skill | LIBRARY| no .py files, no pyproject.toml       | not active in this repo
-rules/typescript/*       | rules | DAILY  | package.json + tsconfig.json            | active TS repo
-rules/python/*           | rules | LIBRARY| zero Python source files                | keep accessible only
-```
 
 Hand off to `configure-ecc` for installation, `skill-stocktake` for catalog cleanup, or `strategic-compact` for broader context trimming.
+
+## USE FOR
+
+- Requests about agent sort.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to agent-sort.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

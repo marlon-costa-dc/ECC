@@ -1,9 +1,16 @@
 ---
 name: source-command-add-language-rules
-description: Use when scaffolding or running the /add-language-rules source command for the everything-Codex repository, its language-rule pipeline, and validation steps.
+description: 'Use this skill to use when scaffolding or running the /add-language-rules
+  source command for the everything-Codex repository, its language-rule pipeline,
+  and validation steps. DO NOT USE FOR: questions unrelated to source-command-add-language-rules
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # source-command-add-language-rules
+
+**UTILITY SKILL**
 
 ## Quando usar
 - User asks to run the migrated source command `add-language-rules`.
@@ -23,3 +30,35 @@ description: Use when scaffolding or running the /add-language-rules source comm
 
 ## Exemplo (se necessário)
 - Create `rules/python/coding-style.md`, `rules/python/patterns.md`, etc.
+
+## USE FOR
+
+- Requests about source command add language rules.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to source-command-add-language-rules.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

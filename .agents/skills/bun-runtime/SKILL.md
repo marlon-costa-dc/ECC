@@ -1,9 +1,16 @@
 ---
 name: bun-runtime
-description: Use when choosing Bun as the JS/TS runtime, package manager, bundler, or test runner, or when migrating a Node.js project to Bun and evaluating trade-offs.
+description: 'Use this skill to use when choosing Bun as the JS/TS runtime, package
+  manager, bundler, or test runner, or when migrating a Node.js project to Bun and
+  evaluating trade-offs. DO NOT USE FOR: questions unrelated to bun-runtime creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # bun-runtime
+
+**UTILITY SKILL**
 
 ## When to use
 - New JS/TS projects or scripts where speed matters.
@@ -38,3 +45,25 @@ test("add", () => {
   expect(1 + 2).toBe(3);
 });
 ```
+
+## USE FOR
+
+- Requests about bun runtime.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to bun-runtime.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

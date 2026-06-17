@@ -1,10 +1,16 @@
 ---
 name: search-first
-description: Use when starting implementation work and you should search existing tools, libraries, patterns, or documentation before writing custom code or inventing APIs.
-origin: ECC
+description: 'Use this skill to use when starting implementation work and you should
+  search existing tools, libraries, patterns, or documentation before writing custom
+  code or inventing APIs. DO NOT USE FOR: questions unrelated to search-first creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # search-first
+
+**UTILITY SKILL**
 
 ## When to use
 - Starting a feature that likely has existing solutions
@@ -35,3 +41,25 @@ Search: npm "markdown dead link checker"
 Found: `textlint-rule-no-dead-link`
 Action: adopt — install and configure
 Result: zero custom code
+
+## USE FOR
+
+- Requests about search first.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to search-first.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

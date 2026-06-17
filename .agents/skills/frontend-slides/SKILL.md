@@ -1,15 +1,18 @@
 ---
 name: frontend-slides
-description: Use when creating zero-dependency, animation-rich HTML presentations from scratch or by converting PPT/PPTX files for talks, pitches, workshops, or documentation.
+description: 'Use this skill to use when creating zero-dependency, animation-rich
+  HTML presentations from scratch or by converting PPT/PPTX files for talks, pitches,
+  workshops, or documentation. DO NOT USE FOR: questions unrelated to frontend-slides
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # frontend-slides
 
-## When to use
-- Building a talk, pitch, workshop, or internal deck
-- Converting `.ppt` or `.pptx` to HTML
-- Improving layout, motion, or typography of existing HTML slides
+**UTILITY SKILL**
 
+## When to use
 ## What to do
 1. Detect mode: new deck, PPT conversion, or enhancement
 2. Discover content: ask purpose, length, and content state; have the user paste copy before styling
@@ -23,8 +26,30 @@ description: Use when creating zero-dependency, animation-rich HTML presentation
 - Zero dependencies: one self-contained HTML file with inline CSS and JS
 - Every slide must fit the viewport: `height: 100vh; height: 100dvh; overflow: hidden;`
 - Use `clamp()` for type and spacing; split content rather than shrink below readable sizes
-- Read `STYLE_PRESETS.md` for the viewport-safe CSS base, presets, and density limits
-- Distinctive design: avoid generic gradients, system-font-only decks, and template look
-- Support keyboard, wheel, and touch navigation; progress indicator; reveal-on-enter; `prefers-reduced-motion`
-- Content density limits: title = 1 heading + 1 subtitle; content = 1 heading + 4-6 bullets; feature grid = 6 cards max; code = 8-10 lines max
-- For PPT conversion use `python3` + `python-pptx`; preserve slide order, notes, and extracted assets
+
+## USE FOR
+
+- Requests about frontend slides.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to frontend-slides.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

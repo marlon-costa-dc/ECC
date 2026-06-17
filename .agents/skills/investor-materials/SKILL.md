@@ -1,9 +1,16 @@
 ---
 name: investor-materials
-description: Use when creating or updating pitch decks, investor memos, financial models, accelerator applications, and fundraising materials that stay internally consistent.
+description: 'Use this skill to use when creating or updating pitch decks, investor
+  memos, financial models, accelerator applications, and fundraising materials that
+  stay internally consistent. DO NOT USE FOR: questions unrelated to investor-materials
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # investor-materials
+
+**UTILITY SKILL**
 
 ## Quando usar
 - creating or revising a pitch deck
@@ -28,3 +35,35 @@ description: Use when creating or updating pitch decks, investor memos, financia
 
 ## Exemplo
 - pitch deck flow: company+wedge → problem → solution → product/demo → market → business model → traction → team → competition/differentiation → ask → use of funds/milestones → appendix
+
+## USE FOR
+
+- Requests about investor materials.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to investor-materials.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

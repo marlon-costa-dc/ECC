@@ -1,8 +1,13 @@
 ---
 name: article-writing
-description: Use this skill to write polished long-form content. Clarify audience, build a hard outline, lead with concrete proof, and cut generic AI throat-clearing.
+description: 'Use this skill to write polished long-form content. Clarify audience,
+  build a hard outline, lead with concrete proof, and cut generic AI throat-clearing.
+  DO NOT USE FOR: questions unrelated to article-writing creating projects or architecture
+  from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # Article Writing
 
 **UTILITY SKILL**
@@ -46,3 +51,29 @@ Turn notes, research, or rough drafts into structured, voice-consistent long-for
 - Voice unclear → ask for examples or run `brand-voice`.
 - Claims lack source → flag or run `deep-research`.
 - Draft is too long → cut sections that do not serve the outline.
+
+## USE FOR
+
+- Requests about article writing.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to article-writing.
+- creating projects or architecture from scratch.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

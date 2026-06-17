@@ -1,17 +1,18 @@
 ---
 name: x-api
-description: Use when integrating with the X/Twitter API to post tweets, threads, search timelines, or read analytics with OAuth patterns and rate-limit awareness.
+description: 'Use this skill to use when integrating with the X/Twitter API to post
+  tweets, threads, search timelines, or read analytics with OAuth patterns and rate-limit
+  awareness. DO NOT USE FOR: questions unrelated to x-api creating projects or architecture
+  from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # x-api
 
-## When to use
-- Post tweets or threads to X programmatically
-- Read timelines, mentions, or user data
-- Search X for content, trends, or conversations
-- Track analytics and engagement metrics
-- User says "post to X", "tweet", "X API", or "Twitter API"
+**UTILITY SKILL**
 
+## When to use
 ## What to do
 1. **Choose auth**
    - Read-only/search: OAuth 2.0 Bearer Token (`X_BEARER_TOKEN`).
@@ -26,21 +27,29 @@ description: Use when integrating with the X/Twitter API to post tweets, threads
 - Never hardcode or commit tokens; use `.env` excluded by `.gitignore`.
 - Use OAuth 1.0a for writes; Bearer token is read/search only.
 - Check rate-limit headers at runtime; do not rely on static limits.
-- Rotate tokens immediately if exposed.
-- Combine with `brand-voice` and `content-engine`; require approval before posting.
 
 ## Example
-```python
-import os
-from requests_oauthlib import OAuth1Session
+**Input:** a request.
+**Output:** a concise response.
 
-oauth = OAuth1Session(
-    os.environ["X_CONSUMER_KEY"],
-    client_secret=os.environ["X_CONSUMER_SECRET"],
-    resource_owner_key=os.environ["X_ACCESS_TOKEN"],
-    resource_owner_secret=os.environ["X_ACCESS_TOKEN_SECRET"],
-)
-resp = oauth.post("https://api.x.com/2/tweets", json={"text": "Hello from Claude Code"})
-resp.raise_for_status()
-tweet_id = resp.json()["data"]["id"]
-```
+## USE FOR
+
+- Requests about x api.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to x-api.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

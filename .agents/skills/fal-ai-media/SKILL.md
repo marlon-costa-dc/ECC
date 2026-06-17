@@ -1,40 +1,50 @@
 ---
 name: fal-ai-media
-description: Use when generating images, video, or audio via the fal.ai MCP, including Nano Banana, Seedance, Kling, Veo 3, CSM-1B, and ThinkSound models and pipelines.
+description: 'Use this skill to use when generating images, video, or audio via the
+  fal.ai MCP, including Nano Banana, Seedance, Kling, Veo 3, CSM-1B, and ThinkSound
+  models and pipelines. DO NOT USE FOR: questions unrelated to fal-ai-media creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # fal-ai-media
 
-## Quando usar
-- Generate images, videos, speech, music, or sound effects with AI
-- User says "generate image", "create video", "text to speech", "make a thumbnail", or similar
+**UTILITY SKILL**
 
-## O que fazer
-1. Ensure the fal.ai MCP server is configured with a valid `FAL_KEY`.
-2. Pick the right model for the task.
-3. Call `generate` with required input parameters.
-4. For image/video inputs, `upload` the file first and pass the returned URL.
-5. For expensive jobs, run `estimate_cost` before generating.
-6. Poll async jobs with `result` or `status` if output is not immediate.
+## USE FOR
 
-## Regras críticas
-- **Images:** `fal-ai/nano-banana-2` for drafts; `fal-ai/nano-banana-pro` for production.
-- **Videos:** `fal-ai/seedance-1-0-pro` for motion quality; `fal-ai/kling-video/v3/pro` for native audio; `fal-ai/veo-3` for generated sound.
-- **Audio speech:** `fal-ai/csm-1b`; `fal-ai/thinksound` for video-matched audio.
-- Common image params: `prompt`, `image_size`, `num_images`, `seed`, `guidance_scale`.
-- Common video params: `prompt`, `duration`, `aspect_ratio`, `seed`, `image_url`.
-- Always set `seed` when iterating for reproducible results.
-- Start with cheaper models for iteration, then upscale to Pro/final models.
+- Requests about fal ai media.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-## Exemplo
-```
-generate(
-  model_name: "fal-ai/nano-banana-2",
-  input: {
-    "prompt": "a futuristic cityscape at sunset, cyberpunk style",
-    "image_size": "landscape_16_9",
-    "num_images": 1,
-    "seed": 42
-  }
-)
-```
+
+## DO NOT USE FOR
+
+- questions unrelated to fal-ai-media.
+- creating projects or architecture from scratch.
+
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

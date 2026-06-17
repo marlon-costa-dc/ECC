@@ -1,33 +1,50 @@
 ---
 name: crosspost
-description: Use when the user wants to distribute one piece of content across X, LinkedIn, Threads, and Bluesky as platform-native versions without posting identical copy.
+description: 'Use this skill to use when the user wants to distribute one piece of
+  content across X, LinkedIn, Threads, and Bluesky as platform-native versions without
+  posting identical copy. DO NOT USE FOR: questions unrelated to crosspost creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # crosspost
 
-## Quando usar
-- the user wants to publish the same idea across multiple platforms
-- a launch, update, release, or essay needs platform-specific versions
-- the user says "crosspost", "post this everywhere", or "adapt this for X and LinkedIn"
+**UTILITY SKILL**
 
-## O que fazer
-1. Pick the strongest source version. Run `content-engine` first if voice shaping is needed.
-2. Capture the voice fingerprint with `brand-voice` if not already captured; reuse the `VOICE PROFILE`.
-3. Adapt one core idea per platform:
-   - **X**: compressed; lead with the sharpest claim; thread only if needed; no hashtags or filler.
-   - **LinkedIn**: add only context outsiders need; don't fake founder-reflection or force a closing question.
-   - **Threads**: readable and direct; don't write fake hyper-casual copy.
-   - **Bluesky**: concise; preserve cadence; avoid hashtags and feed-gaming language.
-4. Return the primary version, each variant, what changed and why, and any unresolved publishing constraint.
+## USE FOR
 
-## Regras críticas
-- Never post identical copy across platforms.
-- Preserve the author's voice; adapt for constraints, not stereotypes.
-- Do not invent a CTA, question, or moral the source did not earn.
-- Do not add cross-platform references unless genuinely useful.
-- Delete and rewrite: "Excited to share", "Here's what I learned", "What do you think?", "link in bio" (unless true), and generic takeaways not in the source.
+- Requests about crosspost.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-## Related Skills
-- `brand-voice` for reusable source-derived voice capture
-- `content-engine` for voice shaping and source shaping
-- `x-api` for X publishing workflows
+
+## DO NOT USE FOR
+
+- questions unrelated to crosspost.
+- creating projects or architecture from scratch.
+
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

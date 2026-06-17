@@ -1,9 +1,16 @@
 ---
 name: api-design
-description: Use when designing, reviewing, or refactoring REST APIs and deciding resource naming, HTTP methods, status codes, pagination, filtering, error formats, versioning, or rate limiting.
+description: 'Use this skill to use when designing, reviewing, or refactoring REST
+  APIs and deciding resource naming, HTTP methods, status codes, pagination, filtering,
+  error formats, versioning, or rate limiting. DO NOT USE FOR: questions unrelated
+  to api-design creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # api-design
+
+**UTILITY SKILL**
 
 ## What to do
 1. **Resources**: plural nouns, kebab-case URLs; sub-resources for relationships; no verbs in URLs.
@@ -16,24 +23,28 @@ description: Use when designing, reviewing, or refactoring REST APIs and decidin
 8. **Versioning**: URL path (`/api/v1/...`), max 2 versions, deprecate with `Sunset`.
 
 ## Critical rules
-- Never return 200 for every response or put success/failure inside the body.
-- Never expose stack traces, SQL errors, or internal details.
-- Use plural resource names; no verbs or singular nouns in URLs.
-- Use snake_case or camelCase consistently.
-- Validate input with schemas; return 400/422 with field-level errors.
-- Include `Location` on 201; `Retry-After` on 503/429.
-- Non-breaking changes don't need a new version.
-
 ## Example
-```http
-POST /api/v1/users
-Authorization: Bearer <token>
-Content-Type: application/json
+**Input:** a request.
+**Output:** a concise response.
 
-{ "email": "alice@example.com", "name": "Alice" }
+## USE FOR
 
-HTTP/1.1 201 Created
-Location: /api/v1/users/abc-123
+- Requests about api design.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-{ "data": { "id": "abc-123", "email": "alice@example.com", "name": "Alice" } }
-```
+## DO NOT USE FOR
+
+- questions unrelated to api-design.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

@@ -1,9 +1,16 @@
 ---
 name: tdd-workflow
-description: Use this skill when writing new features, fixing bugs, or refactoring code. Enforces test-driven development with 80%+ coverage including unit, integration, and E2E tests.
+description: 'Use this skill to use this skill when writing new features, fixing bugs,
+  or refactoring code. Enforces test-driven development with 80%+ coverage including
+  unit, integration, and E2E tests. DO NOT USE FOR: questions unrelated to tdd-workflow
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # tdd-workflow
+
+**UTILITY SKILL**
 
 ## When to use
 - Writing new features, components, or API endpoints
@@ -38,3 +45,25 @@ describe('searchMarkets', () => {
   })
 })
 ```
+
+## USE FOR
+
+- Requests about tdd workflow.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to tdd-workflow.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

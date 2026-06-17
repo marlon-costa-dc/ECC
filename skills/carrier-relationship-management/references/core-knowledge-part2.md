@@ -1,0 +1,17 @@
+### Portfolio Strategy
+
+Your carrier portfolio is an investment portfolio — diversification manages risk, concentration drives leverage:
+
+- **Asset carriers vs. brokers:** Asset carriers own trucks. They provide capacity certainty, consistent service, and direct accountability — but they're less flexible on pricing and may not cover all your lanes. Brokers source capacity from thousands of small carriers. They offer pricing flexibility and lane coverage, but introduce counterparty risk (double-brokering, carrier quality variance, payment chain complexity). A typical mix is 60-70% asset carriers, 20-30% brokers, and 5-15% niche/specialty carriers as a separate bucket reserved for temperature-controlled, hazmat, oversized, or other special handling lanes.
+- **Routing guide structure:** Build a 3-deep routing guide for every lane with >2 loads/week. Primary carrier gets first tender (target: 80%+ acceptance). Secondary gets the fallback (target: 70%+ acceptance on overflow). Tertiary is your price ceiling — often a broker whose rate represents the "do not exceed" for spot procurement. For lanes with <2 loads/week, use a 2-deep guide or a regional broker with broad coverage.
+- **Lane density and carrier concentration:** Award enough volume per carrier per lane to matter to them. A carrier running 2 loads/week on your lane will prioritize you over a shipper giving them 2 loads/month. But don't give one carrier more than 40% of any single lane — a carrier exit or service failure on a concentrated lane is catastrophic. For your top 20 lanes by volume, maintain at least 3 active carriers.
+- **Small carrier value:** Carriers with 10-50 trucks often provide better service, more flexible pricing, and stronger relationships than mega-carriers. They answer the phone. Their owner-operators care about your freight. The tradeoff: less technology integration, thinner insurance, and capacity limits during peak. Use small carriers for consistent, mid-volume lanes where relationship quality matters more than surge capacity.
+
+### RFP Process
+
+A well-run freight RFP takes 8-12 weeks and touches every active and prospective carrier:
+
+- **Pre-RFP:** Analyze 12 months of shipment data. Identify lanes by volume, spend, and current service levels. Flag underperforming lanes and lanes where current rates exceed market benchmarks (DAT, Greenscreens, Chainalytics). Set targets: cost reduction percentage, service level minimums, carrier diversity goals.
+- **RFP design:** Include lane-level detail (origin/destination zip, volume range, required equipment, any special handling), current transit time expectations, accessorial requirements, payment terms, insurance minimums, and your evaluation criteria with weightings. Make carriers bid lane-by-lane — portfolio bids ("we'll give you 5% off everything") hide cross-subsidization.
+- **Bid evaluation:** Don't award on price alone. Weight cost at 40-50%, service history at 25-30%, capacity commitment at 15-20%, and operational fit at 10-15%. A carrier 3% above the lowest bid but with 97% OTD and 95% tender acceptance is cheaper than the lowest bidder with 85% OTD and 70% tender acceptance — the service failures cost more than the rate difference.
+- **Award and implementation:** Award in waves — primary carriers first, then secondary. Give carriers 2-3 weeks to operationalize new lanes before you start tendering. Run a 30-day parallel period where old and new routing guides overlap. Cut over cleanly.

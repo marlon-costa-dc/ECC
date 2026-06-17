@@ -1,22 +1,15 @@
 ---
 name: api-connector-builder
-description: Build a new API connector or provider by matching the target repo's existing integration pattern exactly. Use when adding one more integration without inventing a second architecture.
+description: Use when adding a new API connector, provider, or integration to a project that already has an established integration pattern, so the new surface matches the repo's existing architecture instead of inventing a second one.
 origin: ECC direct-port adaptation
 version: "1.0.0"
+metadata:
+  adrs: []
 ---
 
 # API Connector Builder
 
-Use this when the job is to add a repo-native integration surface, not just a generic HTTP client.
-
-The point is to match the host repository's pattern:
-
-- connector layout
-- config schema
-- auth model
-- error handling
-- test style
-- registration/discovery wiring
+Add repo-native API integrations by matching the host project's existing connector pattern.
 
 ## When to Use
 
@@ -27,94 +20,36 @@ The point is to match the host repository's pattern:
 
 ## Guardrails
 
-- do not invent a new integration architecture when the repo already has one
-- do not start from vendor docs alone; start from existing in-repo connectors first
-- do not stop at transport code if the repo expects registry wiring, tests, and docs
-- do not cargo-cult old connectors if the repo has a newer current pattern
+- Do not invent a new integration architecture when the repo already has one
+- Start from existing in-repo connectors, not vendor docs alone
+- Do not stop at transport code if the repo expects registry wiring, tests, and docs
+- Do not cargo-cult old connectors if the repo has a newer current pattern
 
 ## Workflow
 
-### 1. Learn the house style
+1. **Learn the house style**: inspect at least 2 existing connectors and map layout, abstractions, config, retry/pagination, registry hooks, and tests
+2. **Narrow the integration**: define auth flow, entities, core operations, pagination/rate limits, and webhook or polling model
+3. **Build in repo-native layers**: config/schema, client/transport, mapping, entrypoint, registration, and tests
+4. **Validate against the source pattern**: the new connector should look obvious in the codebase
 
-Inspect at least 2 existing connectors/providers and map:
-
-- file layout
-- abstraction boundaries
-- config model
-- retry / pagination conventions
-- registry hooks
-- test fixtures and naming
-
-### 2. Narrow the target integration
-
-Define only the surface the repo actually needs:
-
-- auth flow
-- key entities
-- core read/write operations
-- pagination and rate limits
-- webhook or polling model
-
-### 3. Build in repo-native layers
-
-Typical slices:
-
-- config/schema
-- client/transport
-- mapping layer
-- connector/provider entrypoint
-- registration
-- tests
-
-### 4. Validate against the source pattern
-
-The new connector should look obvious in the codebase, not imported from a different ecosystem.
-
-## Reference Shapes
-
-### Provider-style
+## Reference Layouts
 
 ```text
-providers/
-  existing_provider/
-    __init__.py
-    provider.py
-    config.py
-```
-
-### Connector-style
-
-```text
-integrations/
-  existing/
-    client.py
-    models.py
-    connector.py
-```
-
-### TypeScript plugin-style
-
-```text
-src/integrations/
-  existing/
-    index.ts
-    client.ts
-    types.ts
-    test.ts
+providers/existing_provider/__init__.py, provider.py, config.py
+integrations/existing/client.py, models.py, connector.py
+src/integrations/existing/index.ts, client.ts, types.ts, test.ts
 ```
 
 ## Quality Checklist
 
-- [ ] matches an existing in-repo integration pattern
-- [ ] config validation exists
-- [ ] auth and error handling are explicit
-- [ ] pagination/retry behavior follows repo norms
-- [ ] registry/discovery wiring is complete
-- [ ] tests mirror the host repo's style
-- [ ] docs/examples are updated if expected by the repo
+- [ ] Matches an existing in-repo integration pattern
+- [ ] Config validation exists
+- [ ] Auth and error handling are explicit
+- [ ] Pagination/retry behavior follows repo norms
+- [ ] Registry/discovery wiring is complete
+- [ ] Tests mirror the host repo's style
+- [ ] Docs/examples updated if expected
 
 ## Related Skills
 
-- `backend-patterns`
-- `mcp-server-patterns`
-- `github-ops`
+- `backend-patterns`, `mcp-server-patterns`, `github-ops`

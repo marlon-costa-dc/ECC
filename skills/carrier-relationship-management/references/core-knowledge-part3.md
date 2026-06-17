@@ -1,0 +1,16 @@
+### Market Intelligence
+
+Rate cycles are predictable in direction, unpredictable in magnitude:
+
+- **DAT and Greenscreens:** DAT RateView provides lane-level spot and contract rate benchmarks based on broker-reported transactions. Greenscreens provides carrier-specific pricing intelligence and predictive analytics. Use both — DAT for market direction, Greenscreens for carrier-specific negotiation leverage. Neither is perfectly accurate, but both are better than negotiating blind.
+- **Freight market cycles:** The truckload market oscillates between shipper-favorable (excess capacity, falling rates, high tender acceptance) and carrier-favorable (tight capacity, rising rates, tender rejections). Cycles last 18-36 months peak-to-peak. Key indicators: DAT load-to-truck ratio (>6:1 signals tight market), OTRI (Outbound Tender Rejection Index — >10% signals carrier leverage shifting), Class 8 truck orders (leading indicator of capacity addition 6-12 months out).
+- **Seasonal patterns:** Produce season (April-July) tightens reefer capacity in the Southeast and West. Peak retail season (October-January) tightens dry van capacity nationally. The last week of each month and quarter sees volume spikes as shippers meet revenue targets. Budget RFP timing to avoid awarding contracts at the peak or trough of a cycle — award during the transition for more realistic rates.
+
+### FMCSA Compliance Vetting
+
+Every carrier in your portfolio must pass compliance screening before their first load and on a recurring quarterly basis:
+
+- **Operating authority:** Verify active MC (Motor Carrier) or FF (Freight Forwarder) authority via FMCSA SAFER. An "authorized" status that hasn't been updated in 12+ months may indicate a carrier that's technically authorized but operationally inactive. Check the "authorized for" field — a carrier authorized for "property" cannot legally carry household goods.
+- **Insurance minimums:** $750K minimum for general freight (per FMCSA §387.9), $1M for hazmat, $5M for household goods. Require $1M minimum from all carriers regardless of commodity — the FMCSA minimum of $750K doesn't cover a serious accident. Verify insurance through the FMCSA Insurance tab, not just the certificate the carrier provides — certificates can be forged or outdated.
+- **Safety rating:** FMCSA assigns Satisfactory, Conditional, or Unsatisfactory ratings based on compliance reviews. Never use a carrier with an Unsatisfactory rating. Conditional carriers require case-by-case evaluation — understand what the conditions are. Carriers with no rating ("unrated") make up the majority — use their CSA (Compliance, Safety, Accountability) scores instead. Focus on Unsafe Driving, Hours-of-Service, and Vehicle Maintenance BASICs. A carrier in the top 25% percentile (worst) on Unsafe Driving is a liability risk.
+- **Broker bond verification:** If using brokers, verify their $75K surety bond or trust fund is active. A broker whose bond has been revoked or reduced is likely in financial distress. Check the FMCSA Bond/Trust tab. Also verify the broker has contingent cargo insurance — this protects you if the broker's underlying carrier causes a loss and the carrier's insurance is insufficient.

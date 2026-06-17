@@ -1,6 +1,6 @@
 ---
 name: social-publisher
-description: Agent-driven scheduling and publishing of social media posts across 13 platforms via SocialClaw. Use when the user wants to publish to X, LinkedIn, Instagram, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, or Pinterest — or when managing campaigns, uploading media, or monitoring post delivery status.
+description: Use when the user wants agent-driven scheduling and publishing of social media posts across 13 platforms via SocialClaw, including X, LinkedIn, Instagram, Facebook Pages, TikTok, Discord, Telegram, YouTube, Reddit, WordPress, or Pinterest, plus campaign management, media uploads, and post delivery monitoring.
 origin: community
 ---
 
@@ -19,91 +19,29 @@ Connects Claude Code to [SocialClaw](https://getsocialclaw.com) for agent-driven
 ## Setup
 
 ```bash
-# Required: workspace API key from https://getsocialclaw.com/dashboard
 export SC_API_KEY="<workspace-key>"
-
-# Verify access
 printf 'header = "Authorization: Bearer %s"\n' "$SC_API_KEY" |
   curl -sS -K - https://getsocialclaw.com/v1/keys/validate
-
-# Install CLI (optional but recommended)
 npm install -g socialclaw@0.1.12
 socialclaw login --api-key <workspace-key>
 ```
 
 ## Core Workflow
 
-### 1. List connected accounts
-```bash
-socialclaw accounts list --json
-```
+1. List accounts: `socialclaw accounts list --json`
+2. Connect providers: `socialclaw accounts connect --provider x --open`
+3. Upload media: `socialclaw assets upload --file ./image.png --json`
+4. Build `schedule.json` with provider, account, text, and `scheduled_at` per post.
+5. Validate: `socialclaw validate -f schedule.json --json`
+6. Publish: `socialclaw apply -f schedule.json --json` → returns `run_id`
+7. Monitor: `socialclaw status --run-id <run-id> --json`
 
-If not connected:
-```bash
-socialclaw accounts connect --provider x --open
-socialclaw accounts connect --provider linkedin --open
-```
-
-### 2. Upload media (optional)
-```bash
-socialclaw assets upload --file ./image.png --json
-# → { "asset_id": "..." }
-```
-
-### 3. Build schedule.json
-```json
-{
-  "posts": [
-    {
-      "provider": "x",
-      "account_id": "<account-id>",
-      "text": "Post text here",
-      "scheduled_at": "2026-06-01T10:00:00Z"
-    }
-  ]
-}
-```
-
-### 4. Validate before publishing
-```bash
-socialclaw validate -f schedule.json --json
-```
-
-### 5. Publish
-```bash
-socialclaw apply -f schedule.json --json
-# → { "run_id": "..." }
-```
-
-### 6. Monitor
-```bash
-socialclaw status --run-id <run-id> --json
-socialclaw posts list --json
-```
-
-## Supported Providers
-
-| Provider | Key |
-|----------|-----|
-| X (Twitter) | `x` |
-| LinkedIn profile | `linkedin` |
-| LinkedIn page | `linkedin_page` |
-| Instagram Business | `instagram_business` |
-| Instagram standalone | `instagram` |
-| Facebook Page | `facebook` |
-| TikTok | `tiktok` |
-| YouTube | `youtube` |
-| Reddit | `reddit` |
-| WordPress | `wordpress` |
-| Discord | `discord` |
-| Telegram | `telegram` |
-| Pinterest | `pinterest` |
+See [references/providers.md](references/providers.md) for provider key mapping.
 
 ## Security
 
 - Outbound requests go to `getsocialclaw.com` only
-- Provider OAuth is in the SocialClaw dashboard — no per-provider secrets exposed to the agent
-- `SC_API_KEY` is a workspace-scoped key
+- `SC_API_KEY` is workspace-scoped
 
 ## Related Skills
 
@@ -112,5 +50,4 @@ socialclaw posts list --json
 
 ## Source
 
-- npm: `npm install -g socialclaw@0.1.12`
 - Dashboard: [SocialClaw dashboard](https://getsocialclaw.com/dashboard)

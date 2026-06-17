@@ -1,53 +1,54 @@
 ---
 name: api-design
-description: Use when designing, reviewing, or versioning REST APIs where consistent resource naming, HTTP semantics, pagination, filtering, authentication, rate limiting, and error shapes are required for production endpoints.
-origin: ECC
+description: 'Use this skill to use when designing, reviewing, or versioning REST
+  APIs where consistent resource naming, HTTP semantics, pagination, filtering, authentication,
+  rate limiting, and error shapes are required for production endpoints. DO NOT USE
+  FOR: questions unrelated to api-design creating projects or architecture from scratch'
+license: MIT
 metadata:
   adrs: []
+  version: 1.0.0
 ---
-
 # API Design Patterns
 
-Conventions for consistent, developer-friendly REST APIs.
+**UTILITY SKILL**
 
-## When to Activate
+## USE FOR
 
-- Designing or reviewing API endpoints
-- Adding pagination, filtering, sorting, or search
-- Implementing error envelopes, versioning, auth, or rate limiting
-- Building public or partner-facing APIs
+- Requests about api design.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-## Core Rules
 
-- Resources are plural, lowercase, kebab-case nouns: `/api/v1/users`, `/api/v1/team-members`
-- No verbs in URLs; use HTTP methods: `GET /users` not `/getUsers`
-- Use sub-resources for ownership: `/users/:id/orders`
-- Return semantic HTTP status codes; never return 200 for errors or 500 for validation failures
-- Use a standard error envelope: `{ "error": { "code", "message", "details" } }`
-- Validate input with schemas (Zod, Pydantic, Bean Validation)
+## DO NOT USE FOR
 
-## Pagination, Filtering, Versioning
+- questions unrelated to api-design.
+- creating projects or architecture from scratch.
 
-- **Offset-based**: simple, supports jump-to-page; best for small datasets and search results
-- **Cursor-based**: stable performance; best for infinite scroll, feeds, and public APIs
-- Filter with equality (`?status=active`), comparisons (`?price[gte]=10`), multi-value (`?category=a,b`)
-- Sort with `?sort=-created_at,price`; sparse fieldsets with `?fields=id,name,email`
-- Prefer URL path versioning (`/api/v1/users`, `/api/v2/users`); maintain at most 2 versions
 
-## Quality Checklist
+## Workflow
 
-- [ ] URLs are plural, kebab-case, verb-free
-- [ ] Correct HTTP methods and status codes used
-- [ ] Input validated with a schema
-- [ ] Errors follow the standard envelope
-- [ ] List endpoints paginated
-- [ ] Auth, authorization, and rate limiting explicit
-- [ ] OpenAPI/Swagger spec updated
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
 
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.
 ## References
 
-- [REST API Patterns](references/rest-api-patterns.md) — detailed examples and response formats
-
-## Related Skills
-
-- `backend-patterns`, `fastapi-patterns`, `nestjs-patterns`, `django-patterns`, `security-review`
+- [references/rest-api-patterns.md](references/rest-api-patterns.md)

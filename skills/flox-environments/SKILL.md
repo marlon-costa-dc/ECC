@@ -1,6 +1,6 @@
 ---
 name: flox-environments
-description: Use when the user needs reproducible, cross-platform development environments with system-level dependencies using Flox, including package installation, version pinning, manifest authoring, language-specific toolchains, hooks, services, and team sharing.
+description: "Use when the user needs reproducible, cross-platform development environments with system-level dependencies using Flox, including package installation, version pinning, manifest authoring, language-specific toolchains, hooks, services, and team sharing."
 origin: Flox
 ---
 
@@ -8,11 +8,11 @@ origin: Flox
 
 ## When to Activate
 
-- System-level packages (compilers, databases, CLI tools) alongside language dependencies
-- Reproducible setup across teammates, CI, and fresh machines
-- Multiple tools coexisting in one environment
-- Cross-platform support (macOS and Linux from the same config)
-- Tool installation without sudo or system pollution
+- System-level packages (compilers, databases, CLI tools) alongside language dependencies.
+- Reproducible setup across teammates, CI, and fresh machines.
+- Multiple tools coexisting in one environment.
+- Cross-platform support (macOS and Linux from the same config).
+- Tool installation without sudo or system pollution.
 
 ## Core Concepts
 
@@ -28,7 +28,6 @@ flox init
 flox search <package>
 flox install <package>
 flox activate
-flox activate -- <cmd>
 flox edit
 ```
 
@@ -45,11 +44,6 @@ DATABASE_URL = "postgres://localhost:5432/myapp"
 [hook]
 on-activate = """
   echo "Environment ready"
-"""
-
-[profile]
-common = """
-  alias dev="npm run dev"
 """
 
 [options]

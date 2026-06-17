@@ -1,63 +1,34 @@
 ---
 name: beads
-description: Use when working in a repository that uses bd or Beads for durable project task tracking, issue dependencies, blocker management, multi-session handoff, or shared work memory. Trigger when the user asks to find ready work, claim or close tasks, create follow-up work, inspect blockers, recover project context, or choose between local planning and persistent project tracking.
+description: 'Use this skill to use when working in a repository that uses bd or Beads
+  for durable project task tracking, issue dependencies, blocker management, multi-session
+  handoff, or shared work memory. Trigger when the user asks to find ready work, claim
+  or close tasks, create follow-up work, inspect. DO NOT USE FOR: questions unrelated
+  to beads creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # Beads
 
-Use Beads as the shared project task system. Local plans, scratch files, and personal memories are useful, but they are not the durable source of truth for project work.
-
-## First Step
-
-Run:
-
-```bash
-bd prime
-```
-
-If that prints nothing, check whether the repository has an active Beads workspace:
-
-```bash
-bd where
-```
-
-## Preferred Route
-
-Use the `bd` CLI when shell access is available. It is the most compact and direct Beads interface.
+**UTILITY SKILL**
 
 ## Core CLI Workflow
 
 1. Find work:
 
-```bash
-bd ready
-bd list --status=open
-bd list --status=in_progress
-```
 
 2. Inspect before editing:
 
-```bash
-bd show <id>
-```
 
 3. Claim work atomically:
 
-```bash
-bd update <id> --claim
-```
 
 4. Create durable follow-up work when implementation reveals new tasks:
 
-```bash
-bd create "Short title" --description="Why this exists and what needs to be done" --type=task --priority=2
-```
 
 5. Close completed work:
 
-```bash
-bd close <id> --reason="Completed"
-```
 
 ## What Belongs In Beads
 
@@ -78,3 +49,35 @@ Use agent-local planning tools only for the current turn's execution checklist. 
 - Prefer `--json` when parsing `bd` output programmatically.
 - If hooks are installed, `bd prime` may already be injected. Run it manually when context is missing.
 - Do not auto-close or mutate tasks unless the work is actually complete.
+
+## USE FOR
+
+- Requests about beads.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to beads.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

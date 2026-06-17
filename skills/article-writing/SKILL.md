@@ -1,9 +1,14 @@
 ---
 name: article-writing
-description: Use when the user wants polished long-form content such as articles, guides, blog posts, tutorials, or newsletter issues that match a distinctive voice from examples or brand guidance and require structure, specificity, and credibility.
-origin: ECC
+description: 'Use this skill to use when the user wants polished long-form content
+  such as articles, guides, blog posts, tutorials, or newsletter issues that match
+  a distinctive voice from examples or brand guidance and require structure, specificity,
+  and credibility. DO NOT USE FOR: questions unrelated to article-writing creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # Article Writing
 
 Write long-form content that sounds like an actual person with a point of view, not generic AI paste.

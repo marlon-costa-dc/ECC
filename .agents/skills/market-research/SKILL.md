@@ -1,74 +1,51 @@
 ---
 name: market-research
-description: Conduct market research, competitive analysis, investor due diligence, and industry intelligence with source attribution and decision-oriented summaries. Use when the user wants market sizing, competitor comparisons, fund research, technology scans, or research that informs business decisions.
+description: 'Use this skill to conduct market research, competitive analysis, investor
+  due diligence, and industry intelligence with source attribution and decision-oriented
+  summaries. Use when the user wants market sizing, competitor comparisons, fund research,
+  technology scans, or research that informs. DO NOT USE FOR: questions unrelated
+  to market-research creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # Market Research
 
-Produce research that supports decisions, not research theater.
+**UTILITY SKILL**
 
-## When to Activate
+## USE FOR
 
-- researching a market, category, company, investor, or technology trend
-- building TAM/SAM/SOM estimates
-- comparing competitors or adjacent products
-- preparing investor dossiers before outreach
-- pressure-testing a thesis before building, funding, or entering a market
+- Requests about market research.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-## Research Standards
 
-1. Every important claim needs a source.
-2. Prefer recent data and call out stale data.
-3. Include contrarian evidence and downside cases.
-4. Translate findings into a decision, not just a summary.
-5. Separate fact, inference, and recommendation clearly.
+## DO NOT USE FOR
 
-## Common Research Modes
+- questions unrelated to market-research.
+- creating projects or architecture from scratch.
 
-### Investor / Fund Diligence
-Collect:
-- fund size, stage, and typical check size
-- relevant portfolio companies
-- public thesis and recent activity
-- reasons the fund is or is not a fit
-- any obvious red flags or mismatches
 
-### Competitive Analysis
-Collect:
-- product reality, not marketing copy
-- funding and investor history if public
-- traction metrics if public
-- distribution and pricing clues
-- strengths, weaknesses, and positioning gaps
+## Workflow
 
-### Market Sizing
-Use:
-- top-down estimates from reports or public datasets
-- bottom-up sanity checks from realistic customer acquisition assumptions
-- explicit assumptions for every leap in logic
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
 
-### Technology / Vendor Research
-Collect:
-- how it works
-- trade-offs and adoption signals
-- integration complexity
-- lock-in, security, compliance, and operational risk
 
-## Output Format
+## Critical rules
 
-Default structure:
-1. executive summary
-2. key findings
-3. implications
-4. risks and caveats
-5. recommendation
-6. sources
+- Prefer canonical sources.
+- Require evidence before claiming success.
 
-## Quality Gate
 
-Before delivering:
-- all numbers are sourced or labeled as estimates
-- old data is flagged
-- the recommendation follows from the evidence
-- risks and counterarguments are included
-- the output makes a decision easier
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

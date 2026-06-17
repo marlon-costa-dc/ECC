@@ -1,13 +1,18 @@
 ---
 name: automation-audit-ops
-description: Use this skill to run an evidence-first automation inventory and overlap audit. Identify which jobs, hooks, connectors, MCP servers, or wrappers are live, broken, redundant, or missing before fixing anything.
+description: 'Use this skill to run an evidence-first automation inventory and overlap
+  audit. Identify which jobs, hooks, connectors, MCP servers, or wrappers are live,
+  broken, redundant, or missing before fixing anything. DO NOT USE FOR: questions
+  unrelated to automation-audit-ops creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # Automation Audit Ops
 
 **UTILITY SKILL**
 
-Audit automations before rewriting them. Produce an evidence-backed inventory and a keep / merge / cut / fix-next recommendation set.
+Audit automations before rewriting them. Produce evidence-backed inventory plus keep / merge / cut / fix-next recommendations.
 
 ## USE FOR:
 
@@ -20,19 +25,18 @@ Audit automations before rewriting them. Produce an evidence-backed inventory an
 - Rewriting automations before the inventory exists.
 - Claiming a tool is live just because a skill references it.
 
-## INVOKES:
+## INVOKES
 
 - `workspace-surface-audit` for connector/MCP/hook/app inventory.
 - `github-ops` for CI, workflows, issues, PR automation.
-- `knowledge-ops` to reconcile repo truth with durable context.
 - `verification-loop` to prove post-fix state.
 
 ## Workflow
 
-1. **Inventory the real surface** — read hooks, GitHub Actions, MCP configs, connectors, wrapper scripts.
-2. **Classify live state** — configured / authenticated / recently verified / stale / broken / missing.
-3. **Trace the proof path** — cite file path, workflow run, hook log, config entry, or failure signature.
-4. **Recommend** — keep / merge / cut / fix-next for each item.
+1. **Inventory** hooks, Actions, MCP configs, connectors, and wrapper scripts.
+2. **Classify** each item as configured, authenticated, verified, stale, broken, or missing.
+3. **Prove** status with file path, workflow run, hook log, config entry, or failure signature.
+4. **Recommend** keep, merge, cut, or fix-next for each item.
 
 ## Output Format
 
@@ -41,7 +45,7 @@ CURRENT SURFACE
 - automation | source | live state | proof
 
 FINDINGS
-- active breakage | overlap | stale status | missing capability
+- breakage | overlap | stale status | missing capability
 
 RECOMMENDATION
 - keep | merge | cut | fix-next
@@ -50,13 +54,13 @@ NEXT ECC MOVE
 - exact skill / hook / workflow / app lane to strengthen
 ```
 
-## Examples:
+## Examples
 
 - "What jobs are running in this repo?" → inventory hooks + Actions → classify live state.
-- "Is this connector redundant?" → map overlaps → recommend merge or cut with proof.
+- "Is this connector redundant?" → map overlaps → recommend merge/cut with proof.
 
-## Troubleshooting:
+## Troubleshooting
 
 - State ambiguous → say so; do not pretend the audit is complete.
-- Tool looks configured but fails → treat as broken until verified with a recent run.
-- User asks to fix before inventory → pause and complete the inventory first.
+- Tool looks configured but fails → treat as broken until verified.
+- Fix requested before inventory → complete the inventory first.

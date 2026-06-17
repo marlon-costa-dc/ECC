@@ -1,0 +1,4 @@
+- `brand-voice` — Build a reusable voice profile from real X and site/source material
+- `content-engine` — Generate platform-native content for X
+- `crosspost` — Distribute content across X, LinkedIn, and other platforms
+- `connections-optimizer` — Reorganize the X graph before drafting network-driven outreach

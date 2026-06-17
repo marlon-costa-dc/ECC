@@ -1,9 +1,16 @@
 ---
 name: source-command-add-language-rules
-description: Workflow command scaffold for add-language-rules in everything-Codex.
+description: 'Use this skill to workflow command scaffold for add-language-rules in
+  everything-Codex. Use this skill when the user asks to run the migrated source command
+  `add-language-rules`. DO NOT USE FOR: questions unrelated to source-command-add-language-rules
+  creating projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # source-command-add-language-rules
+
+**UTILITY SKILL**
 
 Use this skill when the user asks to run the migrated source command `add-language-rules`.
 
@@ -42,3 +49,35 @@ Adds a new programming language to the rules system, including coding style, hoo
 
 - Treat this as a scaffold, not a hard-coded script.
 - Update the command if the workflow evolves materially.
+
+## USE FOR
+
+- Requests about source command add language rules.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to source-command-add-language-rules.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

@@ -1,0 +1,53 @@
+# Database Migration Patterns
+
+Safe, reversible schema changes for production systems. For ORM-specific workflows, see `references/orm-migration-guides.md`.
+
+## When to Activate
+
+- Creating or altering database tables
+- Adding/removing columns or indexes
+- Running data migrations (backfill, transform)
+- Planning zero-downtime schema changes
+- Setting up migration tooling for a new project
+
+## Core Principles
+
+1. Every change is a migration — never alter production databases manually.
+2. Migrations are forward-only in production; rollbacks use new forward migrations.
+3. Schema and data migrations are separate — never mix DDL and DML.
+4. Test against production-sized data; a migration that works on 100 rows may lock on 10M.
+5. Migrations are immutable once deployed — never edit a migration that has run.
+
+## Safety Checklist
+
+- [ ] Migration has UP and DOWN (or is explicitly irreversible)
+- [ ] No full table locks on large tables (use concurrent operations)
+- [ ] New columns have defaults or are nullable (never add NOT NULL without default)
+- [ ] Indexes created concurrently for existing tables
+- [ ] Data backfill is a separate migration from schema change
+- [ ] Tested against a copy of production data
+- [ ] Rollback plan documented
+
+## PostgreSQL Patterns
+
+[See code example 1 in `code-examples.md`]
+
+## Zero-Downtime Rename
+
+Use expand-contract: add new column, backfill, update app to write both, then drop old column in a later migration.
+
+## Anti-Patterns
+
+- Manual SQL in production — no audit trail; always use migration files.
+- Editing deployed migrations — causes drift; create a new migration instead.
+- NOT NULL without default — locks table; add nullable, backfill, then add constraint.
+- Inline index on large table — blocks writes; use `CREATE INDEX CONCURRENTLY`.
+- Schema + data in one migration — hard to rollback; separate them.
+- Dropping column before removing code — causes errors; remove code first.
+
+## Related
+
+- Reference: `references/orm-migration-guides.md`
+- Skill: `postgres-patterns`
+- Skill: `mysql-patterns`
+- Skill: `backend-patterns`

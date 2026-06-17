@@ -1,0 +1,4 @@
+- Generating icons without checking existing project icon style
+- Using default colors when the project has a defined color palette
+- Generating at wrong sizes (check existing icons first)
+- Committing generated icons without visual verification

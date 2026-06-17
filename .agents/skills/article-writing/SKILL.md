@@ -1,79 +1,78 @@
 ---
 name: article-writing
-description: 'Use this skill to write polished long-form content. Clarify audience,
-  build a hard outline, lead with concrete proof, and cut generic AI throat-clearing.
-  DO NOT USE FOR: questions unrelated to article-writing creating projects or architecture
-  from scratch'
-license: MIT
-metadata:
-  version: 1.0.0
+description: Write articles, guides, blog posts, tutorials, newsletter issues, and other long-form content in a distinctive voice derived from supplied examples or brand guidance. Use when the user wants polished written content longer than a paragraph, especially when voice consistency, structure, and credibility matter.
 ---
+
 # Article Writing
 
-**UTILITY SKILL**
+Write long-form content that sounds like an actual person with a point of view, not an LLM smoothing itself into paste.
 
-Turn notes, research, or rough drafts into structured, voice-consistent long-form content.
+## When to Activate
 
-## USE FOR:
+- drafting blog posts, essays, launch posts, guides, tutorials, or newsletter issues
+- turning notes, transcripts, or research into polished articles
+- matching an existing founder, operator, or brand voice from examples
+- tightening structure, pacing, and evidence in already-written long-form copy
 
-- Blog posts, guides, tutorials, newsletters, essays, or executive memos.
-- Matching a founder/brand voice from supplied examples.
-- Tightening structure and evidence in existing drafts.
+## Core Rules
 
-## DO NOT USE FOR:
+1. Lead with the concrete thing: artifact, example, output, anecdote, number, screenshot, or code.
+2. Explain after the example, not before.
+3. Keep sentences tight unless the source voice is intentionally expansive.
+4. Use proof instead of adjectives.
+5. Never invent facts, credibility, or customer evidence.
 
-- Short chat replies or one-line answers.
-- Inventing facts, testimonials, or customer evidence.
+## Voice Handling
 
-## INVOKES:
+If the user wants a specific voice, run `brand-voice` first and reuse its `VOICE PROFILE`.
+Do not duplicate a second style-analysis pass here unless the user explicitly asks for one.
 
-- `brand-voice` when a specific voice is requested.
-- `deep-research` when factual claims need sources.
-- Reference examples provided by the user.
+If no voice references are given, default to a sharp operator voice: concrete, unsentimental, useful.
 
-## Workflow
+## Banned Patterns
 
-1. Clarify audience, purpose, and medium.
-2. Run `brand-voice` first if a specific voice is requested.
-3. Build a hard outline: one job per section.
-4. Start sections with proof, artifact, conflict, or concrete example.
-5. Expand only where the next sentence earns its space.
-6. Cut clichés and generic AI throat-clearing.
-7. Verify factual claims against sources before delivering.
+Delete and rewrite any of these:
+- "In today's rapidly evolving landscape"
+- "game-changer", "cutting-edge", "revolutionary"
+- "here's why this matters" as a standalone bridge
+- fake vulnerability arcs
+- a closing question added only to juice engagement
+- biography padding that does not move the argument
+- generic AI throat-clearing that delays the point
 
-## Examples:
+## Writing Process
 
-- "Turn these notes into a blog post" → outline → draft → polish.
-- "Match this voice" → run `brand-voice` → write in that voice.
+1. Clarify the audience and purpose.
+2. Build a hard outline with one job per section.
+3. Start sections with proof, artifact, conflict, or example.
+4. Expand only where the next sentence earns space.
+5. Cut anything that sounds templated, overexplained, or self-congratulatory.
 
-## Troubleshooting:
+## Structure Guidance
 
-- Voice unclear → ask for examples or run `brand-voice`.
-- Claims lack source → flag or run `deep-research`.
-- Draft is too long → cut sections that do not serve the outline.
+### Technical Guides
 
-## USE FOR
+- open with what the reader gets
+- use code, commands, screenshots, or concrete output in major sections
+- end with actionable takeaways, not a soft recap
 
-- Requests about article writing.
-- Workflows described in this skill.
-- Operator tasks within this scope.
+### Essays / Opinion
 
-## DO NOT USE FOR
+- start with tension, contradiction, or a specific observation
+- keep one argument thread per section
+- make opinions answer to evidence
 
-- questions unrelated to article-writing.
-- creating projects or architecture from scratch.
+### Newsletters
 
-## Critical rules
+- keep the first screen doing real work
+- do not front-load diary filler
+- use section labels only when they improve scanability
 
-- Prefer canonical sources.
-- Require evidence before claiming success.
+## Quality Gate
 
-## Example
-
-**Input:** a request.
-**Output:** a concise response.
-
-## Troubleshooting
-
-- Unclear scope → ask.
-- Missing context → state assumptions.
+Before delivering:
+- factual claims are backed by provided sources
+- generic AI transitions are gone
+- the voice matches the supplied examples or the agreed `VOICE PROFILE`
+- every section adds something new
+- formatting matches the intended medium

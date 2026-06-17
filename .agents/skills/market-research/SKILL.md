@@ -1,65 +1,74 @@
 ---
 name: market-research
-description: 'Use this skill to use when researching markets, competitors, investors,
-  or technology trends with sourced evidence, comparative analysis, and decision-ready
-  summaries for strategy or pitches. DO NOT USE FOR: questions unrelated to market-research
-  creating projects or architecture from scratch'
-license: MIT
-metadata:
-  version: 1.0.0
+description: Conduct market research, competitive analysis, investor due diligence, and industry intelligence with source attribution and decision-oriented summaries. Use when the user wants market sizing, competitor comparisons, fund research, technology scans, or research that informs business decisions.
 ---
-# market-research
 
-**UTILITY SKILL**
+# Market Research
 
-## Quando usar
+Produce research that supports decisions, not research theater.
+
+## When to Activate
+
 - researching a market, category, company, investor, or technology trend
 - building TAM/SAM/SOM estimates
 - comparing competitors or adjacent products
 - preparing investor dossiers before outreach
 - pressure-testing a thesis before building, funding, or entering a market
 
-## O que fazer
-1. Clarify the decision the research must support.
-2. Collect sourced evidence; prefer recent data and flag stale data.
+## Research Standards
+
+1. Every important claim needs a source.
+2. Prefer recent data and call out stale data.
 3. Include contrarian evidence and downside cases.
-4. Separate fact, inference, and recommendation.
-5. Translate findings into a clear recommendation.
+4. Translate findings into a decision, not just a summary.
+5. Separate fact, inference, and recommendation clearly.
 
-## Regras críticas
-- Every important claim needs a source.
-- Old or uncertain data must be flagged.
-- Include risks and counterarguments.
-- Output must make a decision easier, not just summarize.
+## Common Research Modes
 
-## USE FOR
+### Investor / Fund Diligence
+Collect:
+- fund size, stage, and typical check size
+- relevant portfolio companies
+- public thesis and recent activity
+- reasons the fund is or is not a fit
+- any obvious red flags or mismatches
 
-- Requests about market research.
-- Workflows described in this skill.
-- Operator tasks within this scope.
+### Competitive Analysis
+Collect:
+- product reality, not marketing copy
+- funding and investor history if public
+- traction metrics if public
+- distribution and pricing clues
+- strengths, weaknesses, and positioning gaps
 
-## DO NOT USE FOR
+### Market Sizing
+Use:
+- top-down estimates from reports or public datasets
+- bottom-up sanity checks from realistic customer acquisition assumptions
+- explicit assumptions for every leap in logic
 
-- questions unrelated to market-research.
-- creating projects or architecture from scratch.
+### Technology / Vendor Research
+Collect:
+- how it works
+- trade-offs and adoption signals
+- integration complexity
+- lock-in, security, compliance, and operational risk
 
-## Workflow
+## Output Format
 
-1. **Understand** intent and constraints.
-2. **Execute** the canonical approach.
-3. **Validate** with native checks.
+Default structure:
+1. executive summary
+2. key findings
+3. implications
+4. risks and caveats
+5. recommendation
+6. sources
 
-## Critical rules
+## Quality Gate
 
-- Prefer canonical sources.
-- Require evidence before claiming success.
-
-## Example
-
-**Input:** a request.
-**Output:** a concise response.
-
-## Troubleshooting
-
-- Unclear scope → ask.
-- Missing context → state assumptions.
+Before delivering:
+- all numbers are sourced or labeled as estimates
+- old data is flagged
+- the recommendation follows from the evidence
+- risks and counterarguments are included
+- the output makes a decision easier

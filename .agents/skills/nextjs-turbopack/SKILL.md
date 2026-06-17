@@ -1,35 +1,30 @@
 ---
 name: nextjs-turbopack
-description: 'Use this skill to use when deciding whether to adopt Next.js 16+ Turbopack,
-  migrating from webpack, or optimizing production bundles, dev-server performance,
-  and caching. DO NOT USE FOR: questions unrelated to nextjs-turbopack creating projects
-  or architecture from scratch'
-license: MIT
-metadata:
-  version: 1.0.0
+description: Next.js 16+ and Turbopack — incremental bundling, FS caching, dev speed, and when to use Turbopack vs webpack.
 ---
-# nextjs-turbopack
 
-**UTILITY SKILL**
+# Next.js and Turbopack
 
-## Quando usar
-- Developing or debugging Next.js 16+ apps with slow dev startup or HMR.
-- Deciding between Turbopack and webpack for local development.
-- Optimizing production bundles with official analysis tools.
+Next.js 16+ uses Turbopack by default for local development: an incremental bundler written in Rust that significantly speeds up dev startup and hot updates.
 
-## O que fazer
-1. Run `next dev` to use Turbopack (default in Next.js 16+).
-2. If you hit a Turbopack bug or need a webpack-only plugin, disable with `--webpack` / `--no-turbopack` per docs.
-3. Keep `.next` cache intact; only clear it when debugging cache-related issues.
-4. Use the experimental Bundle Analyzer for your version to inspect and trim heavy dependencies.
-5. Prefer App Router and Server Components to reduce client bundle size.
+## When to Use
 
-## Regras críticas
-- Do not force Turbopack in production builds; follow the Next.js version docs for `next build`.
-- Do not manually bump Next.js versions outside the project’s pinned range.
-- Do not clear `.next` cache as a first troubleshooting step.
+- **Turbopack (default dev)**: Use for day-to-day development. Faster cold start and HMR, especially in large apps.
+- **Webpack (legacy dev)**: Use only if you hit a Turbopack bug or rely on a webpack-only plugin in dev. Disable with `--webpack` (or `--no-turbopack` depending on your Next.js version; check the docs for your release).
+- **Production**: Production build behavior (`next build`) may use Turbopack or webpack depending on Next.js version; check the official Next.js docs for your version.
 
-## Exemplo (se necessário)
+Use when: developing or debugging Next.js 16+ apps, diagnosing slow dev startup or HMR, or optimizing production bundles.
+
+## How It Works
+
+- **Turbopack**: Incremental bundler for Next.js dev. Uses file-system caching so restarts are much faster (e.g. 5–14x on large projects).
+- **Default in dev**: From Next.js 16, `next dev` runs with Turbopack unless disabled.
+- **File-system caching**: Restarts reuse previous work; cache is typically under `.next`; no extra config needed for basic use.
+- **Bundle Analyzer (Next.js 16.1+)**: Experimental Bundle Analyzer to inspect output and find heavy dependencies; enable via config or experimental flag (see Next.js docs for your version).
+
+## Examples
+
+### Commands
 
 ```bash
 next dev
@@ -37,34 +32,12 @@ next build
 next start
 ```
 
-## USE FOR
+### Usage
 
-- Requests about nextjs turbopack.
-- Workflows described in this skill.
-- Operator tasks within this scope.
+Run `next dev` for local development with Turbopack. Use the Bundle Analyzer (see Next.js docs) to optimize code-splitting and trim large dependencies. Prefer App Router and server components where possible.
 
-## DO NOT USE FOR
+## Best Practices
 
-- questions unrelated to nextjs-turbopack.
-- creating projects or architecture from scratch.
-
-## Workflow
-
-1. **Understand** intent and constraints.
-2. **Execute** the canonical approach.
-3. **Validate** with native checks.
-
-## Critical rules
-
-- Prefer canonical sources.
-- Require evidence before claiming success.
-
-## Example
-
-**Input:** a request.
-**Output:** a concise response.
-
-## Troubleshooting
-
-- Unclear scope → ask.
-- Missing context → state assumptions.
+- Stay on a recent Next.js 16.x for stable Turbopack and caching behavior.
+- If dev is slow, ensure you're on Turbopack (default) and that the cache isn't being cleared unnecessarily.
+- For production bundle size issues, use the official Next.js bundle analysis tooling for your version.

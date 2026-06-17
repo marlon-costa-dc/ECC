@@ -5,7 +5,7 @@ description: Use when working on PostgreSQL schema design, query optimization, i
 
 # PostgreSQL Patterns
 
-Quick reference for PostgreSQL best practices. For full diagnostics and extended examples, see `references/postgres-patterns.md` and use the `database-reviewer` agent.
+Quick reference for PostgreSQL best practices. For full diagnostics, configuration template, and extended examples, see `references/postgres-patterns.md` and use the `database-reviewer` agent.
 
 ## When to Activate
 
@@ -46,19 +46,10 @@ UPDATE jobs SET status = 'processing'
 WHERE id = (SELECT id FROM jobs WHERE status = 'pending'
             ORDER BY created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
 RETURNING *;
-
--- Configuration
-ALTER SYSTEM SET max_connections = 100;
-ALTER SYSTEM SET work_mem = '8MB';
-ALTER SYSTEM SET statement_timeout = '30s';
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-REVOKE ALL ON SCHEMA public FROM public;
-SELECT pg_reload_conf();
 ```
 
 ## Related
 
 - Agent: `database-reviewer`
 - Skill: `clickhouse-io`
-- Skill: `backend-patterns`
 - Reference: `references/postgres-patterns.md`

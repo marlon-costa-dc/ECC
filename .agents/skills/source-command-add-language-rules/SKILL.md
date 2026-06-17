@@ -1,44 +1,25 @@
 ---
 name: source-command-add-language-rules
-description: Workflow command scaffold for add-language-rules in everything-Codex.
+description: Use when scaffolding or running the /add-language-rules source command for the everything-Codex repository, its language-rule pipeline, and validation steps.
 ---
 
 # source-command-add-language-rules
 
-Use this skill when the user asks to run the migrated source command `add-language-rules`.
+## Quando usar
+- User asks to run the migrated source command `add-language-rules`.
+- Adding a new programming language to the rules system in `everything-Codex`.
 
-## Command Template
-
-# /add-language-rules
-
-Use this workflow when working on **add-language-rules** in `everything-Codex`.
-
-## Goal
-
-Adds a new programming language to the rules system, including coding style, hooks, patterns, security, and testing guidelines.
-
-## Common Files
-
-- `rules/*/coding-style.md`
-- `rules/*/hooks.md`
-- `rules/*/patterns.md`
-- `rules/*/security.md`
-- `rules/*/testing.md`
-
-## Suggested Sequence
-
+## O que fazer
 1. Understand the current state and failure mode before editing.
-2. Make the smallest coherent change that satisfies the workflow goal.
-3. Run the most relevant verification for touched files.
-4. Summarize what changed and what still needs review.
+2. Create or update files under `rules/{language}/` with language-specific content.
+3. Make the smallest coherent change that satisfies the workflow goal.
+4. Run the most relevant verification for touched files.
+5. Summarize what changed and what still needs review.
 
-## Typical Commit Signals
-
-- Create a new directory under rules/{language}/
-- Add coding-style.md, hooks.md, patterns.md, security.md, and testing.md files with language-specific content
-- Optionally reference or link to related skills
-
-## Notes
-
+## Regras críticas
+- Only touch files under `rules/{language}/` (coding-style.md, hooks.md, patterns.md, security.md, testing.md).
 - Treat this as a scaffold, not a hard-coded script.
-- Update the command if the workflow evolves materially.
+- Update this skill if the workflow evolves materially.
+
+## Exemplo (se necessário)
+- Create `rules/python/coding-style.md`, `rules/python/patterns.md`, etc.

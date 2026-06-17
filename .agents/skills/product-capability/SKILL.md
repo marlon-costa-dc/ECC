@@ -1,140 +1,37 @@
 ---
 name: product-capability
-description: Translate PRD intent, roadmap asks, or product discussions into an implementation-ready capability plan that exposes constraints, invariants, interfaces, and unresolved decisions before multi-service work starts. Use when the user needs an ECC-native PRD-to-SRS lane instead of vague planning prose.
+description: Translate PRD intent, roadmap asks, or product discussions into an implementation-ready capability plan that exposes constraints, invariants, interfaces, and unresolved decisions before multi-service work starts.
 ---
 
-# Product Capability
+# product-capability
 
-This skill turns product intent into explicit engineering constraints.
+## Quando usar
+- A PRD, roadmap item, or product discussion exists but implementation constraints remain implicit.
+- A feature crosses services, repos, or teams and needs a capability contract before coding.
+- Architecture, data, lifecycle, or policy implications are still fuzzy despite clear product intent.
+- Senior engineers keep restating hidden assumptions during review.
+- You need a durable, harness-agnostic artifact that survives across sessions.
 
-Use it when the gap is not "what should we build?" but "what exactly must be true before implementation starts?"
+## O que fazer
+1. **Restate the capability.** One sentence: who, what new capability exists, what outcome changes.
+2. **Resolve constraints.** Business rules, scope, invariants, trust boundaries, data ownership, lifecycle, rollout, failure/recovery.
+3. **Define the implementation contract.** SRS-style plan: summary, non-goals, actors/surfaces, states/transitions, interfaces, data, constraints, observability, open questions.
+4. **Translate into execution.** Declare handoff state: ready, needs review, or needs clarification.
+5. **Persist.** Update `PRODUCT.md`, `docs/product/`, or program-spec; create from template if none exists.
 
-## When to Use
-
-- A PRD, roadmap item, discussion, or founder note exists, but the implementation constraints are still implicit
-- A feature crosses multiple services, repos, or teams and needs a capability contract before coding
-- Product intent is clear, but architecture, data, lifecycle, or policy implications are still fuzzy
-- Senior engineers keep restating the same hidden assumptions during review
-- You need a reusable artifact that can survive across harnesses and sessions
-
-## Canonical Artifact
-
-If the repo has a durable product-context file such as `PRODUCT.md`, `docs/product/`, or a program-spec directory, update it there.
-
-If no capability manifest exists yet, create one using the template at:
-
-- `docs/examples/product-capability-template.md`
-
-The goal is not to create another planning stack. The goal is to make hidden capability constraints durable and reusable.
-
-## Non-Negotiable Rules
-
-- Do not invent product truth. Mark unresolved questions explicitly.
+## Regras críticas
+- Do not invent product truth; mark unresolved questions explicitly.
 - Separate user-visible promises from implementation details.
-- Call out what is fixed policy, what is architecture preference, and what is still open.
-- If the request conflicts with existing repo constraints, say so clearly instead of smoothing it over.
-- Prefer one reusable capability artifact over scattered ad hoc notes.
+- Call out fixed policy, architecture preference, or open items.
+- Flag conflicts with repo constraints instead of smoothing over.
+- Prefer one reusable artifact over scattered notes.
 
-## Inputs
-
-Read only what is needed:
-
-1. Product intent
-   - issue, discussion, PRD, roadmap note, founder message
-2. Current architecture
-   - relevant repo docs, contracts, schemas, routes, existing workflows
-3. Existing capability context
-   - `PRODUCT.md`, design docs, RFCs, migration notes, operating-model docs
-4. Delivery constraints
-   - auth, billing, compliance, rollout, backwards compatibility, performance, review policy
-
-## Core Workflow
-
-### 1. Restate the capability
-
-Compress the ask into one precise statement:
-
-- who the user or operator is
-- what new capability exists after this ships
-- what outcome changes because of it
-
-If this statement is weak, the implementation will drift.
-
-### 2. Resolve capability constraints
-
-Extract the constraints that must hold before implementation:
-
-- business rules
-- scope boundaries
-- invariants
-- trust boundaries
-- data ownership
-- lifecycle transitions
-- rollout / migration requirements
-- failure and recovery expectations
-
-These are the things that often live only in senior-engineer memory.
-
-### 3. Define the implementation-facing contract
-
-Produce an SRS-style capability plan with:
-
-- capability summary
-- explicit non-goals
-- actors and surfaces
-- required states and transitions
-- interfaces / inputs / outputs
-- data model implications
-- security / billing / policy constraints
-- observability and operator requirements
-- open questions blocking implementation
-
-### 4. Translate into execution
-
-End with the exact handoff:
-
-- ready for direct implementation
-- needs architecture review first
-- needs product clarification first
-
-If useful, point to the next ECC-native lane:
-
-- `project-flow-ops`
-- `workspace-surface-audit`
-- `api-connector-builder`
-- `dashboard-builder`
-- `tdd-workflow`
-- `verification-loop`
-
-## Output Format
-
-Return the result in this order:
-
+## Exemplo
 ```text
-CAPABILITY
-- one-paragraph restatement
-
-CONSTRAINTS
-- fixed rules, invariants, and boundaries
-
-IMPLEMENTATION CONTRACT
-- actors
-- surfaces
-- states and transitions
-- interface/data implications
-
-NON-GOALS
-- what this lane explicitly does not own
-
-OPEN QUESTIONS
-- blockers or product decisions still required
-
-HANDOFF
-- what should happen next and which ECC lane should take it
+CAPABILITY: Operators schedule recurring compliance reports by email/webhook.
+CONSTRAINTS: UTC generation, tenant timezone delivery, 90-day retention.
+CONTRACT: Actors (operator, scheduler, generator, delivery), surfaces (UI, API, email/webhook), states (draft→scheduled→running→delivered/failed), data (schedule, run log, receipt).
+NON-GOALS: Real-time streaming, custom templates.
+OPEN QUESTIONS: Webhook retry/dead-letter.
+HANDOFF: Needs architecture review on scheduler reliability.
 ```
-
-## Good Outcomes
-
-- Product intent is now concrete enough to implement without rediscovering hidden constraints mid-PR.
-- Engineering review has a durable artifact instead of relying on memory or Slack context.
-- The resulting plan is reusable across Claude Code, Codex, Cursor, OpenCode, and ECC 2.0 planning surfaces.

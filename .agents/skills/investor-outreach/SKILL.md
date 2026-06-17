@@ -1,90 +1,42 @@
 ---
 name: investor-outreach
-description: Draft cold emails, warm intro blurbs, follow-ups, update emails, and investor communications for fundraising. Use when the user wants outreach to angels, VCs, strategic investors, or accelerators and needs concise, personalized, investor-facing messaging.
+description: Use when drafting cold emails, warm intro blurbs, follow-ups, update emails, and investor communications during a fundraising or relationship-building process.
 ---
 
-# Investor Outreach
+# investor-outreach
 
-Write investor communication that is short, concrete, and easy to act on.
-
-## When to Activate
-
+## Quando usar
 - writing a cold email to an investor
 - drafting a warm intro request
 - sending follow-ups after a meeting or no response
 - writing investor updates during a process
 - tailoring outreach based on fund thesis or partner fit
 
-## Core Rules
+## O que fazer
+1. Personalize every outbound message using the investor's thesis, portfolio, or a mutual connection.
+2. Keep the ask low-friction and explicit — one concrete next step.
+3. Use proof instead of adjectives: metrics, milestones, traction, or a clear market shift.
+4. Run `brand-voice` first if the user's voice matters, then keep investor-specific structure.
+5. Default follow-up cadence: day 0 outbound, day 4–5 short follow-up with a new data point, day 10–12 final close.
+6. For warm intros, include a forwardable blurb under 100 words that explains why the intro fits.
+7. For post-meeting updates, reference what was discussed, deliver the promised update, add one new proof point, and restate the next step.
 
-1. Personalize every outbound message.
-2. Keep the ask low-friction.
-3. Use proof instead of adjectives.
-4. Stay concise.
-5. Never send copy that could go to any investor.
+## Regras críticas
+- never send copy that could go to any investor
+- delete weak phrases: "I'd love to connect", "excited to share", generic thesis praise, vague founder adjectives, begging language, soft closers
+- if personalization context is missing, say the draft still needs it instead of pretending it is finished
+- stop nudging after the final follow-up unless the user explicitly asks for a longer sequence
 
-## Voice Handling
+## Exemplo (se necessário)
 
-If the user's voice matters, run `brand-voice` first and reuse its `VOICE PROFILE`.
-This skill should keep the investor-specific structure and ask discipline, not recreate its own parallel voice system.
+Subject: [Company] — [specific hook tied to investor thesis]
 
-## Hard Bans
+Hi [Name],
 
-Delete and rewrite any of these:
-- "I'd love to connect"
-- "excited to share"
-- generic thesis praise without a real tie-in
-- vague founder adjectives
-- begging language
-- soft closing questions when a direct ask is clearer
+[Why this investor specifically — portfolio co, thesis, talk, or mutual connection].
 
-## Cold Email Structure
+[One-sentence what we do + why now + concrete proof point].
 
-1. subject line: short and specific
-2. opener: why this investor specifically
-3. pitch: what the company does, why now, and what proof matters
-4. ask: one concrete next step
-5. sign-off: name, role, and one credibility anchor if needed
+[One concrete ask].
 
-## Personalization Sources
-
-Reference one or more of:
-- relevant portfolio companies
-- a public thesis, talk, post, or article
-- a mutual connection
-- a clear market or product fit with the investor's focus
-
-If that context is missing, state that the draft still needs personalization instead of pretending it is finished.
-
-## Follow-Up Cadence
-
-Default:
-- day 0: initial outbound
-- day 4 or 5: short follow-up with one new data point
-- day 10 to 12: final follow-up with a clean close
-
-Do not keep nudging after that unless the user wants a longer sequence.
-
-## Warm Intro Requests
-
-Make life easy for the connector:
-- explain why the intro is a fit
-- include a forwardable blurb
-- keep the forwardable blurb under 100 words
-
-## Post-Meeting Updates
-
-Include:
-- the specific thing discussed
-- the answer or update promised
-- one new proof point if available
-- the next step
-
-## Quality Gate
-
-Before delivering:
-- the message is genuinely personalized
-- the ask is explicit
-- the proof point is concrete
-- filler praise and softener language are gone
-- word count stays tight
+[Name, role, optional credibility anchor]

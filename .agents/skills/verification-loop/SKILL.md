@@ -1,125 +1,55 @@
 ---
 name: verification-loop
-description: "A comprehensive verification system for Claude Code sessions."
+description: Use this skill to verify work before declaring it done. Follow the build → type → lint → test → security → diff workflow and report the result with evidence.
 ---
 
-# Verification Loop Skill
+# Verification Loop
 
-A comprehensive verification system for Claude Code sessions.
+**UTILITY SKILL**
 
-## When to Use
+Never claim completion without fresh, objective evidence.
 
-Invoke this skill:
-- After completing a feature or significant code change
-- Before creating a PR
-- When you want to ensure quality gates pass
-- After refactoring
+## USE FOR:
 
-## Verification Phases
+- Verifying a feature, fix, or refactor before opening a PR or handing off.
+- Running the full gate sequence after significant changes.
+- Producing a verification report with counts and exit codes.
 
-### Phase 1: Build Verification
-```bash
-# Check if project builds
-npm run build 2>&1 | tail -20
-# OR
-pnpm build 2>&1 | tail -20
-```
+## DO NOT USE FOR:
 
-If build fails, STOP and fix before continuing.
+- Skipping gates because "it should work".
+- Declaring done when any check fails or is unverified.
 
-### Phase 2: Type Check
-```bash
-# TypeScript projects
-npx tsc --noEmit 2>&1 | head -30
+## INVOKES:
 
-# Python projects
-pyright . 2>&1 | head -30
-```
+- Build (`npm run build`, `pnpm build`, `make docs`, etc.).
+- Type check (`tsc --noEmit`, `pyright`, `mypy`).
+- Lint (`npm run lint`, `ruff check .`, `make lint`).
+- Tests with coverage.
+- Security scan (secrets, leftover logs, exposed PII).
+- `git diff --stat` for diff review.
 
-Report all type errors. Fix critical ones before continuing.
+## FOR SINGLE OPERATIONS:
 
-### Phase 3: Lint Check
-```bash
-# JavaScript/TypeScript
-npm run lint 2>&1 | head -30
+If the user only asks for one check, run just that check and report it.
 
-# Python
-ruff check . 2>&1 | head -30
-```
+## Workflow
 
-### Phase 4: Test Suite
-```bash
-# Run tests with coverage
-npm run test -- --coverage 2>&1 | tail -50
+1. Build — fix before continuing.
+2. Type check — fix type errors.
+3. Lint — fix warnings.
+4. Tests — target ≥80% coverage; report pass/fail/count.
+5. Security scan — grep secrets, exposed tokens, unsafe inputs.
+6. Diff review — inspect every changed file.
+7. Report: `READY` only when all gates pass.
 
-# Check coverage threshold
-# Target: 80% minimum
-```
+## Examples:
 
-Report:
-- Total tests: X
-- Passed: X
-- Failed: X
-- Coverage: X%
+- "Is this ready?" → run all gates → return verification report.
+- "Just run tests" → run tests → report pass/fail/coverage.
 
-### Phase 5: Security Scan
-```bash
-# Check for secrets
-grep -rn "sk-" --include="*.ts" --include="*.js" . 2>/dev/null | head -10
-grep -rn "api_key" --include="*.ts" --include="*.js" . 2>/dev/null | head -10
+## Troubleshooting:
 
-# Check for console.log
-grep -rn "console.log" --include="*.ts" --include="*.tsx" src/ 2>/dev/null | head -10
-```
-
-### Phase 6: Diff Review
-```bash
-# Show what changed
-git diff --stat
-git diff HEAD~1 --name-only
-```
-
-Review each changed file for:
-- Unintended changes
-- Missing error handling
-- Potential edge cases
-
-## Output Format
-
-After running all phases, produce a verification report:
-
-```
-VERIFICATION REPORT
-==================
-
-Build:     [PASS/FAIL]
-Types:     [PASS/FAIL] (X errors)
-Lint:      [PASS/FAIL] (X warnings)
-Tests:     [PASS/FAIL] (X/Y passed, Z% coverage)
-Security:  [PASS/FAIL] (X issues)
-Diff:      [X files changed]
-
-Overall:   [READY/NOT READY] for PR
-
-Issues to Fix:
-1. ...
-2. ...
-```
-
-## Continuous Mode
-
-For long sessions, run verification every 15 minutes or after major changes:
-
-```markdown
-Set a mental checkpoint:
-- After completing each function
-- After finishing a component
-- Before moving to next task
-
-Run: /verify
-```
-
-## Integration with Hooks
-
-This skill complements PostToolUse hooks but provides deeper verification.
-Hooks catch issues immediately; this skill provides comprehensive review.
+- Gate fails → stop, paste output, fix root cause, rerun.
+- Missing tool → install or hand the exact command to the user.
+- Coverage drops → add tests before declaring ready.

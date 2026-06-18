@@ -5,7 +5,7 @@ description: Use when fixing common Angular Signal Forms build errors related to
 
 # Signal Forms — Recovering from Build Errors
 
-### `Property 'value' does not exist on type 'FieldTree'`
+## `Property 'value' does not exist on type 'FieldTree'`
 
 **Problem**: Accessing `.value()` directly on a field without calling it first.
 
@@ -16,7 +16,7 @@ const val = this.form.field.value();
 const val = this.form.field().value();
 ```
 
-### `Property 'set' does not exist on type 'FieldTree'`
+## `Property 'set' does not exist on type 'FieldTree'`
 
 **Problem**: Trying to set values on the form tree. Signal Forms are model-driven.
 
@@ -27,7 +27,7 @@ this.form.address.street.set('Main St');
 this.model.update((m) => ({...m, address: {...m.address, street: 'Main St'}}));
 ```
 
-### `Type 'string[]' is not assignable to type 'string'`
+## `Type 'string[]' is not assignable to type 'string'`
 
 **Problem**: Binding `[formField]` to an array field with a single-value `<select>`.
 

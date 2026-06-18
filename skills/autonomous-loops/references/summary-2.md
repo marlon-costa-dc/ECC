@@ -21,7 +21,7 @@ The critical innovation: a `SHARED_TASK_NOTES.md` file persists across iteration
 
 Claude reads this file at iteration start and updates it at iteration end. This bridges the context gap between independent `claude -p` invocations.
 
-### CI Failure Recovery
+## CI Failure Recovery
 
 When PR checks fail, Continuous Claude automatically:
 1. Fetches the failed run ID via `gh run list`

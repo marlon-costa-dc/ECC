@@ -8,6 +8,12 @@ origin: ECC
 
 Turn Claude Code into a persistent, self-directing agent system using only native features and MCP servers.
 
+## Consent and Safety Boundaries
+
+- Run autonomous or scheduled work only when explicitly requested and scoped by the user.
+- Do not create schedules, recurring jobs, external actions, purchases, posts, or account changes without explicit approval.
+- Prefer dry-run plans before enabling persistent behavior; document cadence, owner, stop condition, and rollback.
+
 ## When to Use
 
 - User wants an agent that runs continuously or on a schedule.

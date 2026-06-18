@@ -12,21 +12,21 @@ Score each applicable dimension from 1 to 5:
 
 Use `N/A` for dimensions that do not apply.
 
-### 1. Problem and Research Question
+## 1. Problem and Research Question
 
 - Is the problem clear and specific?
 - Is the contribution meaningful?
 - Are scope and assumptions explicit?
 - Does the question match the claimed contribution?
 
-### 2. Literature and Context
+## 2. Literature and Context
 
 - Is relevant prior work covered?
 - Does the work synthesize rather than merely list sources?
 - Are gaps accurately identified?
 - Are recent and foundational sources balanced?
 
-### 3. Methodology
+## 3. Methodology
 
 - Does the method answer the research question?
 - Are design choices justified?
@@ -34,41 +34,41 @@ Use `N/A` for dimensions that do not apply.
 - Could another researcher reproduce the work?
 - Are ethical and practical constraints acknowledged?
 
-### 4. Data and Evidence
+## 4. Data and Evidence
 
 - Are data sources credible and appropriate?
 - Is sample size or corpus coverage adequate?
 - Are inclusion, exclusion, and preprocessing decisions documented?
 - Are missing data and bias risks discussed?
 
-### 5. Analysis
+## 5. Analysis
 
 - Are statistical, qualitative, or computational methods appropriate?
 - Are baselines and controls fair?
 - Are uncertainty, sensitivity, or robustness checks included when needed?
 - Are alternative explanations considered?
 
-### 6. Results and Interpretation
+## 6. Results and Interpretation
 
 - Are results clearly presented?
 - Do claims stay within the evidence?
 - Are figures, tables, and metrics understandable?
 - Are negative or null results handled honestly?
 
-### 7. Limitations and Threats to Validity
+## 7. Limitations and Threats to Validity
 
 - Are limitations specific rather than generic?
 - Are internal, external, construct, and conclusion-validity risks addressed?
 - Does the paper distinguish speculation from demonstrated results?
 
-### 8. Writing and Structure
+## 8. Writing and Structure
 
 - Is the argument easy to follow?
 - Are sections organized around the research question?
 - Are definitions and notation clear?
 - Is the tone precise and scholarly?
 
-### 9. Citations
+## 9. Citations
 
 - Do cited papers support the claims attached to them?
 - Are primary sources used where possible?

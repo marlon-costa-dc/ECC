@@ -23,4 +23,16 @@ An interactive, step-by-step installation wizard for the Everything Claude Code 
 2. Execute the canonical workflow for this skill
 3. Report results and next steps
 
+## Skill Source Roots
+
+- Core agent-facing skills are copied from `$ECC_ROOT/.agents/skills/<skill-name>`.
+- Niche and long-tail skills are copied from `$ECC_ROOT/skills/<skill-name>`.
+
+When copying a selected skill directory, strip any trailing slash from the source before deriving the destination name:
+
+```bash
+dest="$target_root/$(basename "${src%/}")"
+cp -R "${src%/}" "$dest"
+```
+
 For full details, examples, edge cases, and reference material, read `references/summary.md`.

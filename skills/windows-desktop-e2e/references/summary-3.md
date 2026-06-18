@@ -58,7 +58,7 @@ Launch: `WindowsSandbox.exe e2e-sandbox.wsb`
 > pywinauto and the app both run **inside** the sandbox (same session required).
 > Artifacts are written back to the host via the mapped folder.
 
-### Tier comparison
+## Tier comparison
 
 | Tier | Isolation | Setup cost | Works on CI | Use when |
 |------|-----------|-----------|-------------|----------|

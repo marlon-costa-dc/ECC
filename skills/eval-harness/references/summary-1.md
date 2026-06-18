@@ -18,6 +18,8 @@ Regression Evals:
 Run: /eval check add-authentication
 
 ### Phase 4: Report
+
+```text
 EVAL REPORT: add-authentication
 ==============================
 Capability: 5/5 passed (pass@3: 100%)

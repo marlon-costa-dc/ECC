@@ -4,13 +4,13 @@
 
 ```
 PLANNER (Opus 4.6)
-  └─ Product Spec ──▶ GENERATOR-EVALUATOR LOOP
+  └─ Product Spec --> GENERATOR-EVALUATOR LOOP
                          ┌──────────┐
-                    ┌────│GENERATOR │──build──▶ live app
+                    ┌────│GENERATOR │--build--> live app
                     │    │(Opus 4.6)│
                  feedback └────▲─────┘
                     │          │
-                    └────│EVALUATOR │◀─test──── live app
+                    └────│EVALUATOR │<--test---- live app
                          │+Playwright│
                          └──────────┘
 ```

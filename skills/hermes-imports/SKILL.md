@@ -17,6 +17,13 @@ Use this skill when turning a repeated Hermes workflow into something safe to sh
 - A launch, content, research, or engineering workflow needs sanitized handoff docs.
 - A workflow mentions local paths, credentials, personal datasets, or private account names that must be removed before publication.
 
+## Sanitization Checklist
+
+- Do not ship raw workspace exports.
+- Remove local filesystem paths, account names, private project aliases, credentials, tokens, and private datasets.
+- Replace private examples with public, synthetic, or domain-generic examples before adding release-pack artifacts.
+- Re-read generated artifacts for secrets and local-only paths before publishing.
+
 ## Workflow
 
 1. Understand the request and confirm scope

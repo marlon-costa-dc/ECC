@@ -12,6 +12,12 @@ metadata:
 
 **UTILITY SKILL**
 
+## Privacy and Data Boundaries
+
+- Use synthetic or domain-generic data for examples, screenshots, demos, and fixtures.
+- Do not collect, log, persist, or display personal, customer, credential, or regulated data unless the user explicitly scopes that work.
+- Do not add analytics, tracking pixels, telemetry, or third-party embeds without explicit approval and a documented privacy purpose.
+
 ## USE FOR
 
 - Requests about frontend patterns.
@@ -46,5 +52,5 @@ metadata:
 
 ## Troubleshooting
 
-- Unclear scope → ask.
-- Missing context → state assumptions.
+- Unclear scope -> ask.
+- Missing context -> state assumptions.

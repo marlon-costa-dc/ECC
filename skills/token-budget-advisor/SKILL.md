@@ -23,6 +23,7 @@ description: Use when the user explicitly asks to control response length, depth
    Which level? (1-4 or "25% depth", etc.)
    ```
 4. **Respond at the chosen level.**
+
    | Level | Target | Include | Omit |
    |-------|--------|---------|------|
    | 25% | 2-4 sentences | Direct answer, key conclusion | Context, examples |

@@ -157,5 +157,3 @@ final class StorePostRequest extends FormRequest
     }
 }
 ```
-
-

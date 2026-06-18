@@ -1,4 +1,4 @@
-> ⚠️ **Execution Safety**
+> **WARNING: Execution Safety**
 >
 > The shell commands in this skill are local audit examples. Run them only in a trusted checkout or disposable sandbox, and do not splice untrusted contract names, paths, RPC URLs, private keys, or user-supplied flags into shell commands. Ask before installing tools or running long fuzzing/static-analysis jobs that may consume significant local or paid resources.
 >

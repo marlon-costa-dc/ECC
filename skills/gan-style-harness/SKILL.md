@@ -44,4 +44,4 @@ GAN_MAX_ITERATIONS=10 GAN_PASS_THRESHOLD=7.5 ./scripts/gan-harness.sh "..."
 ## References
 
 - Full architecture, rubric, configuration, anti-patterns, and results: [references/gan-style-reference.md](references/gan-style-reference.md)
-- Anthropic paper: https://www.anthropic.com/engineering/harness-design-long-running-apps
+- Anthropic paper: <https://www.anthropic.com/engineering/harness-design-long-running-apps>

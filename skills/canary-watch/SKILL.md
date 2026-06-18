@@ -29,6 +29,14 @@ Monitors a deployed URL in a loop until stopped or until the watch window expire
 - Static asset responses and content types
 - SSE stream connectivity and heartbeat
 
+## Watch List
+
+- **HTTP endpoints**: status, redirects, latency, and 4xx/5xx regressions.
+- **SSE Streams**: connection setup, first event, heartbeat, reconnects, and drops.
+- **Static Assets**: JavaScript, CSS, image, font, and source-map responses.
+- **Console errors**: new browser errors, failed module loads, and noisy warnings.
+- **Performance regressions**: LCP, CLS, INP, response time, and request volume drift.
+
 ## Watch Modes
 
 - **Quick check**: single pass, report results.
@@ -37,7 +45,7 @@ Monitors a deployed URL in a loop until stopped or until the watch window expire
 
 ## Alert Thresholds
 
-- **Critical**: HTTP != 200, > 5 new console errors, LCP > 4s, 5xx API responses, 4xx/5xx static assets, SSE cannot connect or drops before first heartbeat.
+- **Critical**: HTTP != 200, > 5 new console errors, LCP > 4s, 5xx API responses, 4xx/5xx static assets, SSE endpoint cannot connect or drops before first heartbeat.
 - **Warning**: LCP delta > 500ms, CLS > 0.1, new console warnings, response time > 2x baseline, unexpected asset content type, SSE heartbeat latency > 2x baseline.
 - **Info**: minor performance variance, new third-party requests.
 

@@ -8,7 +8,8 @@ metadata:
 
 # Continuous Learning v2.1
 
-Operate ECC instinct learning. Hooks capture signals, scoped stores isolate behaviors, and `instinct-cli.py` handles status/import/export/promote/projects/prune/evolve.
+Operate ECC learning. Hooks capture signals, scoped stores isolate behaviors, and `instinct-cli.py` handles status/import/export/promote/projects/prune/evolve.
+Plugin installs auto-loads the plugin `hooks/hooks.json`; if you copied observe hooks into settings.json, remove that duplicate `PreToolUse` / `PostToolUse` block.
 
 **UTILITY SKILL:** use for learning-surface ops, not general skill writing.
 

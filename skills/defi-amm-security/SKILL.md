@@ -45,6 +45,6 @@ echidna-test . --contract YourAMM --config echidna.yaml
 forge test --fuzz-runs 10000
 ```
 
-## Safety Note
+## Execution Safety
 
-Run shell commands only in a trusted checkout or disposable sandbox. Do not splice untrusted contract names, paths, RPC URLs, private keys, or flags into commands. Never include secrets, private keys, seed phrases, API tokens, or mainnet signing credentials in examples, logs, or reports.
+The shell commands in this skill are local audit examples. Run them only in a trusted checkout or disposable sandbox. Do not splice untrusted contract names, paths, RPC URLs, private keys, or flags into commands. Never include secrets, private keys, seed phrases, API tokens, or mainnet signing credentials in examples, logs, or reports.

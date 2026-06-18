@@ -82,7 +82,7 @@ def login_fail(self, user, pwd):
         return self.get_text(self.error_label)
 ```
 
-### conftest.py
+## conftest.py
 
 > For new projects prefer the **Tier 1 sandbox fixture** (see below) — it adds filesystem isolation at zero extra cost. This basic fixture is for minimal/legacy setups only.
 

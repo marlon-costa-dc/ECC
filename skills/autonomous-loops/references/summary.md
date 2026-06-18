@@ -24,10 +24,10 @@ From simplest to most sophisticated:
 |---------|-----------|----------|
 | [Sequential Pipeline](#1-sequential-pipeline-claude--p) | Low | Daily dev steps, scripted workflows |
 | [NanoClaw REPL](#2-nanoclaw-repl) | Low | Interactive persistent sessions |
-| [Infinite Agentic Loop](#3-infinite-agentic-loop) | Medium | Parallel content generation, spec-driven work |
-| [Continuous Claude PR Loop](#4-continuous-claude-pr-loop) | Medium | Multi-day iterative projects with CI gates |
-| [De-Sloppify Pattern](#5-the-de-sloppify-pattern) | Add-on | Quality cleanup after any Implementer step |
-| [Ralphinho / RFC-Driven DAG](#6-ralphinho--rfc-driven-dag-orchestration) | High | Large features, multi-unit parallel work with merge queue |
+| Infinite Agentic Loop | Medium | Parallel content generation, spec-driven work |
+| Continuous Claude PR Loop | Medium | Multi-day iterative projects with CI gates |
+| De-Sloppify Pattern | Add-on | Quality cleanup after any Implementer step |
+| Ralphinho / RFC-Driven DAG | High | Large features, multi-unit parallel work with merge queue |
 
 ---
 
@@ -47,7 +47,7 @@ The `claude -p` flag runs Claude Code non-interactively with a prompt, exits whe
 
 1. **Each step is isolated** — A fresh context window per `claude -p` call means no context bleed between steps.
 2. **Order matters** — Steps execute sequentially. Each builds on the filesystem state left by the previous.
-3. **Negative instructions are dangerous** — Don't say "don't test type systems." Instead, add a separate cleanup step (see [De-Sloppify Pattern](#5-the-de-sloppify-pattern)).
+3. **Negative instructions are dangerous** — Don't say "don't test type systems." Instead, add a separate cleanup step (see the De-Sloppify Pattern).
 4. **Exit codes propagate** — `set -e` stops the pipeline on failure.
 
 ### Variations

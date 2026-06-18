@@ -25,4 +25,15 @@ Retrieve, analyze, and update Jira tickets directly from your AI coding workflow
 2. Execute the canonical workflow for this skill
 3. Report results and next steps
 
+## Direct REST API Safety
+
+Prefer the Jira MCP server. When direct REST is required, pass Jira credentials through curl config stdin so `JIRA_EMAIL` and `JIRA_API_TOKEN` do not appear in process arguments.
+
+```bash
+jira_curl() {
+  printf 'user = "%s:%s"\n' "$JIRA_EMAIL" "$JIRA_API_TOKEN" |
+    curl -s -K - "$@"
+}
+```
+
 For full details, examples, edge cases, and reference material, read `references/summary.md`.

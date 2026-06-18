@@ -7,7 +7,7 @@ def find_image_on_screen(template_path, confidence=0.85):
         cv2.cvtColor(template, cv2.COLOR_RGB2BGR),
         cv2.TM_CCOEFF_NORMED,
     )
-    _, max_val, _, max_loc = cv2.minMaxLoc(result)
+    _, max_val,_, max_loc = cv2.minMaxLoc(result)
     if max_val >= confidence:
         h, w = template.shape[:2]
         return max_loc[0] + w // 2, max_loc[1] + h // 2

@@ -1,7 +1,7 @@
 export function Modal({ onClose }: { onClose: () => void }) {
   return (
     <>
-      {/* Overlay */}
+      {/*Overlay*/}
       <motion.div
         className="fixed inset-0 bg-black/50"
         initial={{ opacity: 0 }}
@@ -10,8 +10,8 @@ export function Modal({ onClose }: { onClose: () => void }) {
         onClick={onClose}
       />
 
-{/* Panel — accessibility requirements: focus trap, Escape close,
-          scroll lock, role="dialog", aria-modal="true" */}
+{/*Panel — accessibility requirements: focus trap, Escape close,
+          scroll lock, role="dialog", aria-modal="true"*/}
       <motion.div
         role="dialog"
         aria-modal="true"

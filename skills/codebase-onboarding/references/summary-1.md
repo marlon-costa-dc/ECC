@@ -7,6 +7,7 @@
 | Add a database table | `prisma/schema.prisma` |
 | Add a test | `tests/` matching the source path |
 | Change build config | `next.config.ts` |
+
 ```
 
 #### Output 2: Starter CLAUDE.md

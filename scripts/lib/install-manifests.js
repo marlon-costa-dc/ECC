@@ -5,6 +5,7 @@ const { getInstallTargetAdapter, planInstallTargetScaffold } = require('./instal
 
 const DEFAULT_REPO_ROOT = path.join(__dirname, '../..');
 const SUPPORTED_INSTALL_TARGETS = ['claude', 'claude-project', 'cursor', 'antigravity', 'codex', 'gemini', 'opencode', 'codebuddy', 'joycode', 'qwen', 'zed', 'kimi'];
+const HIDDEN_SYNTHETIC_SKILL_IDS = new Set(['continuous-learning']);
 const COMPONENT_FAMILY_PREFIXES = {
   baseline: 'baseline:',
   language: 'lang:',
@@ -151,6 +152,7 @@ function listSkillDirectoryIds(repoRoot) {
   return fs.readdirSync(skillsRoot, { withFileTypes: true })
     .filter(entry => entry.isDirectory())
     .map(entry => entry.name)
+    .filter(skillId => !HIDDEN_SYNTHETIC_SKILL_IDS.has(skillId))
     .sort();
 }
 

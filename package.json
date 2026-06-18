@@ -145,7 +145,6 @@
     "skills/content-engine/",
     "skills/content-hash-cache-pattern/",
     "skills/continuous-agent-loop/",
-    "skills/continuous-learning/",
     "skills/continuous-learning-v2/",
     "skills/cost-aware-llm-pipeline/",
     "skills/cost-tracking/",

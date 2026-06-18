@@ -555,7 +555,7 @@ export ECC_AGENT_DATA_HOME="$HOME/.cursor/ecc"
 Paths resolved under that root include:
 
 - `$ECC_AGENT_DATA_HOME/session-data/` — session summaries
-- `$ECC_AGENT_DATA_HOME/skills/learned/` — learned skills from evaluate-session
+- `$ECC_AGENT_DATA_HOME/skills/learned/` — legacy/manual learned skills consumed by skill health tooling
 - `$ECC_AGENT_DATA_HOME/session-aliases.json` — session aliases
 - `$ECC_AGENT_DATA_HOME/metrics/` — cost and activity metrics
 
@@ -746,7 +746,7 @@ ECC/
 |   |   |-- session-end.js       # Save state on session end
 |   |   |-- pre-compact.js       # Pre-compaction state saving
 |   |   |-- suggest-compact.js   # Strategic compaction suggestions
-|   |   |-- evaluate-session.js  # Extract patterns from sessions
+|   |   |-- evaluate-session.js  # Legacy session evaluator; v2 observation uses observe-runner.js
 |   |-- setup-package-manager.js # Interactive PM setup
 |
 |-- tests/            # Test suite (NEW)

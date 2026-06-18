@@ -6,6 +6,8 @@ origin: ECC
 
 # Deployment Patterns
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## When to Activate
 
 - Setting up CI/CD pipelines

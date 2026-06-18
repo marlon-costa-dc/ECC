@@ -8,6 +8,8 @@ origin: ECC
 
 Senior quality engineering expertise for regulated manufacturing (FDA 21 CFR 820, IATF 16949, AS9100, ISO 13485).
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## When to Use
 
 - Investigating an NCR from incoming inspection, in-process, final test, or field

@@ -154,7 +154,7 @@ Stable graduation of the 2.0 line: 261 skills, the control-pane substrate (sessi
 ### v2.0.0-rc.1 — Surface Refresh, Operator Workflows, and ECC 2.0 Alpha (Apr 2026)
 
 - **Dashboard GUI** — New Tkinter-based desktop application (`ecc_dashboard.py` or `npm run dashboard`) with dark/light theme toggle, font customization, and project logo in header and taskbar.
-- **Public surface synced to the live repo** — metadata, catalog counts, plugin manifests, and install-facing docs now match the actual OSS surface: 64 agents, 267 skills, and 84 legacy command shims.
+- **Public surface synced to the live repo** — metadata, catalog counts, plugin manifests, and install-facing docs now match the actual OSS surface: 64 agents, 270 skills, and 84 legacy command shims.
 - **Operator and outbound workflow expansion** — `brand-voice`, `social-graph-ranker`, `connections-optimizer`, `customer-billing-ops`, `ecc-tools-cost-audit`, `google-workspace-ops`, `project-flow-ops`, and `workspace-surface-audit` round out the operator lane.
 - **Media and launch tooling** — `manim-video`, `remotion-video-creation`, and upgraded social publishing surfaces make technical explainers and launch content part of the same system.
 - **Framework and product surface growth** — `nestjs-patterns`, richer Codex/OpenCode install surfaces, and expanded cross-harness packaging keep the repo usable beyond Claude Code alone.
@@ -443,7 +443,7 @@ If you stacked methods, clean up in this order:
 /plugin list ecc@ecc
 ```
 
-**That's it!** You now have access to 64 agents, 267 skills, and 84 legacy command shims.
+**That's it!** You now have access to 64 agents, 270 skills, and 84 legacy command shims.
 
 ### Dashboard GUI
 
@@ -616,8 +616,7 @@ ECC/
 |   |-- market-research/            # Source-attributed market, competitor, and investor research (NEW)
 |   |-- investor-materials/         # Pitch decks, one-pagers, memos, and financial models (NEW)
 |   |-- investor-outreach/          # Personalized fundraising outreach and follow-up (NEW)
-|   |-- continuous-learning/        # Legacy v1 Stop-hook pattern extraction
-|   |-- continuous-learning-v2/     # Instinct-based learning with confidence scoring
+|   |-- continuous-learning-v2/     # Canonical instinct-based learning with confidence scoring
 |   |-- iterative-retrieval/        # Progressive context refinement for subagents
 |   |-- strategic-compact/          # Manual compaction suggestions (Longform Guide)
 |   |-- tdd-workflow/               # TDD methodology
@@ -860,7 +859,7 @@ The instinct-based learning system automatically learns your patterns:
 ```
 
 See `skills/continuous-learning-v2/` for full documentation.
-Keep `continuous-learning/` only when you explicitly want the legacy v1 Stop-hook learned-skill flow.
+`continuous-learning-v2` is the only continuous-learning skill exposed through agent and install surfaces.
 
 ---
 
@@ -1601,7 +1600,7 @@ The configuration is automatically detected from `.opencode/opencode.json`.
 |---------|---------------------|----------|--------|
 | Agents | PASS: 64 agents     | PASS: 12 agents | **Claude Code leads** |
 | Commands | PASS: 84 commands   | PASS: 35 commands | **Claude Code leads** |
-| Skills | PASS: 267 skills    | PASS: 37 skills | **Claude Code leads** |
+| Skills | PASS: 270 skills    | PASS: 37 skills | **Claude Code leads** |
 | Hooks | PASS: 8 event types | PASS: 11 events | **OpenCode has more!** |
 | Rules | PASS: 29 rules      | PASS: 13 instructions | **Claude Code leads** |
 | MCP Servers | PASS: 14 servers    | PASS: Full | **Full parity** |
@@ -1762,7 +1761,7 @@ ECC is the **first plugin to maximize every major AI coding tool**. Here's how e
 |---------|-----------------------|------------|-----------|----------|----------------|
 | **Agents** | 64                    | Shared (AGENTS.md) | Shared (AGENTS.md) | 12 | N/A |
 | **Commands** | 84                    | Shared | Instruction-based | 35 | 5 prompts |
-| **Skills** | 267                   | Shared | 10 (native format) | 37 | Via instructions |
+| **Skills** | 270                   | Shared | 10 (native format) | 37 | Via instructions |
 | **Hook Events** | 8 types               | 15 types | None yet | 11 types | None |
 | **Hook Scripts** | 20+ scripts           | 16 scripts (DRY adapter) | N/A | Plugin hooks | N/A |
 | **Rules** | 34 (common + lang)    | 34 (YAML frontmatter) | Instruction-based | 13 instructions | 1 always-on file |

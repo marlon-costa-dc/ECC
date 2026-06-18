@@ -8,6 +8,8 @@ origin: ECC
 
 Use this skill to ensure code follows security best practices and to identify potential vulnerabilities.
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## When to Activate
 
 - Implementing authentication or authorization

@@ -15,7 +15,7 @@ Pull knowledge from multiple sources into one place:
 
 ```
 # Short-term: current session context
-Use TodoWrite for in-session task tracking
+Use bd (beads) for in-session task tracking — bd ready / bd update <id> --claim / bd close <id> (not TodoWrite)
 
 # Medium-term: project memory files
 Write to ~/.claude/projects/*/memory/ for cross-session recall

@@ -10,6 +10,8 @@ origin: ECC
 
 Use this when the user wants real repo execution: run commands, inspect git state, debug CI or builds, make a narrow fix, and report exactly what changed and what was verified.
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## When to Use
 
 - user says "fix", "debug", "run this", "check the repo", or "push it"

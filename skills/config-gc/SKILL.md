@@ -11,6 +11,8 @@ origin: ECC
 
 Borrowed from runtime garbage collection: periodically scan for objects that are no longer referenced, redundant, expired, or low-value, and reclaim the space. The critical difference: **here, collection requires a human in the loop.**
 
+> Configs emitidos aqui ficam portáveis (${HOME}/relativo, nunca caminho absoluto); empurrar governança/self-config a repos externos exige autorização explícita do operador (AGENTS.md R10 / .ai-hub ADR-0001) — guardrail nunca contornado.
+
 ## When to Use
 
 - The user asks to clean up, audit, or slim down their Claude Code configuration

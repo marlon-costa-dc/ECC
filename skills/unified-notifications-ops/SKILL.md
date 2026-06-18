@@ -10,6 +10,8 @@ origin: ECC
 
 Use this skill when the real problem is not a missing ping. The real problem is a fragmented notification system.
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## When to Use
 
 - the user wants a unified notification lane across GitHub, Linear, local hooks, desktop alerts, chat, or email

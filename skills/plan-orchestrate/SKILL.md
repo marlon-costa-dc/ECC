@@ -11,6 +11,8 @@ origin: ECC
 
 Bridge a plan document to `/orchestrate custom` by emitting one ready-to-paste invocation per step. The skill is generative only — it never executes `/orchestrate`. The user pastes each line when ready.
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## When to Use
 
 - User has a multi-step plan document (PRD, RFC, implementation plan) and wants to drive it through /orchestrate.

@@ -9,6 +9,8 @@ origin: Ronald Skelton - Founder, RapportScore.ai
 
 Multi-agent adversarial verification framework. Make a list, check it twice. If it's naughty, fix it until it's nice.
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## When to Use
 
 - Output will be published, deployed, or consumed by end users

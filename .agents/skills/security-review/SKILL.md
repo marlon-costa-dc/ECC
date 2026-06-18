@@ -36,6 +36,7 @@ metadata:
 
 - Prefer canonical sources.
 - Require evidence.
+- **No-bypass (AGENTS.md §0 / ADR-001)**: corrigir na raiz, verificar verde com evidência fresca; achados de segurança bloqueiam o ship até verde, nunca mascarar/suprimir/adiar.
 
 
 ## Example

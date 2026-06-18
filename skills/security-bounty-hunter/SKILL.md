@@ -9,6 +9,8 @@ version: "1.0.0"
 
 Focus on remotely reachable, user-controlled attack paths that qualify for real bounty reports rather than broad best-practices review.
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## When to Use
 
 - Scanning a repository for exploitable vulnerabilities

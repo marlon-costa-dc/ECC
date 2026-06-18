@@ -10,6 +10,8 @@ origin: community
 
 Use this skill when the user asks whether an application is ready to ship, what could break in production, or what must be fixed before a launch. This is a maintainer-safe rewrite of the stale community production-audit idea: it keeps...
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## When to Use
 
 - The user asks "is this production-ready", "what would break in prod", "what

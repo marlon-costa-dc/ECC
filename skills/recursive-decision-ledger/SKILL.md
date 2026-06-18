@@ -11,6 +11,8 @@ tools: Read, Write, Edit, Bash, Grep, Glob
 
 Use this skill when the user is trying to force deeper computation through repeated rollouts or "Prime Gauss" style recursive prompting. Preserve the useful part: repeated trials, prior memory, fresh information, and explicit marks....
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## When to Use
 
 - User asks about recursive decision ledger or related tasks

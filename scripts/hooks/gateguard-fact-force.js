@@ -25,11 +25,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const {
-  extractCommandSubstitutions,
-  extractSubshellGroups,
-  extractBraceGroups
-} = require('../lib/shell-substitution');
+const { extractCommandSubstitutions, extractSubshellGroups, extractBraceGroups } = require('../lib/shell-substitution');
 
 // Session state — scoped per session to avoid cross-session races.
 const STATE_DIR = process.env.GATEGUARD_STATE_DIR || path.join(process.env.HOME || process.env.USERPROFILE || '/tmp', '.gateguard');
@@ -88,10 +84,10 @@ function getExtraDestructiveRegex() {
     extraDestructiveCacheRegex = null;
     if (!extraDestructiveWarnLogged) {
       try {
-        process.stderr.write(
-          `[gateguard-fact-force] ignoring invalid GATEGUARD_BASH_EXTRA_DESTRUCTIVE regex: ${err.message}\n`
-        );
-      } catch (_) { /* stderr write failure is non-fatal */ }
+        process.stderr.write(`[gateguard-fact-force] ignoring invalid GATEGUARD_BASH_EXTRA_DESTRUCTIVE regex: ${err.message}\n`);
+      } catch (_) {
+        /* stderr write failure is non-fatal */
+      }
       extraDestructiveWarnLogged = true;
     }
   }
@@ -112,9 +108,7 @@ function isRoutineBashGateDisabled() {
  * @returns {string}
  */
 function stripQuotedStrings(input) {
-  return input
-    .replace(/'(?:[^'\\]|\\.)*'/g, "''")
-    .replace(/"(?:[^"\\]|\\.)*"/g, '""');
+  return input.replace(/'(?:[^'\\]|\\.)*'/g, "''").replace(/"(?:[^"\\]|\\.)*"/g, '""');
 }
 
 /**
@@ -167,7 +161,6 @@ function splitCommandSegments(input) {
 function tokenize(segment) {
   return segment.split(/\s+/).filter(Boolean);
 }
-
 
 /**
  * Tokenize a short allowlisted shell command while preserving quoted
@@ -236,7 +229,10 @@ function tokenizeAllowlistedShellWords(input) {
  */
 function commandBasename(token) {
   if (!token) return '';
-  return token.replace(/^.*[\\/]/, '').replace(/\.exe$/i, '').toLowerCase();
+  return token
+    .replace(/^.*[\\/]/, '')
+    .replace(/\.exe$/i, '')
+    .toLowerCase();
 }
 
 /**
@@ -491,7 +487,9 @@ function isDestructiveBash(command) {
 // --- State management (per-session, atomic writes, bounded) ---
 
 function normalizeEnvValue(value) {
-  return String(value || '').trim().toLowerCase();
+  return String(value || '')
+    .trim()
+    .toLowerCase();
 }
 
 function isGateGuardDisabled() {
@@ -754,6 +752,25 @@ function isClaudeSettingsPath(filePath) {
   return /(^|\/)\.claude\/settings(?:\.[^/]+)?\.json$/.test(normalized);
 }
 
+/**
+ * Scratch/non-project paths the fact-forcing Edit/Write gate should skip:
+ *   - System temp dirs (/tmp, /var/tmp, /private/tmp, /private/var/tmp) —
+ *     ephemeral working files, never project source.
+ *   - Claude auto-memory scratch (~/.claude/projects/<proj>/memory/) — the
+ *     agent's own index/topic notes, not callable code with importers.
+ * The gate still fires for every real repository file. Narrowing it here
+ * removes friction on scratch writes without weakening enforcement on code.
+ *
+ * @param {string} filePath
+ * @returns {boolean}
+ */
+function isScratchPath(filePath) {
+  const normalized = normalizeForMatch(filePath);
+  if (/^\/+(?:private\/)?(?:var\/)?tmp\//.test(normalized)) return true;
+  if (/\/\.claude\/projects\/[^/]+\/memory\//.test(normalized)) return true;
+  return false;
+}
+
 function isReadOnlyGitIntrospection(command) {
   const trimmed = String(command || '').trim();
   if (!trimmed || /[\r\n;&|><`$()]/.test(trimmed)) {
@@ -880,11 +897,7 @@ function routineBashMsg() {
 
 function withRecoveryHint(message, hookIds = [EDIT_WRITE_HOOK_ID]) {
   const disableTargets = hookIds.map(hookId => `\`${hookId}\``).join(' or ');
-  return [
-    message,
-    '',
-    `Recovery: if GateGuard is blocking setup or repair work, run this session with \`ECC_GATEGUARD=off\` or add ${disableTargets} to \`ECC_DISABLED_HOOKS\`.`
-  ].join('\n');
+  return [message, '', `Recovery: if GateGuard is blocking setup or repair work, run this session with \`ECC_GATEGUARD=off\` or add ${disableTargets} to \`ECC_DISABLED_HOOKS\`.`].join('\n');
 }
 
 function isSubagentInvocation(data) {
@@ -892,12 +905,7 @@ function isSubagentInvocation(data) {
     return false;
   }
 
-  const candidates = [
-    data.agent_id,
-    data.agentId,
-    data.parent_tool_use_id,
-    data.parentToolUseId
-  ];
+  const candidates = [data.agent_id, data.agentId, data.parent_tool_use_id, data.parentToolUseId];
 
   return candidates.some(candidate => typeof candidate === 'string' && candidate.trim());
 }
@@ -952,7 +960,7 @@ function run(rawInput) {
 
   if (toolName === 'Edit' || toolName === 'Write') {
     const filePath = toolInput.file_path || '';
-    if (!filePath || isClaudeSettingsPath(filePath)) {
+    if (!filePath || isClaudeSettingsPath(filePath) || isScratchPath(filePath)) {
       return rawInput; // allow
     }
 
@@ -983,7 +991,7 @@ function run(rawInput) {
     const edits = toolInput.edits || [];
     for (const edit of edits) {
       const filePath = edit.file_path || '';
-      if (filePath && !isClaudeSettingsPath(filePath) && !isChecked(filePath)) {
+      if (filePath && !isClaudeSettingsPath(filePath) && !isScratchPath(filePath) && !isChecked(filePath)) {
         const { ok, denials } = markCheckedAndCountDenial(filePath);
         if (!ok) {
           return allowWithStateWarning();

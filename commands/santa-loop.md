@@ -6,6 +6,8 @@ description: Adversarial dual-review convergence loop — two independent model 
 
 Adversarial dual-review convergence loop using the santa-method skill. Two independent reviewers — different models, no shared context — must both return NICE before code ships.
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## Purpose
 
 Run two independent reviewers (Claude Opus + an external model) against the current task output. Both must return NICE before the code is pushed. If either returns NAUGHTY, fix all flagged issues, commit, and re-run fresh reviewers — up to 3 rounds.

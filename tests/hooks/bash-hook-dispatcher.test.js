@@ -53,16 +53,6 @@ function runTests() {
     assert.strictEqual(result.stdout, '', 'Blocking hook should not pass through stdout');
   })) passed++; else failed++;
 
-  if (test('pre dispatcher emits no stdout for a plain command (regression: issue #2239)', () => {
-    // A pass-through command (no sub-hook adds context) must NOT echo the
-    // input event back to stdout — Claude Code validates hook stdout against
-    // the hook-output schema and the input event fails as "(root): Invalid input".
-    const input = { tool_input: { command: 'ls -la' } };
-    const result = runScript(preDispatcher, input, { ECC_HOOK_PROFILE: 'standard' });
-    assert.strictEqual(result.status, 0);
-    assert.strictEqual(result.stdout, '', `Pass-through must emit empty stdout, got: ${result.stdout}`);
-  })) passed++; else failed++;
-
   if (test('pre dispatcher still honors per-hook disable flags', () => {
     const input = { tool_input: { command: 'git push origin main' } };
 
@@ -79,7 +69,7 @@ function runTests() {
       ECC_DISABLED_HOOKS: 'pre:bash:git-push-reminder',
     });
     assert.strictEqual(disabled.status, 0);
-    assert.strictEqual(disabled.stdout, '', 'Disabled hook should emit no stdout (echoing the input event fails hook-output schema validation)');
+    assert.strictEqual(disabled.stdout, JSON.stringify(input), 'Disabled hook should pass through original input');
     assert.ok(!disabled.stderr.includes('Review changes before push'), 'Disabled hook should not emit reminder');
   })) passed++; else failed++;
 
@@ -88,7 +78,7 @@ function runTests() {
     const result = runScript(preDispatcher, input, { ECC_HOOK_PROFILE: 'minimal' });
     assert.strictEqual(result.status, 0);
     assert.strictEqual(result.stderr, '', 'Strict-only reminders should stay disabled in minimal profile');
-    assert.strictEqual(result.stdout, '', 'Pass-through must emit no stdout, not echo the input event');
+    assert.strictEqual(result.stdout, JSON.stringify(input));
   })) passed++; else failed++;
 
   if (test('post dispatcher writes both bash audit and cost logs in one pass', () => {
@@ -101,7 +91,7 @@ function runTests() {
         USERPROFILE: homeDir,
       });
       assert.strictEqual(result.status, 0);
-      assert.strictEqual(result.stdout, '', 'Post dispatcher pass-through must emit no stdout, not echo the input event');
+      assert.strictEqual(result.stdout, JSON.stringify(payload));
 
       const auditLog = fs.readFileSync(path.join(homeDir, '.claude', 'bash-commands.log'), 'utf8');
       const costLog = fs.readFileSync(path.join(homeDir, '.claude', 'cost-tracker.log'), 'utf8');

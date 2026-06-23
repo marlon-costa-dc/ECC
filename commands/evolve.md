@@ -6,6 +6,8 @@ command: true
 
 # Evolve Command
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## Implementation
 
 Run the instinct CLI using the plugin root path:

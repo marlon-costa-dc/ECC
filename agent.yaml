@@ -41,7 +41,6 @@ skills:
   - content-hash-cache-pattern
   - context-budget
   - continuous-agent-loop
-  - continuous-learning
   - continuous-learning-v2
   - cost-aware-llm-pipeline
   - cpp-coding-standards
@@ -166,13 +165,6 @@ commands:
   - cpp-review
   - cpp-test
   - ecc-guide
-  - epic-claim
-  - epic-decompose
-  - epic-publish
-  - epic-review
-  - epic-sync
-  - epic-unblock
-  - epic-validate
   - evolve
   - fastapi-review
   - feature-dev
@@ -247,7 +239,6 @@ commands:
   - test-coverage
   - update-codemaps
   - update-docs
-  - vue-review
 tags:
   - agent-harness
   - developer-tools

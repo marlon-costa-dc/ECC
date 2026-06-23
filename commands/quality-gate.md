@@ -7,6 +7,8 @@ description: Run the ECC formatter quality gate for a single file and report rem
 Operator entry point for the formatter quality gate that normally runs as the
 `post:quality-gate` PostToolUse hook (`scripts/hooks/quality-gate.js`).
 
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
+
 ## How it actually works
 
 The gate is a single-file formatter check driven by hook input, not CLI flags:

@@ -414,7 +414,6 @@ function normalizeForMatch(value) {
 function isInSpecialConfigPath(filePath) {
   const normalized = normalizedPath(filePath);
   return /\/\.claude\//.test(normalized)
-    || /\/\.cursor\//.test(normalized)
     || /\/\.vscode\//.test(normalized)
     || /\/\.kiro\/settings\//.test(normalized)
     || /\/Library\/LaunchAgents\//.test(normalized)
@@ -662,26 +661,21 @@ function scanFile(filePath, rootDir, findings) {
 
   for (const indicator of CRITICAL_TEXT_INDICATORS) {
     const normalizedIndicator = normalizeForMatch(indicator);
-    // Require a non-filename character before the indicator so legitimate
-    // names that merely end with an IOC filename (e.g. the stock Cursor hook
-    // `before-shell-execution.js` vs the payload `execution.js`) do not match.
-    const indicatorPattern = new RegExp(
-      `(?<![a-z0-9_-])${escapeRegExp(normalizedIndicator)}`,
-      'g',
-    );
-    let match;
-    while ((match = indicatorPattern.exec(lowerText)) !== null) {
-      if (!indexInRanges(match.index, defensiveClaudeDenyRanges)) {
+    let index = lowerText.indexOf(normalizedIndicator);
+    while (index !== -1) {
+      if (!indexInRanges(index, defensiveClaudeDenyRanges)) {
         addFinding(
           findings,
           'critical',
           relativePath,
-          lineForIndex(text, match.index),
+          lineForIndex(text, index),
           indicator,
           'Known active supply-chain IOC is present',
         );
         break;
       }
+
+      index = lowerText.indexOf(normalizedIndicator, index + normalizedIndicator.length);
     }
   }
 

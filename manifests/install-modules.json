@@ -16,7 +16,8 @@
         "codebuddy",
         "joycode",
         "qwen",
-        "zed"
+        "zed",
+        "kimi"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -41,7 +42,8 @@
         "codebuddy",
         "joycode",
         "qwen",
-        "zed"
+        "zed",
+        "kimi"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -121,7 +123,8 @@
         "codebuddy",
         "joycode",
         "qwen",
-        "zed"
+        "zed",
+        "kimi"
       ],
       "dependencies": [],
       "defaultInstall": true,
@@ -183,8 +186,7 @@
         "skills/springboot-patterns",
         "skills/springboot-tdd",
         "skills/springboot-verification",
-        "skills/ui-to-vue",
-        "skills/vue-patterns"
+        "skills/ui-to-vue"
       ],
       "targets": [
         "claude",
@@ -242,14 +244,13 @@
     {
       "id": "workflow-quality",
       "kind": "skills",
-      "description": "Evaluation, TDD, verification, compaction, and learning skills, including the legacy continuous-learning v1 path.",
+      "description": "Evaluation, TDD, verification, compaction, and the canonical continuous-learning-v2 instinct workflow.",
       "paths": [
         "skills/agent-sort",
         "skills/agent-introspection-debugging",
         "skills/ai-regression-testing",
         "skills/configure-ecc",
         "skills/code-tour",
-        "skills/continuous-learning",
         "skills/continuous-learning-v2",
         "skills/council",
         "skills/e2e-testing",
@@ -470,7 +471,7 @@
     {
       "id": "prediction-market-skills",
       "kind": "skills",
-      "description": "Public, non-advisory prediction-market and Itô basket research workflows with gated Itô API access.",
+      "description": "Public, non-advisory prediction-market and It\u00f4 basket research workflows with gated It\u00f4 API access.",
       "paths": [
         "skills/ito-basket-compare",
         "skills/ito-data-atlas-agent",

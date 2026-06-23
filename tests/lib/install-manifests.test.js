@@ -143,12 +143,10 @@ function runTests() {
     );
   })) passed++; else failed++;
 
-  if (test('labels continuous-learning as a legacy v1 install surface', () => {
+  if (test('does not expose legacy continuous-learning v1 as an install surface', () => {
     const components = listInstallComponents({ family: 'skill' });
     const component = components.find(entry => entry.id === 'skill:continuous-learning');
-    assert.ok(component, 'Should include skill:continuous-learning');
-    assert.match(component.description, /legacy/i, 'Should label continuous-learning as legacy');
-    assert.match(component.description, /continuous-learning-v2/, 'Should point new installs to continuous-learning-v2');
+    assert.strictEqual(component, undefined, 'Should not include skill:continuous-learning');
   })) passed++; else failed++;
 
   if (test('exposes continuous-learning-v2 as a single-skill install surface', () => {

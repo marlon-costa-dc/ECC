@@ -1,6 +1,6 @@
 # Sponsoring ECC
 
-ECC is maintained as an open-source agent harness operating system across Claude Code, Cursor, OpenCode, Codex, Gemini, Zed, and other agent workflows.
+ECC is maintained as an open-source agent harness performance system across Claude Code, Cursor, OpenCode, and Codex app/CLI.
 
 ## Why Sponsor
 
@@ -12,15 +12,13 @@ Sponsorship directly funds:
 
 ## Sponsorship Tiers
 
-These are practical public starting points. Sponsorship funds the public OSS layer and sponsor visibility, not private implementation work.
+These are practical starting points and can be adjusted for partnership scope.
 
 | Tier | Price | Best For | Includes |
 |------|-------|----------|----------|
-| Team Sponsor | $200/mo | Teams that want visible OSS support without README placement | Company name/logo/link in SPONSORS.md |
-| Business Sponsor | $800/mo | Companies that want README sponsor visibility | Featured README sponsor area + SPONSORS.md listing + one sponsor-placement review |
-| Strategic Sponsor | $3,700/mo | Ecosystem partners that want top placement and tighter coordination | Top README sponsor placement + SPONSORS.md listing + one 30-minute placement call + optional launch mention if the integration is genuinely useful |
-
-No public tier includes seats, support SLA, custom development, a dedicated channel, or guaranteed case study unless separately agreed in writing.
+| Pilot Partner | $200/mo | First sponsor engagement | Monthly metrics update, roadmap preview, prioritized maintainer feedback |
+| Growth Partner | $500/mo | Teams actively adopting ECC | Pilot benefits + monthly office-hours sync + workflow integration guidance |
+| Strategic Partner | $1,000+/mo | Platform/ecosystem partnerships | Growth benefits + coordinated launch support + deeper maintainer collaboration |
 
 ## Sponsor Reporting
 

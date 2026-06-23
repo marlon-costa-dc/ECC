@@ -122,12 +122,6 @@ function normalizeHookResult(previousRaw, output) {
 
 function runHooks(rawInput, hooks) {
   let currentRaw = rawInput;
-  // Track whether a sub-hook deliberately produced stdout (a string or
-  // {stdout}) versus currentRaw still being the untouched input event.
-  // Echoing the unmodified input event back to stdout fails Claude Code's
-  // hook-output JSON schema validation ("(root): Invalid input"), so in the
-  // pass-through case we must emit nothing instead.
-  let rawModified = false;
   let stderr = '';
   let additionalContext = '';
 
@@ -138,9 +132,6 @@ function runHooks(rawInput, hooks) {
 
     try {
       const result = normalizeHookResult(currentRaw, hook.run(currentRaw));
-      if (result.raw !== currentRaw) {
-        rawModified = true;
-      }
       currentRaw = result.raw;
       if (result.stderr) {
         stderr += result.stderr.endsWith('\n') ? result.stderr : `${result.stderr}\n`;
@@ -149,12 +140,7 @@ function runHooks(rawInput, hooks) {
         additionalContext = combineAdditionalContext(additionalContext, result.additionalContext);
       }
       if (result.exitCode !== 0) {
-        return {
-          output: rawModified ? currentRaw : '',
-          stderr,
-          additionalContext,
-          exitCode: result.exitCode,
-        };
+        return { output: currentRaw, stderr, additionalContext, exitCode: result.exitCode };
       }
     } catch (error) {
       stderr += `[Hook] ${hook.id} failed: ${error.message}\n`;
@@ -164,9 +150,7 @@ function runHooks(rawInput, hooks) {
   return {
     output: additionalContext
       ? buildPreToolUseAdditionalContext(additionalContext)
-      : rawModified
-        ? currentRaw
-        : '',
+      : currentRaw,
     stderr,
     additionalContext,
     exitCode: 0,

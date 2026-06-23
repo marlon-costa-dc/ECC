@@ -33,11 +33,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/affaan-m/ECC.git"
+    "url": "git+https://github.com/marlon-costa-dc/ECC.git"
   },
-  "homepage": "https://github.com/affaan-m/ECC#readme",
+  "homepage": "https://github.com/marlon-costa-dc/ECC#readme",
   "bugs": {
-    "url": "https://github.com/affaan-m/ECC/issues"
+    "url": "https://github.com/marlon-costa-dc/ECC/issues"
   },
   "files": [
     ".agents/",
@@ -77,11 +77,11 @@
     "scripts/catalog.js",
     "scripts/ci/scan-supply-chain-iocs.js",
     "scripts/ci/supply-chain-advisory-sources.js",
+    "scripts/ai-sync-ecc.js",
     "scripts/consult.js",
     "scripts/auto-update.js",
     "scripts/claw.js",
     "scripts/control-pane.js",
-    "scripts/codex/check-plugin-cache.js",
     "scripts/codex/merge-codex-config.js",
     "scripts/codex/merge-mcp-config.js",
     "scripts/discussion-audit.js",
@@ -96,7 +96,6 @@
     "scripts/preview-pack-smoke.js",
     "scripts/release-approval-gate.js",
     "scripts/release-video-suite.js",
-    "scripts/dashboard-web.js",
     "scripts/skills-health.js",
     "scripts/hooks/",
     "scripts/install-apply.js",
@@ -146,7 +145,6 @@
     "skills/content-engine/",
     "skills/content-hash-cache-pattern/",
     "skills/continuous-agent-loop/",
-    "skills/continuous-learning/",
     "skills/continuous-learning-v2/",
     "skills/cost-aware-llm-pipeline/",
     "skills/cost-tracking/",
@@ -309,7 +307,6 @@
     "skills/video-editing/",
     "skills/videodb/",
     "skills/visa-doc-translate/",
-    "skills/vue-patterns/",
     "skills/windows-desktop-e2e/",
     "skills/workspace-surface-audit/",
     "skills/x-api/",
@@ -326,12 +323,13 @@
     "ecc-install": "scripts/install-apply.js"
   },
   "scripts": {
-    "postinstall": "echo '\\n  ecc-universal installed!\\n  Run: npx ecc typescript\\n  Compat: npx ecc-install typescript\\n  Docs: https://github.com/affaan-m/ECC\\n'",
+    "postinstall": "echo '\\n  ecc-universal installed!\\n  Run: npx ecc typescript\\n  Compat: npx ecc-install typescript\\n  Docs: https://github.com/marlon-costa-dc/ECC\\n'",
     "catalog:check": "node scripts/ci/catalog.js --text",
     "catalog:sync": "node scripts/ci/catalog.js --write --text",
     "command-registry:generate": "node scripts/ci/generate-command-registry.js",
     "command-registry:write": "node scripts/ci/generate-command-registry.js --write",
     "command-registry:check": "node scripts/ci/generate-command-registry.js --check",
+    "ai-sync": "node scripts/ai-sync-ecc.js",
     "lint": "eslint . && markdownlint '**/*.md' --ignore node_modules",
     "harness:adapters": "node scripts/harness-adapter-compliance.js",
     "harness:audit": "node scripts/harness-audit.js",
@@ -350,11 +348,10 @@
     "orchestrate:worker": "bash scripts/orchestrate-codex-worker.sh",
     "orchestrate:tmux": "node scripts/orchestrate-worktrees.js",
     "test": "node scripts/ci/check-unicode-safety.js && node scripts/ci/validate-agents.js && node scripts/ci/validate-commands.js && node scripts/ci/validate-rules.js && node scripts/ci/validate-skills.js && node scripts/ci/validate-hooks.js && node scripts/ci/validate-install-manifests.js && node scripts/ci/validate-no-personal-paths.js && npm run catalog:check && npm run command-registry:check && node tests/run-all.js",
-    "coverage": "c8 --all --include=\"scripts/**/*.js\" --check-coverage --lines 80 --functions 80 --branches 79 --statements 80 --reporter=text --reporter=lcov node tests/run-all.js",
+    "coverage": "c8 --all --include=\"scripts/**/*.js\" --check-coverage --lines 80 --functions 80 --branches 80 --statements 80 --reporter=text --reporter=lcov node tests/run-all.js",
     "build:opencode": "node scripts/build-opencode.js",
     "prepack": "npm run build:opencode",
-    "dashboard": "python3 ./ecc_dashboard.py",
-    "dashboard:web": "node scripts/dashboard-web.js"
+    "dashboard": "python3 ./ecc_dashboard.py"
   },
   "dependencies": {
     "@iarna/toml": "^2.2.5",
@@ -373,14 +370,6 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "overrides": {
-    "markdown-it": ">=14.2.0",
-    "js-yaml": ">=4.2.0"
-  },
-  "resolutions": {
-    "markdown-it": ">=14.2.0",
-    "js-yaml": ">=4.2.0"
   },
   "packageManager": "yarn@4.9.2+sha512.1fc009bc09d13cfd0e19efa44cbfc2b9cf6ca61482725eb35bbc5e257e093ebf4130db6dfe15d604ff4b79efd8e1e8e99b25fa7d0a6197c9f9826358d4d65c3c"
 }

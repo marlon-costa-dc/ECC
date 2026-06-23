@@ -98,14 +98,6 @@
       ]
     },
     {
-      "id": "framework:vue",
-      "family": "framework",
-      "description": "Vue.js, Nuxt, Pinia, and Vue Router engineering guidance. Currently resolves through the shared framework-language module.",
-      "modules": [
-        "framework-language"
-      ]
-    },
-    {
       "id": "framework:nextjs",
       "family": "framework",
       "description": "Next.js-focused engineering guidance. Currently resolves through the shared framework-language module.",
@@ -463,14 +455,6 @@
       ]
     },
     {
-      "id": "skill:continuous-learning",
-      "family": "skill",
-      "description": "Legacy v1 Stop-hook session pattern extraction skill; prefer continuous-learning-v2 for new installs.",
-      "modules": [
-        "workflow-quality"
-      ]
-    },
-    {
       "id": "skill:eval-harness",
       "family": "skill",
       "description": "Evaluation harness for AI regression testing.",
@@ -514,14 +498,6 @@
       "id": "skill:frontend-patterns",
       "family": "skill",
       "description": "React and frontend engineering patterns.",
-      "modules": [
-        "framework-language"
-      ]
-    },
-    {
-      "id": "skill:vue-patterns",
-      "family": "skill",
-      "description": "Vue.js 3 Composition API, reactivity, Pinia, Vue Router, and Nuxt SSR patterns.",
       "modules": [
         "framework-language"
       ]

@@ -21,6 +21,10 @@ const COMMANDS = {
     script: 'consult.js',
     description: 'Recommend ECC components and profiles from a natural language query',
   },
+  'ai-sync': {
+    script: 'ai-sync-ecc.js',
+    description: 'Generate or apply ECC assets through the local AI sync automation',
+  },
   'control-pane': {
     script: 'control-pane.js',
     description: 'Run the local ECC2 operator control pane',
@@ -84,6 +88,7 @@ const PRIMARY_COMMANDS = [
   'plan',
   'catalog',
   'consult',
+  'ai-sync',
   'control-pane',
   'list-installed',
   'doctor',
@@ -106,7 +111,6 @@ ECC selective-install CLI
 Usage:
   ecc <command> [args...]
   ecc [install args...]
-  ecc --dry-run <command> [args...]
 
 Commands:
 ${PRIMARY_COMMANDS.map(command => `  ${command.padEnd(15)} ${COMMANDS[command].description}`).join('\n')}
@@ -116,9 +120,6 @@ Compatibility:
   ecc [args...]      Without a command, args are routed to "install"
   ecc help <command> Show help for a specific command
 
-Global Flags:
-  --dry-run          Preview actions without executing (sets ECC_DRY_RUN=1)
-
 Examples:
   ecc typescript
   ecc install --profile developer --target claude
@@ -127,6 +128,8 @@ Examples:
   ecc catalog components --family language
   ecc catalog show framework:nextjs
   ecc consult "security reviews"
+  ecc ai-sync --json
+  ecc ai-sync --apply --target kimi --skip-mcp
   ecc control-pane --port 8765
   ecc list-installed --json
   ecc doctor --target cursor
@@ -156,21 +159,7 @@ function resolveCommand(argv) {
     return { mode: 'help' };
   }
 
-  if (args.includes('--dry-run')) {
-    process.env.ECC_DRY_RUN = '1';
-  }
-
-  let cmdStart = 0;
-  while (cmdStart < args.length && args[cmdStart] === '--dry-run') {
-    cmdStart++;
-  }
-
-  if (cmdStart >= args.length) {
-    return { mode: 'help' };
-  }
-
-  const firstArg = args[cmdStart];
-  const restArgs = args.slice(cmdStart + 1);
+  const [firstArg, ...restArgs] = args;
 
   if (firstArg === '--help' || firstArg === '-h') {
     return { mode: 'help' };

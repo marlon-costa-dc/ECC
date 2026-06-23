@@ -962,6 +962,43 @@ function runTests() {
     );
   })) passed++; else failed++;
 
+  if (test('claude-project includes local rules and commands overlay', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ecc-local-overlay-'));
+    const repoRoot = tmpDir;
+    const projectRoot = path.join(tmpDir, 'project');
+
+    fs.mkdirSync(path.join(repoRoot, 'local', 'rules'), { recursive: true });
+    fs.mkdirSync(path.join(repoRoot, 'local', 'commands'), { recursive: true });
+    fs.writeFileSync(path.join(repoRoot, 'local', 'rules', 'local-rule.md'), '# rule');
+    fs.writeFileSync(path.join(repoRoot, 'local', 'commands', 'local-cmd.md'), '# cmd');
+
+    try {
+      const plan = planInstallTargetScaffold({
+        target: 'claude-project',
+        repoRoot,
+        projectRoot,
+        modules: [],
+      });
+
+      assert.ok(
+        plan.operations.some(operation => (
+          normalizedRelativePath(operation.sourceRelativePath) === 'local/rules/local-rule.md'
+          && operation.destinationPath === path.join(projectRoot, '.claude', 'rules', 'local-rule.md')
+        )),
+        'Should install local rules under project-scope rules'
+      );
+      assert.ok(
+        plan.operations.some(operation => (
+          normalizedRelativePath(operation.sourceRelativePath) === 'local/commands/local-cmd.md'
+          && operation.destinationPath === path.join(projectRoot, '.claude', 'commands', 'local-cmd.md')
+        )),
+        'Should install local commands under project-scope commands'
+      );
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  })) passed++; else failed++;
+
   if (test('resolves opencode adapter root and install-state path from home dir', () => {
     const adapter = getInstallTargetAdapter('opencode');
     const homeDir = '/Users/example';

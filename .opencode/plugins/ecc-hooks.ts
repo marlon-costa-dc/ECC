@@ -22,52 +22,6 @@ import {
   clearChanges,
 } from "./lib/changed-files-store.js"
 import changedFilesTool from "../tools/changed-files.js"
-import dependencyAnalyzerTool from "../tools/dependency-analyzer.js"
-
-/**
- * Type definitions for better type safety
- */
-interface ToolArgs {
-  filePath?: string
-  file_path?: string
-  path?: string
-  command?: string
-  [key: string]: unknown
-}
-
-interface ToolInput {
-  tool: string
-  callID?: string
-  args?: ToolArgs
-}
-
-interface PermissionEvent {
-  tool: string
-  args: unknown
-}
-
-interface FileEvent {
-  path: string
-  type?: string
-}
-
-interface TodoEvent {
-  todos: Array<{ text: string; done: boolean }>
-}
-
-/**
- * Read ECC version from package.json
- * Falls back to a default if package.json cannot be read
- */
-function getECCVersion(): string {
-  try {
-    const packageJsonPath = path.resolve(__dirname, "../../package.json")
-    const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf-8"))
-    return packageJson.version || "2.0.0"
-  } catch {
-    return "2.0.0"
-  }
-}
 
 type ECCHooksPluginFn = (input: PluginInput) => Promise<Record<string, unknown>>
 
@@ -100,7 +54,7 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
   const pendingToolChanges = new Map<string, { path: string; type: "added" | "modified" }>()
   let writeCounter = 0
 
-  function getFilePath(args: ToolArgs | undefined): string | null {
+  function getFilePath(args: Record<string, unknown> | undefined): string | null {
     if (!args) return null
     const p = (args.filePath ?? args.file_path ?? args.path) as string | undefined
     return typeof p === "string" && p.trim() ? p : null
@@ -161,10 +115,8 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
         try {
           await $`prettier --write ${event.path} 2>/dev/null`
           log("info", `[ECC] Formatted: ${event.path}`)
-        } catch (error: unknown) {
-          // Prettier not installed or failed - log but continue
-          const errorMessage = error instanceof Error ? error.message : String(error)
-          log("debug", `[ECC] Prettier formatting failed for ${event.path}: ${errorMessage}`)
+        } catch {
+          // Prettier not installed or failed - silently continue
         }
       }
 
@@ -193,10 +145,10 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
      * Action: Runs tsc --noEmit to check for type errors
      */
     "tool.execute.after": async (
-      input: ToolInput,
+      input: { tool: string; callID?: string; args?: { filePath?: string; file_path?: string; path?: string } },
       output: unknown
     ) => {
-      const filePath = getFilePath(input.args)
+      const filePath = getFilePath(input.args as Record<string, unknown>)
       if (input.tool === "edit" && filePath) {
         recordChange(filePath, "modified")
       }
@@ -249,7 +201,7 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
      * Action: Warns about potential security issues
      */
     "tool.execute.before": async (
-      input: ToolInput
+      input: { tool: string; callID?: string; args?: Record<string, unknown> }
     ) => {
       if (input.tool === "write") {
         const filePath = getFilePath(input.args)
@@ -380,22 +332,11 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
         log("info", "[ECC] Audit passed: No console.log statements found")
       }
 
-      // Desktop notification (cross-platform)
+      // Desktop notification (macOS)
       try {
-        if (process.platform === "darwin") {
-          // macOS
-          await $`osascript -e 'display notification "Task completed!" with title "OpenCode ECC"' 2>/dev/null`
-        } else if (process.platform === "win32") {
-          // Windows - PowerShell notification
-          await $`powershell -Command "Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.MessageBox]::Show('Task completed!', 'OpenCode ECC', 'OK', 'Information')" 2>/dev/null`
-        } else if (process.platform === "linux") {
-          // Linux - notify-send (requires libnotify)
-          await $`notify-send "OpenCode ECC" "Task completed!" 2>/dev/null`
-        }
-      } catch (error: unknown) {
-        // Notification not supported or failed - log but continue
-        const errorMessage = error instanceof Error ? error.message : String(error)
-        log("debug", `[ECC] Desktop notification failed: ${errorMessage}`)
+        await $`osascript -e 'display notification "Task completed!" with title "OpenCode ECC"' 2>/dev/null`
+      } catch {
+        // Notification not supported or failed
       }
 
       // Clear tracked files for next task
@@ -458,7 +399,7 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
      */
     "shell.env": async () => {
       const env: Record<string, string> = {
-        ECC_VERSION: getECCVersion(),
+        ECC_VERSION: "1.8.0",
         ECC_PLUGIN: "true",
         ECC_HOOK_PROFILE: currentProfile,
         ECC_DISABLED_HOOKS: process.env.ECC_DISABLED_HOOKS || "",
@@ -546,52 +487,32 @@ export const ECCHooksPlugin: ECCHooksPluginFn = async ({
      * Triggers: When permission is requested
      * Action: Auto-approve reads, formatters, and test commands; log all for audit
      */
-    "permission.ask": async (event: PermissionEvent) => {
+    "permission.ask": async (event: { tool: string; args: unknown }) => {
       log("info", `[ECC] Permission requested for: ${event.tool}`)
 
-      try {
-        // Handle both string args and object args with command property
-        let cmd: string
-        if (typeof event.args === "string") {
-          cmd = event.args
-        } else if (event.args && typeof event.args === "object") {
-          cmd = String((event.args as Record<string, unknown>).command || "")
-        } else {
-          cmd = String(event.args || "")
-        }
+      const cmd = String((event.args as Record<string, unknown>)?.command || event.args || "")
 
-        // Auto-approve: read/search tools
-        if (["read", "glob", "grep", "search", "list"].includes(event.tool)) {
-          log("debug", `[ECC] Auto-approved read-only tool: ${event.tool}`)
-          return { approved: true, reason: "Read-only operation" }
-        }
-
-        // Auto-approve: formatters
-        if (event.tool === "bash" && /^(npx )?(@biomejs\/biome|prettier|black|gofmt|rustfmt|swift-format)/.test(cmd)) {
-          log("debug", `[ECC] Auto-approved formatter: ${cmd}`)
-          return { approved: true, reason: "Formatter execution" }
-        }
-
-        // Auto-approve: test execution
-        if (event.tool === "bash" && /^(npm test|npx vitest|npx jest|pytest|go test|cargo test)/.test(cmd)) {
-          log("debug", `[ECC] Auto-approved test execution: ${cmd}`)
-          return { approved: true, reason: "Test execution" }
-        }
-
-        // Everything else: let user decide
-        log("debug", `[ECC] Permission requires user approval: ${event.tool}`)
-        return { approved: undefined }
-      } catch (error: unknown) {
-        // Error in permission handling - log and deny for safety
-        const errorMessage = error instanceof Error ? error.message : String(error)
-        log("error", `[ECC] Permission handling error for ${event.tool}: ${errorMessage}`)
-        return { approved: false, reason: `Error: ${errorMessage}` }
+      // Auto-approve: read/search tools
+      if (["read", "glob", "grep", "search", "list"].includes(event.tool)) {
+        return { approved: true, reason: "Read-only operation" }
       }
+
+      // Auto-approve: formatters
+      if (event.tool === "bash" && /^(npx )?(prettier|biome|black|gofmt|rustfmt|swift-format)/.test(cmd)) {
+        return { approved: true, reason: "Formatter execution" }
+      }
+
+      // Auto-approve: test execution
+      if (event.tool === "bash" && /^(npm test|npx vitest|npx jest|pytest|go test|cargo test)/.test(cmd)) {
+        return { approved: true, reason: "Test execution" }
+      }
+
+      // Everything else: let user decide
+      return { approved: undefined }
     },
 
     tool: {
       "changed-files": changedFilesTool,
-      "dependency-analyzer": dependencyAnalyzerTool,
     },
   }
 }

@@ -18,17 +18,6 @@ origin: ECC
 
 Monitors a deployed URL in a loop until stopped or until the watch window expires, then reports regressions.
 
-## What It Watches
-
-- HTTP status
-- Console errors
-- Network failures and 5xx responses
-- LCP, CLS, INP vs baseline
-- Presence of key elements (h1, nav, footer, CTA)
-- Critical API endpoint health and latency
-- Static asset responses and content types
-- SSE stream connectivity and heartbeat
-
 ## Watch List
 
 - **HTTP endpoints**: status, redirects, latency, and 4xx/5xx regressions.

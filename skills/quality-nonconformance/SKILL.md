@@ -1,6 +1,6 @@
 ---
 name: quality-nonconformance
-description: Use when investigating non-conformances, performing root cause analysis, managing CAPAs, interpreting SPC data, handling supplier quality issues, or preparing for regulatory audits in regulated manufacturing environments.
+description: Use when investigating non-conformances, doing root cause analysis, managing CAPAs, interpreting SPC data, or preparing for regulatory audits in regulated manufacturing.
 origin: ECC
 ---
 
@@ -30,11 +30,10 @@ Senior quality engineering expertise for regulated manufacturing (FDA 21 CFR 820
 
 ## Decision Frameworks
 
-- **Disposition:** safety/regulatory → customer-specific requirements → functional impact → reworkability → supplier accountability
-- **RCA selection:** 5 Whys for simple; Ishikawa + 5 Whys for multi-category; 8D for recurring process issues; FTA for safety-critical events
-- **CAPA effectiveness:** verify implementation; monitor 90 days/3 lots/one audit cycle; confirm zero recurrence; review leading indicators
-- **Inspection levels:** tightened for new suppliers/rejections; reduced/skip-lot after sustained acceptance
-- **Supplier escalation:** SCAR → watch → controlled shipping → new source qualification → ASL removal
+- **Disposition:** safety/regulatory → customer requirements → functional impact → reworkability → supplier accountability
+- **RCA selection:** 5 Whys (simple); Ishikawa + 5 Whys (multi-category); 8D (recurring); FTA (safety-critical)
+- **CAPA effectiveness:** monitor 90 days/3 lots/one audit cycle; confirm zero recurrence
+- **Supplier escalation:** SCAR → watch → controlled shipping → requalification → ASL removal
 
 ## Key Guardrails
 

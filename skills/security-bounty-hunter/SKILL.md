@@ -7,7 +7,7 @@ version: "1.0.0"
 
 # Security Bounty Hunter
 
-Focus on remotely reachable, user-controlled attack paths that qualify for real bounty reports rather than broad best-practices review.
+Focus on remotely reachable, user-controlled attack paths worth real bounty reports, not broad best-practices review.
 
 > Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
 
@@ -31,7 +31,7 @@ Focus on remotely reachable, user-controlled attack paths that qualify for real 
 
 ## Skip These
 
-Local-only deserialization, `eval()` in CLI tools, `shell=True` on hardcoded commands, missing headers alone, generic rate-limit complaints, self-XSS, out-of-scope CI/CD injection, and demo/test code.
+Local-only deserialization, `eval()` in CLI tools, `shell=True` on hardcoded commands, missing headers alone, rate-limit complaints, self-XSS, out-of-scope CI/CD injection, and demo/test code.
 
 ## Workflow
 
@@ -45,4 +45,4 @@ Local-only deserialization, `eval()` in CLI tools, `shell=True` on hardcoded com
 
 ## Quality Gate
 
-Before submitting, confirm the code path is reachable, the input is user-controlled, the sink is exploitable, the PoC works, the issue is not already reported, and the target is in scope.
+Before submitting, confirm: reachable code path, user-controlled input, exploitable sink, working PoC, not a duplicate, in scope.

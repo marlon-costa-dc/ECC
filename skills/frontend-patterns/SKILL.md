@@ -39,5 +39,5 @@ Composition, compound components, render props, custom hooks, context + reducer,
 
 ## Links
 
-- Detailed recipes: [references/component-patterns.md](references/component-patterns.md)
+- Detailed recipes: [references/component-patterns.md](references/component-patterns-1.md)
 - Related skills: [react-patterns](../react-patterns/SKILL.md), [react-performance](../react-performance/SKILL.md), [frontend-a11y](../frontend-a11y/SKILL.md)

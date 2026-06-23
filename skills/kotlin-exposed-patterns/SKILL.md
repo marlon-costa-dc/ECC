@@ -32,4 +32,4 @@ Patterns for database access with JetBrains Exposed ORM, including DSL and DAO s
 
 ## References
 
-- Detailed query examples, repository implementation, and Gradle dependencies: [references/exposed-reference.md](references/exposed-reference.md)
+- Detailed query examples, repository implementation, and Gradle dependencies: [references/exposed-reference.md](references/exposed-reference-1.md)

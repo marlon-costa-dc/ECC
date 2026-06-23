@@ -34,4 +34,4 @@ Testing patterns for .NET with xUnit, FluentAssertions, NSubstitute/Moq, WebAppl
 - **Behavior names**: `Method_ExpectedResult_WhenCondition`.
 - **CancellationToken**: always pass and verify it.
 
-See [`references/csharp-testing-reference.md`](references/csharp-testing-reference.md) for code examples of unit tests, parameterized `Theory` tests, NSubstitute mocking, WebApplicationFactory, Testcontainers, builders, anti-patterns, and `dotnet test` commands.
+See [`references/csharp-testing-reference.md`](references/csharp-testing-reference-1.md) for code examples of unit tests, parameterized `Theory` tests, NSubstitute mocking, WebApplicationFactory, Testcontainers, builders, anti-patterns, and `dotnet test` commands.

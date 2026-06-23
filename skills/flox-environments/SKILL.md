@@ -61,4 +61,4 @@ systems = ["x86_64-linux", "aarch64-linux", "x86_64-darwin", "aarch64-darwin"]
 
 ## References
 
-- Language recipes, version pinning, conflict resolution, anti-patterns, full-stack example, sharing, agent workflows, and debugging: [references/flox-environments-reference.md](references/flox-environments-reference.md)
+- Language recipes, version pinning, conflict resolution, anti-patterns, full-stack example, sharing, agent workflows, and debugging: [references/flox-environments-reference.md](references/flox-environments-reference-1.md)

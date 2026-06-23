@@ -49,6 +49,6 @@ Use `findByText` for elements that appear after async work, `waitFor` for side e
 
 ## Links
 
-- Recipes, library choice, coverage targets, examples: [references/testing-recipes.md](references/testing-recipes.md)
+- Recipes, library choice, coverage targets, examples: [references/testing-recipes.md](references/testing-recipes-1.md)
 - Related skills: [react-patterns](../react-patterns/SKILL.md), [frontend-a11y](../frontend-a11y/SKILL.md), [e2e-testing](../e2e-testing/SKILL.md)
 - Rules: [rules/react/testing.md](../../rules/react/testing.md)

@@ -5,7 +5,7 @@ description: Use when writing, reviewing, or refactoring C++ code to enforce mod
 
 # C++ Coding Standards
 
-Concise standards for modern C++ (C++17/20/23) based on the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines). Full rule tables, examples, and checklists live in [`references/cpp-core-guidelines-reference.md`](references/cpp-core-guidelines-reference.md).
+Concise standards for modern C++ (C++17/20/23) based on the [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines). Full rule tables, examples, and checklists live in [`references/cpp-core-guidelines-reference.md`](references/cpp-core-guidelines-reference-1.md).
 
 ## When to Use
 
@@ -37,4 +37,4 @@ Concise standards for modern C++ (C++17/20/23) based on the [C++ Core Guidelines
 - [ ] Rule of Zero or Rule of Five (C.20, C.21).
 - [ ] Templates constrained with concepts (T.10).
 
-See [`references/cpp-core-guidelines-reference.md`](references/cpp-core-guidelines-reference.md) for detailed explanations, examples, and anti-patterns.
+See [`references/cpp-core-guidelines-reference.md`](references/cpp-core-guidelines-reference-1.md) for detailed explanations, examples, and anti-patterns.

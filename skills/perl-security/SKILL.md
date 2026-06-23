@@ -25,7 +25,7 @@ origin: ECC
 7. **Use framework CSRF protection**, constant-time token comparison, and secure session headers (HTTPS-only, `SameSite`, `HttpOnly`, CSP, HSTS, `X-Frame-Options`).
 8. **Pin CPAN versions**, audit dependencies, and avoid ReDoS-prone regexes.
 
-For detailed examples, checklist, and perlcritic configuration, see [references/perl-security-reference.md](references/perl-security-reference.md).
+For detailed examples, checklist, and perlcritic configuration, see [references/perl-security-reference.md](references/perl-security-reference-1.md).
 
 ## Cross-References
 

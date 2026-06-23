@@ -53,7 +53,7 @@ Dependency direction is always inward: adapters -> application -> ports -> domai
 
 ## References
 
-- [Hexagonal Architecture Reference](references/hexagonal-architecture.md) — detailed examples, best practices, and migration tactics
+- [Hexagonal Architecture Reference](references/hexagonal-architecture-1.md) — detailed examples, best practices, and migration tactics
 
 ## Related Skills
 

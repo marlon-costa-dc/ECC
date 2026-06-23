@@ -30,6 +30,6 @@ Performance patterns for React 18/19 and Next.js, adapted from [Vercel Labs `rea
 
 ## Links
 
-- Detailed rules, examples, mapping: [references/performance-rules.md](references/performance-rules.md)
+- Detailed rules, examples, mapping: [references/performance-rules.md](references/performance-rules-1.md)
 - Related skills: [react-patterns](../react-patterns/SKILL.md), [react-testing](../react-testing/SKILL.md), [frontend-patterns](../frontend-patterns/SKILL.md), [nextjs-turbopack](../nextjs-turbopack/SKILL.md)
 - Rules: [rules/react/](../../rules/react/)

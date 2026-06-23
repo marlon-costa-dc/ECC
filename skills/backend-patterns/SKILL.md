@@ -53,7 +53,7 @@ Backend architecture patterns for scalable server-side applications.
 
 ## References
 
-- [Backend Patterns](references/backend-patterns.md) — detailed code examples
+- [Backend Patterns](references/backend-patterns-1.md) — detailed code examples
 
 ## Related Skills
 

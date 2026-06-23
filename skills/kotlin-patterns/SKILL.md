@@ -32,4 +32,4 @@ Idiomatic Kotlin patterns for robust, efficient, and maintainable code.
 
 ## References
 
-- Detailed idioms, Gradle DSL, anti-patterns, and examples: [references/kotlin-idioms-reference.md](references/kotlin-idioms-reference.md)
+- Detailed idioms, Gradle DSL, anti-patterns, and examples: [references/kotlin-idioms-reference.md](references/kotlin-idioms-reference-1.md)

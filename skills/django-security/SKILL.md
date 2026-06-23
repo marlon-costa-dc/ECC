@@ -54,7 +54,7 @@ Security guidelines for Django applications against common vulnerabilities.
 
 ## References
 
-- [Django Security Reference](references/django-security.md) — detailed snippets and checklist
+- [Django Security Reference](references/django-security-1.md) — detailed snippets and checklist
 
 ## Related Skills
 

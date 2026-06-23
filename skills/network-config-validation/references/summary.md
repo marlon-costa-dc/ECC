@@ -26,7 +26,7 @@ Validate in this order: destructive commands, credential and management-plane ex
 
 **Security hygiene**: reject default SNMP communities, SNMPv2 strings, SSH version 1, `enable password`, and local usernames with `password` instead of `secret`. Verify NTP, timestamps, logging, SNMPv3 priv group, and login banner are present.
 
-Concrete Python helpers live in [references/api.md](references/api.md).
+Concrete Python helpers live in [references/api.md](api-1.md).
 
 ## Preflight Workflow
 

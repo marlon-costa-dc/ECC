@@ -18,6 +18,6 @@ def assert_promotion_ready(metrics: dict[str, float]) -> None:
 
 ## References
 
-- [references/swe-surface.md](references/swe-surface.md) — ECC SWE skills mapped to MLE use cases
-- [references/task-simulations.md](references/task-simulations.md) — ten common MLE tasks and ECC paths
-- [references/workflow-guide.md](references/workflow-guide.md) — related skills, iteration compact, decision brain, metric economics, feature hypotheses, error analysis, observation ledger, checklist, anti-patterns, and code snippets
+- [references/swe-surface.md](swe-surface.md) — ECC SWE skills mapped to MLE use cases
+- [references/task-simulations.md](task-simulations.md) — ten common MLE tasks and ECC paths
+- [references/workflow-guide.md](workflow-guide.md) — related skills, iteration compact, decision brain, metric economics, feature hypotheses, error analysis, observation ledger, checklist, anti-patterns, and code snippets

@@ -1,90 +1,117 @@
-### `$transaction` interactive form times out after 5 seconds
+# Prisma Patterns — Extended Reference
+
+Detailed anti-patterns, code examples, and extended guidance for Prisma ORM. The SKILL.md file contains the essential core concepts and best practices; this file preserves the full examples and non-obvious traps.
+
+## Version Notes
+
+Tested against Prisma 5.x and 6.x. Some behaviors differ from Prisma 4.
+
+```bash
+npx prisma --version
+```
+
+Prisma 5 introduced `relationJoins`, which can load relations via JOIN rather than separate queries depending on query strategy and configuration. The `omit` field modifier and `prisma.$extends` Client Extensions API were also added. Note: `relationJoins` can cause row explosion on large 1:N relations or deep nested `include` — benchmark both approaches when relations may return many rows per parent.
+
+## `include` vs `select`
+
+| | `include` | `select` |
+|---|---|---|
+| Returns | All scalar fields + specified relations | Only specified fields |
+| Use when | You need most fields plus a relation | Hot paths, large tables, avoiding over-fetch |
+| Performance | May over-fetch on wide tables | Minimal payload, faster on large datasets |
 
 ```ts
-// BAD: external call inside transaction
-await prisma.$transaction(async (tx) => {
-  const user = await tx.user.findUniqueOrThrow({ where: { id } });
-  await sendWelcomeEmail(user.email);
-  await tx.user.update({ where: { id }, data: { emailSent: true } });
+// include — all columns + relation
+const user = await prisma.user.findUnique({
+  where: { id },
+  include: { posts: { select: { id: true, title: true } } },
 });
 
-// GOOD: external calls outside the transaction
-const user = await prisma.user.findUniqueOrThrow({ where: { id } });
-await sendWelcomeEmail(user.email);
-await prisma.user.update({ where: { id }, data: { emailSent: true } });
-
-// Only raise timeout when bulk processing genuinely needs it
-await prisma.$transaction(async (tx) => { ... }, { timeout: 30_000 });
-```
-
-### `migrate dev` can reset the database
-
-```bash
-# NEVER on shared dev, staging, or production
-npx prisma migrate dev --name add_column
-
-# Safe everywhere except local solo dev
-npx prisma migrate deploy
-
-# Check drift without applying
-npx prisma migrate diff \
-  --from-migrations ./prisma/migrations \
-  --to-schema-datamodel ./prisma/schema.prisma \
-  --shadow-database-url "$SHADOW_DATABASE_URL"
-```
-
-### Manually editing a migration file breaks future deploys
-
-Prisma checksums every migration file. Editing after apply causes `P3006 checksum mismatch`. Create a new migration instead.
-
-### Breaking schema changes require multi-step migration
-
-```bash
-# Step 1: create migration locally, then deploy
-npx prisma migrate dev --name add_new_column
-npx prisma migrate deploy
-```
-
-```ts
-// Step 2: backfill data
-await prisma.user.updateMany({ data: { newColumn: derivedValue } });
-```
-
-```bash
-# Step 3: create the NOT NULL constraint migration
-npx prisma migrate dev --name make_new_column_required
-npx prisma migrate deploy
-```
-
-### `@updatedAt` does not fire on `updateMany`
-
-```ts
-// BAD: updatedAt stays at its old value
-await prisma.post.updateMany({ where: { authorId }, data: { published: true } });
-
-// GOOD
-await prisma.post.updateMany({
-  where: { authorId },
-  data: { published: true, updatedAt: new Date() },
+// select — explicit allowlist
+const user = await prisma.user.findUnique({
+  where: { id },
+  select: { id: true, email: true, name: true },
 });
 ```
 
-### Soft delete + `findUniqueOrThrow` leaks deleted records
+Never return raw Prisma entities from API responses — map to response DTOs:
 
 ```ts
-// BAD: returns soft-deleted user
+// BAD: leaks passwordHash, deletedAt, internal fields
+return await prisma.user.findUniqueOrThrow({ where: { id } });
+
+// GOOD: explicit DTO mapping
 const user = await prisma.user.findUniqueOrThrow({ where: { id } });
-
-// GOOD
-const user = await prisma.user.findFirstOrThrow({ where: { id, deletedAt: null } });
+return { id: user.id, name: user.name, email: user.email };
 ```
 
-### `deleteMany` without `where` deletes every row
+## PrismaClient Singleton
+
+Each `PrismaClient` instance opens its own connection pool. Instantiate once.
 
 ```ts
-// BAD: silently wipes the table
-await prisma.post.deleteMany();
+import { PrismaClient } from '@prisma/client';
 
-// GOOD
-await prisma.post.deleteMany({ where: { authorId: userId } });
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error'] : ['error'],
+  });
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 ```
+
+## N+1 Problem
+
+```ts
+// BAD: N+1 — one extra query per user
+const users = await prisma.user.findMany();
+for (const user of users) {
+  const posts = await prisma.post.findMany({ where: { authorId: user.id } });
+}
+
+// GOOD: single query
+const users = await prisma.user.findMany({ include: { posts: true } });
+```
+
+## Code Examples
+
+### Cursor Pagination
+
+```ts
+async function getPosts(cursor?: string, limit = 20) {
+  const items = await prisma.post.findMany({
+    where: { published: true },
+    orderBy: [
+      { createdAt: 'desc' },
+      { id: 'desc' },
+    ],
+    take: limit + 1,
+    ...(cursor && { cursor: { id: cursor }, skip: 1 }),
+  });
+
+const hasNextPage = items.length > limit;
+  if (hasNextPage) items.pop();
+
+return { items, nextCursor: hasNextPage ? items[items.length - 1].id : null };
+}
+```
+
+### Soft Delete
+
+```ts
+const activeUsers = await prisma.user.findMany({ where: { deletedAt: null } });
+await prisma.user.update({ where: { id }, data: { deletedAt: new Date() } });
+```
+
+### Error Handling
+
+```ts
+import { Prisma } from '@prisma/client';
+
+try {
+  await prisma.user.create({ data: { email } });
+
+> Continued in [`prisma-patterns-extended-2.md`](prisma-patterns-extended-2.md)

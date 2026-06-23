@@ -43,5 +43,5 @@ Practical accessibility patterns for React and Next.js. Covers the issues most c
 
 ## Links
 
-- Detailed recipes and full examples: [references/a11y-recipes.md](references/a11y-recipes.md)
+- Detailed recipes and full examples: [references/a11y-recipes.md](references/a11y-recipes-1.md)
 - Related skills: [frontend-patterns](../frontend-patterns/SKILL.md), [design-system](../design-system/SKILL.md), [motion-ui](../motion-ui/SKILL.md)

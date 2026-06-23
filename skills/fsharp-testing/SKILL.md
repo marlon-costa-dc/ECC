@@ -37,7 +37,7 @@ Concise guidance for F# testing with xUnit, FsUnit, Unquote, FsCheck, and .NET i
 
 ## References
 
-- Detailed examples and recipes: [references/fsharp-testing-reference.md](references/fsharp-testing-reference.md)
+- Detailed examples and recipes: [references/fsharp-testing-reference.md](references/fsharp-testing-reference-1.md)
 - Related skills: `dotnet-patterns`, `csharp-testing`
 
 ## Running Tests

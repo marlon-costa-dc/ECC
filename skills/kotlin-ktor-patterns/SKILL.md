@@ -32,4 +32,4 @@ Patterns for building robust, maintainable HTTP servers with Kotlin coroutines.
 
 ## References
 
-- Detailed routing, auth, serialization, WebSocket, and testing examples: [references/ktor-reference.md](references/ktor-reference.md)
+- Detailed routing, auth, serialization, WebSocket, and testing examples: [references/ktor-reference.md](references/ktor-reference-1.md)

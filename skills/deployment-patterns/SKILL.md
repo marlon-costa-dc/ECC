@@ -53,4 +53,4 @@ startupProbe:
 
 ## References
 
-- Full Dockerfiles, CI/CD pipelines, environment validation, rollback commands, and production readiness checklist: [references/deployment-patterns-reference.md](references/deployment-patterns-reference.md)
+- Full Dockerfiles, CI/CD pipelines, environment validation, rollback commands, and production readiness checklist: [references/deployment-patterns-reference.md](references/deployment-patterns-reference-1.md)

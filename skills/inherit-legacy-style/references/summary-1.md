@@ -1,46 +1,85 @@
-- **First-time (Branch A)** — Measures project scale, scans codebase across 4 meta-architecture dimensions (File Anatomy, State & Control Flow, Infrastructure, Error Handling), applies signal-threshold noise reduction to suppress weak conflicts, resolves strong-signal conflicts one-at-a-time with the user, generates `.ai-style-rules.md` with Golden Files / Naming Rules / DONTs, and offers optional enforcement hooks.
-- **Incremental (Branch B)** — Reads existing rules, checks recent Git diffs for new or conflicting patterns, runs the same one-at-a-time grilling protocol for any conflicts found, and appends evolution logs without overwriting existing rules.
-- **Per-Turn Enforcement** — When hooked via `CLAUDE.md`, every code-writing task opens with a compliance declaration naming the exemplar followed and the DONTs avoided.
+# Inherit Legacy Style
 
-## Output Specification
+Prevents AI code style drift in legacy projects by scanning the codebase for implicit conventions across 4 meta-architecture dimensions, resolving conflicts with the user one at a time, and crystallizing the consensus into an enforceable `.ai-style-rules.md`. Fully language- and framework-agnostic.
 
-- `.ai-style-rules.md` at project root (with commit fingerprint + scale tier in header)
-- Optionally `CLAUDE.md` with `@.ai-style-rules.md` reference
-- Evolution logs appended as `### [YYYY-MM-DD] Style Evolution Log` entries
+## When to Activate
 
-## Anti-Patterns
+- User types `/inherit-legacy-style`
+- User mentions onboarding AI onto a hand-written legacy project
+- User is worried about AI-generated code "drifting" from existing project conventions
+- User wants to extract and codify their project's implicit coding rules
 
-- FAIL: Do NOT skip the scale measurement step — sampling a 30-file project "starves" it; full-scanning a 5,000-file repo blows up
-- FAIL: Do NOT stack multiple conflict questions at once — grilling is strictly one-at-a-time
-- FAIL: Do NOT overwrite old rules in incremental mode — always append evolution logs
-- FAIL: Do NOT default to "hard hook" without asking — enforcement strength is the user's call
-- FAIL: Do NOT judge syntax or tech-stack quality — this skill aligns meta-architecture only
-- FAIL: Do NOT copy bugs from exemplar files — reuse structure, flag defects
+## When to Use
 
-## Best Practices
+Use this skill when you need to preserve legacy project style and prevent AI-generated style drift. See **When to Activate** above for trigger conditions.
 
-- Announce the detected mode (first-time vs incremental) and scale tier in one line before scanning
-- For large projects, read `--stat` summaries first, then targeted `Read` on suspect files
-- Let the signal threshold handle noise — a 843-vs-8 naming split should auto-resolve without user interruption
-- When in doubt about signal strength, lean toward asking
-- The CLAUDE.md soft hook (`@.ai-style-rules.md`) is usually sufficient; hard hook only if the user wants mechanical enforcement
+## Prerequisites
 
-## Related Skills
+- Git (recommended; non-Git projects fall back to file timestamps for incremental mode)
+- Read/Write access to the project root (generates `.ai-style-rules.md` and optionally `CLAUDE.md`)
 
-- `init` — initialize a new CLAUDE.md with codebase documentation
-- `code-review` — review diffs for correctness and style issues
-- `simplify` — review code for reuse and simplification opportunities
+## Workflow
 
-## Examples
+### Step 0 — Auto-Detect Mode
 
-1. **First-time onboarding**
-   - User: "Help me onboard AI to this older codebase without changing its style."
-   - Action: Run Branch A full-scan → measure scale → scan 4 dimensions → grill conflicts → generate `.ai-style-rules.md` → offer hook strength (soft/hard/none).
+Silently check for `.ai-style-rules.md` at the project root:
 
-2. **Incremental update after team changes**
-   - User: "We added a new module; keep existing style rules intact."
-   - Action: Run Branch B incremental sniff → compare Git deltas to recorded rules → grill any new conflicts → append evolution log without overwriting.
+| File exists? | Mode |
+|---|---|
+| No | **Branch A — First-time Full-Scan** |
+| Yes | **Branch B — Incremental Sniff** |
 
-3. **Enforcing DONTs via CLAUDE.md**
-   - User: "Make sure all new code stays consistent with the project's rules."
-   - Action: Soft hook installed → `.ai-style-rules.md` auto-loaded every session → every code-writing task opens with compliance declaration, reusing exemplar patterns and avoiding DONTs.
+Announce the mode in one line and proceed — never ask the user to pick.
+
+### Branch A — First-time Full-Scan
+
+**1. Measure scale, pick a scanning tier**
+
+[See code example 1 in `code-examples.md`]
+
+| Tier | Source files | Strategy |
+|---|---|---|
+| Small | ≲ 50 | Full close-read every source |
+| Medium | 50–500 | Infra layer = full read; business layer = sample 2–3 per dimension |
+| Large | ≳ 500 | Strict sampling + budget cap; `--stat` summary first, then targeted reads |
+
+**2. Scan along 4 dimensions**
+
+1. **File Anatomy** — in-file declaration order (imports → types → main logic → helpers → export)
+2. **State & Control Flow** — naming conventions for async state, pagination, flags
+3. **Infrastructure** — where cross-cutting utils live (interceptors, formatters, middleware)
+4. **Error Handling** — try/catch vs global interceptor vs Result return; null-check habits
+
+**3. Apply signal-threshold noise reduction**
+
+Before interrupting the user, evaluate signal strength:
+
+- **Weak signal** → auto-suppress: minority <5% AND count <10 → majority wins, minority goes to DONTs
+- **Strong signal** → grill: near-even split, or semantic fork on a core dimension
+- **Small-project exception**: sources ≲50, "3 vs 2" is NOT a majority → grill it
+
+**4. Resolve conflicts one at a time (Grilling Protocol)**
+
+For each strong-signal conflict, present exactly ONE question with 4 options:
+
+> Evidence: `pathA` uses style X, `pathB` uses style Y
+> WARNING: Risk: mixing both fractures the project style
+> Choose: `1` follow X  `2` follow Y  `3` this is evolution, update rules  `4` I have a new rule
+
+Suspend until the user answers, then proceed to the next conflict. Never stack questions.
+
+**5. Generate `.ai-style-rules.md`** with three mandatory sections:
+- **[Golden Files]** — real exemplar paths annotated with what they demonstrate
+- **[Naming & State-Control Rules]** — concrete, checkable conventions
+- **[DONTs]** — anti-patterns that must not propagate
+
+**6. Install the persistent hook**
+
+Ask the user for enforcement strength (use `AskUserQuestion`):
+
+| Option | Mechanism |
+|---|---|
+| **1** Soft hook (recommended) | Write `@.ai-style-rules.md` reference into project `CLAUDE.md` |
+| **2** Hard hook | Soft hook + `PreToolUse[Write\|Edit\|MultiEdit]` Hook in `settings.json` |
+
+> Continued in [`summary-2.md`](summary-2.md)

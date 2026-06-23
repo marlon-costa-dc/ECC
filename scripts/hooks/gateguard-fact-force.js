@@ -220,6 +220,106 @@ function tokenizeAllowlistedShellWords(input) {
   return tokens;
 }
 
+const SHELL_SEGMENT_SEPARATORS = new Set([';', '|', '&', '\n', '\r']);
+
+/**
+ * Quote-aware split of a command line into segments, with quotes removed from
+ * the resulting words. Splits only on UNQUOTED `;`, `|`, `&`, and newlines so:
+ *  - a quoted command word (`'rm'`, `"rm"`) normalizes to `rm` (the shell
+ *    treats quotes around a command name as transparent), and
+ *  - a newline behaves as a command separator (the shell runs each line),
+ * neither of which `stripQuotedStrings` + naive splitting handles — both were
+ * destructive-classifier bypasses (GHSA-4v57-ph3x-gf55).
+ *
+ * @param {string} input
+ * @returns {string[][]} array of dequoted token arrays, one per segment
+ */
+function quoteAwareSegments(input) {
+  const segments = [];
+  let words = [];
+  let current = '';
+  let hasWord = false;
+  let quote = null;
+  let escaped = false;
+
+  const flushWord = () => {
+    if (hasWord) words.push(current);
+    current = '';
+    hasWord = false;
+  };
+  const flushSegment = () => {
+    flushWord();
+    if (words.length) segments.push(words);
+    words = [];
+  };
+
+  for (const ch of String(input || '')) {
+    if (escaped) {
+      current += ch;
+      hasWord = true;
+      escaped = false;
+      continue;
+    }
+    if (ch === '\\') {
+      escaped = true;
+      hasWord = true;
+      continue;
+    }
+    if (quote) {
+      if (ch === quote) quote = null;
+      else current += ch;
+      hasWord = true;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      hasWord = true; // entering a quote starts a word, even if its content is empty
+      continue;
+    }
+    if (SHELL_SEGMENT_SEPARATORS.has(ch)) {
+      flushSegment();
+      continue;
+    }
+    if (/\s/.test(ch)) {
+      flushWord();
+      continue;
+    }
+    current += ch;
+    hasWord = true;
+  }
+  flushSegment();
+  return segments;
+}
+
+const SHELL_WRAPPERS = new Set(['sh', 'bash', 'zsh', 'dash', 'ksh']);
+
+/**
+ * Quote-aware destructive check: catches quoted command words, newline
+ * separators, quoted `find -exec`, and `sh -c`/`bash -c` wrappers that evade
+ * the quote-stripping path (GHSA-4v57-ph3x-gf55).
+ *
+ * @param {string} raw
+ * @param {number} [depth] recursion guard for shell -c wrappers
+ * @returns {boolean}
+ */
+function isDestructiveQuoteAware(raw, depth = 0) {
+  if (depth > 4) return false;
+  for (const tokens of quoteAwareSegments(raw)) {
+    if (tokens.length === 0) continue;
+    if (isDestructiveRm(tokens)) return true;
+    if (isDestructiveGit(tokens)) return true;
+    if (isDestructiveFindExec(tokens.join(' '))) return true;
+    const base = commandBasename(tokens[0]);
+    if (SHELL_WRAPPERS.has(base)) {
+      const ci = tokens.indexOf('-c');
+      if (ci !== -1 && tokens[ci + 1] && isDestructiveQuoteAware(tokens[ci + 1], depth + 1)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 /**
  * Strip a leading path and trailing `.exe` from a command token so
  * `/usr/bin/git`, `git.exe`, and `GIT` all normalize to `git`.
@@ -457,6 +557,75 @@ function collectExecutableBodies(raw) {
   return bodies;
 }
 
+/**
+ * Detect destructive commands inside `find ... -exec` invocations.
+ * Handles `-exec rm {} \;`, `-exec rm -rf {} \;`, `-exec rmdir {} \;`,
+ * `-exec unlink {} \;`, `-exec git reset --hard {} \;`.
+ *
+ * @param {string} command
+ * @returns {boolean}
+ */
+function isDestructiveFindExec(command) {
+  const raw = String(command || '');
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return false;
+  }
+
+  // Tokenize the whole command line
+  const tokens = tokenize(trimmed);
+  if (!tokens || tokens.length === 0) {
+    return false;
+  }
+
+  // Must start with `find`
+  if (commandBasename(tokens[0]) !== 'find') {
+    return false;
+  }
+
+  // Find the `-exec` token
+  const execIndex = tokens.indexOf('-exec');
+  if (execIndex === -1) {
+    return false;
+  }
+
+  // Collect tokens after `-exec` until we hit a terminator (`;`, `\;`, or `+`)
+  const execTokens = [];
+  for (let i = execIndex + 1; i < tokens.length; i++) {
+    const token = tokens[i];
+    if (token === ';' || token === '\\;' || token === '+') {
+      break;
+    }
+    execTokens.push(token);
+  }
+
+  if (execTokens.length === 0) {
+    return false;
+  }
+
+  const baseCmd = commandBasename(execTokens[0]);
+
+  // Directly destructive commands inside -exec
+  if (baseCmd === 'rmdir' || baseCmd === 'unlink') {
+    return true;
+  }
+
+  // `rm` with any flags (including none) inside -exec is destructive
+  if (baseCmd === 'rm') {
+    return true;
+  }
+
+  // `git reset --hard` inside -exec
+  if (baseCmd === 'git') {
+    const sub = findGitSubcommand(execTokens);
+    if (sub && sub.command === 'reset' && sub.rest.includes('--hard')) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function isDestructiveBash(command) {
   // The SQL/dd phrases live in command bodies, not as flag-bearing
   // arguments, so we still match them by regex — but on the input
@@ -472,7 +641,23 @@ function isDestructiveBash(command) {
   const extra = getExtraDestructiveRegex();
   if (extra && extra.test(flattened)) return true;
 
-  const segments = collectExecutableBodies(raw).flatMap(splitCommandSegments);
+  // Check for destructive find -exec patterns on raw body segments (before quote-stripping)
+  // so that quoted exec binaries and compound-command prefixes are both handled correctly.
+  // splitCommandSegments strips quotes before splitting, so passing its output to
+  // isDestructiveFindExec would turn `find . -exec 'rm' {} \;` into `find . -exec  {} \;`
+  // — the binary name disappears and the check returns false.  Using raw body text avoids
+  // that false-negative while also catching `&&`, `;`, `|`, and `||` compound forms.
+  const bodies = collectExecutableBodies(raw);
+  for (const body of bodies) {
+    for (const rawSeg of body
+      .split(/[;|&]+/)
+      .map(s => s.trim())
+      .filter(Boolean)) {
+      if (isDestructiveFindExec(rawSeg)) return true;
+    }
+  }
+
+  const segments = bodies.flatMap(splitCommandSegments);
   for (const segment of segments) {
     const stripped = stripQuotedStrings(segment);
     if (DESTRUCTIVE_SQL_DD.test(stripped)) return true;
@@ -481,6 +666,11 @@ function isDestructiveBash(command) {
     if (isDestructiveRm(tokens)) return true;
     if (isDestructiveGit(tokens)) return true;
   }
+
+  // Quote-aware pass: closes the quoted-command-word, newline-separator,
+  // quoted-find-exec, and sh/bash -c bypasses (GHSA-4v57-ph3x-gf55).
+  if (isDestructiveQuoteAware(raw)) return true;
+
   return false;
 }
 
@@ -798,7 +988,10 @@ function isReadOnlyGitIntrospection(command) {
   }
 
   if (subcommand === 'diff') {
-    return args.length <= 1 && args.every(arg => ['--name-only', '--name-status'].includes(arg));
+    const allowedDiffArgs = new Set(['--name-only', '--name-status', '--cached', '--staged', '--stat']);
+    // git diff without arguments is read-only introspection
+    if (args.length === 0) return true;
+    return args.length <= 2 && args.every(arg => allowedDiffArgs.has(arg));
   }
 
   if (subcommand === 'log') {
@@ -806,7 +999,24 @@ function isReadOnlyGitIntrospection(command) {
   }
 
   if (subcommand === 'show') {
-    return args.length === 1 && !args[0].startsWith('--') && /^[a-zA-Z0-9._:/ -]+$/.test(args[0]);
+    // Permite: git show <ref>, git show --stat, git show --name-only,
+    // git show <ref> --stat, git show <ref> --name-only
+    if (args.length === 0) return false;
+    if (args.length === 1) {
+      const arg = args[0];
+      if (arg === '--stat' || arg === '--name-only') return true;
+      // ref
+      return !arg.startsWith('--') && /^[a-zA-Z0-9._:/ -]+$/.test(arg);
+    }
+    if (args.length === 2) {
+      const [first, second] = args;
+      // ref + flag
+      if (!first.startsWith('--') && /^[a-zA-Z0-9._:/ -]+$/.test(first) && (second === '--stat' || second === '--name-only')) {
+        return true;
+      }
+      return false;
+    }
+    return false;
   }
 
   if (subcommand === 'branch') {
@@ -846,7 +1056,7 @@ function writeGateMsg(filePath) {
     `Before creating ${safe}, present these facts:`,
     '',
     '1. Name the file(s) and line(s) that will call this new file',
-    '2. Confirm no existing file serves the same purpose (use Glob)',
+    '2. Confirm no existing file serves the same purpose (search the tree — Glob/Grep, or find/grep via Bash)',
     '3. If this file reads/writes data files, show field names, structure, and date format (use redacted or synthetic values, not raw production data)',
     "4. Quote the user's current instruction verbatim",
     '',

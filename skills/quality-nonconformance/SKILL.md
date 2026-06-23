@@ -45,4 +45,4 @@ Senior quality engineering expertise for regulated manufacturing (FDA 21 CFR 820
 
 - [Core Knowledge](references/core-knowledge.md)
 - [Decision Frameworks](references/decision-frameworks.md)
-- [Operations Reference](references/operations-reference.md)
+- [Operations Reference](references/operations-reference-1.md)

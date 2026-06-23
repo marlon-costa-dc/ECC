@@ -56,4 +56,4 @@ volumes:
 
 ## References
 
-- Full CLI reference, port publishing, compose extensions, external device routing, DNS, scaling, and troubleshooting: [references/uncloud-reference.md](references/uncloud-reference.md)
+- Full CLI reference, port publishing, compose extensions, external device routing, DNS, scaling, and troubleshooting: [references/uncloud-reference.md](references/uncloud-reference-1.md)

@@ -46,4 +46,4 @@ metadata:
 - Missing context → state assumptions.
 ## References
 
-- [references/rest-api-patterns.md](references/rest-api-patterns.md)
+- [references/rest-api-patterns.md](references/rest-api-patterns-1.md)

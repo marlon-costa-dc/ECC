@@ -46,4 +46,4 @@ dmux
 4. **Use git worktrees.** For file-conflict-prone work, use separate worktrees per pane.
 5. **Resource awareness.** Each pane uses API tokens — keep total panes under 5-6.
 
-For detailed workflow patterns, worktree integration, the ECC orchestration helper, and troubleshooting, see [references/dmux-reference.md](references/dmux-reference.md).
+For detailed workflow patterns, worktree integration, the ECC orchestration helper, and troubleshooting, see [references/dmux-reference.md](references/dmux-reference-1.md).

@@ -48,7 +48,7 @@ Production-grade Django architecture patterns for scalable, maintainable applica
 
 ## References
 
-- [Django Patterns](references/django-patterns.md) — detailed code examples
+- [Django Patterns](references/django-patterns-1.md) — detailed code examples
 
 ## Related Skills
 

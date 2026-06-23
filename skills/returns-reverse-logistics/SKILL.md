@@ -44,4 +44,4 @@ Senior returns operations expertise spanning RMA, receiving/inspection, grading,
 
 - [Core Knowledge](references/core-knowledge.md): returns policy, inspection/grading, disposition, fraud detection, vendor recovery, warranty
 - [Decision Frameworks](references/decision-frameworks.md): disposition routing by category, fraud scoring, vendor recovery ROI, exception logic
-- [Operations Reference](references/operations-reference.md): examples, edge cases, communication templates, escalation protocols, KPIs, guardrails
+- [Operations Reference](references/operations-reference-1.md): examples, edge cases, communication templates, escalation protocols, KPIs, guardrails

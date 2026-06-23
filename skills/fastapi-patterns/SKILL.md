@@ -52,7 +52,7 @@ Modern, production-grade FastAPI development patterns.
 
 ## References
 
-- [FastAPI Patterns](references/fastapi-patterns.md) — complete code examples
+- [FastAPI Patterns](references/fastapi-patterns-1.md) — complete code examples
 
 ## Related Skills
 

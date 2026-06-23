@@ -31,4 +31,4 @@ origin: ECC
 
 ## References
 
-- Detailed spec styles, MockK recipes, and property tests: [references/kotest-mockk-reference.md](references/kotest-mockk-reference.md)
+- Detailed spec styles, MockK recipes, and property tests: [references/kotest-mockk-reference.md](references/kotest-mockk-reference-1.md)

@@ -1,19 +1,161 @@
-| Anti-Pattern | Risk | Better Pattern |
-| --- | --- | --- |
-| `SELECT *` in hot paths | Over-fetching and brittle clients | Select explicit columns |
-| Deep `OFFSET` pagination | Linear scans and slow pages | Keyset pagination |
-| No index on foreign-key joins | Slow joins and lock-heavy deletes | Index FK columns intentionally |
-| Long transactions | Lock waits and large undo history | Commit small units of work |
-| Application user with admin grants | High blast radius | Least-privilege runtime user |
-| Pool recycle above `wait_timeout` | Stale pooled connections | Recycle below timeout and pre-ping |
-| Replica reads after writes | Stale user-facing state | Pin read-after-write flows to primary |
+# MySQL Patterns — Extended Reference
 
-## Output Expectations
+Detailed query patterns, transactions, connection pools, diagnostics, replication, security, and configuration examples. The SKILL.md file contains the essential schema defaults and indexing guidance; this file preserves the expanded examples.
 
-When this skill is used for review, return:
+## Query Patterns
 
-1. Engine/version assumptions.
-2. Highest-risk correctness, lock, security, and migration issues.
-3. Exact SQL or code changes for the safe path.
-4. Validation plan: `EXPLAIN`, migration dry run, lock/deadlock check, and rollback criteria.
-5. Any MySQL/MariaDB syntax differences that affect the recommendation.
+### Upsert
+
+Cross-engine-compatible form:
+
+```sql
+INSERT INTO user_settings (user_id, setting_key, setting_value)
+VALUES (?, ?, ?)
+ON DUPLICATE KEY UPDATE
+    setting_value = VALUES(setting_value),
+    updated_at = CURRENT_TIMESTAMP;
+```
+
+MySQL row-alias form:
+
+```sql
+INSERT INTO user_settings (user_id, setting_key, setting_value)
+VALUES (?, ?, ?) AS new
+ON DUPLICATE KEY UPDATE
+    setting_value = new.setting_value,
+    updated_at = CURRENT_TIMESTAMP;
+```
+
+Use the row-alias form only after confirming the target is MySQL. Use `VALUES(col)` for MariaDB or mixed fleets.
+
+### Keyset Pagination
+
+```sql
+SELECT id, name, created_at
+FROM products
+WHERE (created_at, id) < (?, ?)
+ORDER BY created_at DESC, id DESC
+LIMIT 50;
+```
+
+Back it with an index that matches the cursor:
+
+```sql
+CREATE INDEX idx_products_created_id ON products (created_at, id);
+```
+
+### JSON Fields
+
+```sql
+CREATE TABLE events (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    payload JSON NOT NULL,
+    event_type VARCHAR(64)
+        GENERATED ALWAYS AS (JSON_UNQUOTE(JSON_EXTRACT(payload, '$.type'))) STORED,
+    KEY idx_events_type (event_type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Full-Text Search
+
+```sql
+ALTER TABLE articles ADD FULLTEXT KEY ft_articles_title_body (title, body);
+
+SELECT id, title, MATCH(title, body) AGAINST (? IN NATURAL LANGUAGE MODE) AS score
+FROM articles
+WHERE MATCH(title, body) AGAINST (? IN NATURAL LANGUAGE MODE)
+ORDER BY score DESC
+LIMIT 20;
+```
+
+## Transactions
+
+Keep transactions short and lock rows in a consistent order:
+
+```sql
+START TRANSACTION;
+SELECT id, balance
+FROM accounts
+WHERE id IN (?, ?)
+ORDER BY id
+FOR UPDATE;
+UPDATE accounts SET balance = balance - ? WHERE id = ?;
+UPDATE accounts SET balance = balance + ? WHERE id = ?;
+COMMIT;
+```
+
+Queue-style worker claim:
+
+```sql
+START TRANSACTION;
+SELECT id
+FROM jobs
+WHERE status = 'pending'
+ORDER BY created_at
+LIMIT 1
+FOR UPDATE SKIP LOCKED;
+UPDATE jobs
+SET status = 'processing', started_at = CURRENT_TIMESTAMP
+WHERE id = ?;
+COMMIT;
+```
+
+## Connection Pools
+
+SQLAlchemy example:
+
+```python
+from sqlalchemy import create_engine
+
+engine = create_engine(
+    "mysql+mysqlconnector://app:secret@db.internal/app",
+    pool_size=10,
+    max_overflow=5,
+    pool_timeout=30,
+    pool_recycle=240,
+    pool_pre_ping=True,
+    connect_args={"connect_timeout": 5},
+)
+```
+
+Node.js `mysql2` example:
+
+```javascript
+import mysql from 'mysql2/promise';
+
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 30000,
+});
+```
+
+## Diagnostics
+
+```sql
+SHOW FULL PROCESSLIST;
+SHOW ENGINE INNODB STATUS\G;
+SHOW VARIABLES LIKE 'slow_query_log';
+SHOW VARIABLES LIKE 'long_query_time';
+
+SET GLOBAL slow_query_log = 'ON';
+SET GLOBAL long_query_time = 1;
+SET GLOBAL log_queries_not_using_indexes = 'ON';
+```
+
+Use `EXPLAIN ANALYZE` only when it is safe to execute the query.
+
+## Replication
+
+Read replicas can lag. Do not route read-your-own-write paths, checkout flows, permission checks, or idempotency-key reads to a replica immediately after a write.
+
+```sql
+SHOW SLAVE STATUS\G;
+
+> Continued in [`mysql-patterns-extended-2.md`](mysql-patterns-extended-2.md)

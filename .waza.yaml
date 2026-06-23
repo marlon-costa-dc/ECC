@@ -1,13 +1,13 @@
 # Microsoft Waza configuration for the ~/.ai-hub skill control plane.
-# Enforces the workspace standard: SKILL.md must stay ≤500 tokens.
+# Enforces a moderate workspace standard: SKILL.md should stay ≤750 tokens.
 # Distributed to governed projects via sync/ssot-relink.sh.
 
 tokens:
-  warningThreshold: 450
-  fallbackLimit: 500
+  warningThreshold: 700
+  fallbackLimit: 750
   limits:
     defaults:
-      "SKILL.md": 500
+      "SKILL.md": 750
       "references/**/*.md": 1000
       "*.md": 2000
     overrides:

@@ -46,6 +46,6 @@ See [rules/react/hooks.md](../../rules/react/hooks.md). Top-level only, never co
 
 ## Links
 
-- Detailed recipes: [references/patterns-recipes.md](references/patterns-recipes.md)
+- Detailed recipes: [references/patterns-recipes.md](references/patterns-recipes-1.md)
 - Related skills: [react-performance](../react-performance/SKILL.md), [react-testing](../react-testing/SKILL.md), [frontend-patterns](../frontend-patterns/SKILL.md)
 - Rules: [rules/react/](../../rules/react/)

@@ -1,143 +1,66 @@
 ---
 name: automation-audit-ops
-description: Evidence-first automation inventory and overlap audit workflow for ECC. Use when the user wants to know which jobs, hooks, connectors, MCP servers, or wrappers are live, broken, redundant, or missing before fixing anything.
+description: 'Use this skill to run an evidence-first automation inventory and overlap
+  audit. Identify which jobs, hooks, connectors, MCP servers, or wrappers are live,
+  broken, redundant, or missing before fixing anything. DO NOT USE FOR: questions
+  unrelated to automation-audit-ops creating projects or architecture from scratch'
+license: MIT
 metadata:
-  origin: ECC
+  version: 1.0.0
 ---
-
 # Automation Audit Ops
 
-Use this when the user asks what automations are live, which jobs are broken, where overlap exists, or what tooling and connectors are actually doing useful work right now.
+**UTILITY SKILL**
 
-This is an audit-first operator skill. The job is to produce an evidence-backed inventory and a keep / merge / cut / fix-next recommendation set before rewriting anything.
+Audit automations before rewriting them. Produce evidence-backed inventory plus keep / merge / cut / fix-next recommendations.
 
-## Skill Stack
+## USE FOR:
 
-Pull these ECC-native skills into the workflow when relevant:
+- "What automations do I have?", "what is live/broken/overlapping?"
+- Auditing cron jobs, Actions, hooks, MCP servers, connectors, wrappers.
+- Collapsing duplicate paths into one canonical ECC lane.
 
-- `workspace-surface-audit` for connector, MCP, hook, and app inventory
-- `knowledge-ops` when the audit needs to reconcile live repo truth with durable context
-- `github-ops` when the answer depends on CI, scheduled workflows, issues, or PR automation
-- `ecc-tools-cost-audit` when the real problem is webhook fanout, queued jobs, or billing burn in the sibling app repo
-- `research-ops` when local inventory must be compared against current platform support or public docs
-- `verification-loop` for proving post-fix state instead of relying on assumed recovery
+## DO NOT USE FOR:
 
-## When to Use
+- Rewriting automations before the inventory exists.
+- Claiming a tool is live just because a skill references it.
 
-- user asks "what automations do I have", "what is live", "what is broken", or "what overlaps"
-- the task spans cron jobs, GitHub Actions, local hooks, MCP servers, connectors, wrappers, or app integrations
-- the user wants to know what was ported from another agent system and what still needs to be rebuilt inside ECC
-- the workspace has accumulated multiple ways to do the same thing and the user wants one canonical lane
+## INVOKES
 
-## Guardrails
-
-- start read-only unless the user explicitly asked for fixes
-- separate:
-  - configured
-  - authenticated
-  - recently verified
-  - stale or broken
-  - missing entirely
-- do not claim a tool is live just because a skill or config references it
-- do not merge or delete overlapping surfaces until the evidence table exists
+- `workspace-surface-audit` for connector/MCP/hook/app inventory.
+- `github-ops` for CI, workflows, issues, PR automation.
+- `verification-loop` to prove post-fix state.
 
 ## Workflow
 
-### 1. Inventory the real surface
-
-Read the current live surface before theorizing:
-
-- repo hooks and local hook scripts
-- GitHub Actions and scheduled workflows
-- MCP configs and enabled servers
-- connector- or app-backed integrations
-- wrapper scripts and repo-specific automation entrypoints
-
-Group them by surface:
-
-- local runtime
-- repo CI / automation
-- connected external systems
-- messaging / notifications
-- billing / customer operations
-- research / monitoring
-
-### 2. Classify each item by live state
-
-For every surfaced automation, mark:
-
-- configured
-- authenticated
-- recently verified
-- stale or broken
-- missing
-
-Then classify the problem type:
-
-- active breakage
-- auth outage
-- stale status
-- overlap or redundancy
-- missing capability
-
-### 3. Trace the proof path
-
-Back every important claim with a concrete source:
-
-- file path
-- workflow run
-- hook log
-- config entry
-- recent command output
-- exact failure signature
-
-If the current state is ambiguous, say so directly instead of pretending the audit is complete.
-
-### 4. End with keep / merge / cut / fix-next
-
-For each overlapping or suspect surface, return one call:
-
-- keep
-- merge
-- cut
-- fix next
-
-The value is in collapsing noisy automation into one canonical ECC lane, not in preserving every historical path.
+1. **Inventory** hooks, Actions, MCP configs, connectors, and wrapper scripts.
+2. **Classify** each item as configured, authenticated, verified, stale, broken, or missing.
+3. **Prove** status with file path, workflow run, hook log, config entry, or failure signature.
+4. **Recommend** keep, merge, cut, or fix-next for each item.
 
 ## Output Format
 
 ```text
 CURRENT SURFACE
-- automation
-- source
-- live state
-- proof
+- automation | source | live state | proof
 
 FINDINGS
-- active breakage
-- overlap
-- stale status
-- missing capability
+- breakage | overlap | stale status | missing capability
 
 RECOMMENDATION
-- keep
-- merge
-- cut
-- fix next
+- keep | merge | cut | fix-next
 
 NEXT ECC MOVE
 - exact skill / hook / workflow / app lane to strengthen
 ```
 
-## Pitfalls
+## Examples
 
-- do not answer from memory when the live inventory can be read
-- do not treat "present in config" as "working"
-- do not fix lower-value redundancy before naming the broken high-signal path
-- do not widen the task into a repo rewrite if the user asked for inventory first
+- "What jobs are running in this repo?" → inventory hooks + Actions → classify live state.
+- "Is this connector redundant?" → map overlaps → recommend merge/cut with proof.
 
-## Verification
+## Troubleshooting
 
-- important claims cite a live proof path
-- each surfaced automation is labeled with a clear live-state category
-- the final recommendation distinguishes keep / merge / cut / fix-next
+- State ambiguous → say so; do not pretend the audit is complete.
+- Tool looks configured but fails → treat as broken until verified.
+- Fix requested before inventory → complete the inventory first.

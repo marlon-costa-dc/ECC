@@ -1,0 +1,2 @@
+- `competitive-platform-analysis` — the prerequisite; produces the tiered competitor set this skill scores.
+- `competitive-report-structure` — the next step; assembles the scored profile cards into a client-deliverable report.

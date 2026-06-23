@@ -1,0 +1,5 @@
+- **Token estimation**: use `words × 1.3` for prose, `chars / 4` for code-heavy files
+- **MCP is the biggest lever**: each tool schema costs ~500 tokens; a 30-tool server costs more than all your skills combined
+- **Agent descriptions are loaded always**: even if the agent is never invoked, its description field is present in every Task tool context
+- **Verbose mode for debugging**: use when you need to pinpoint the exact files driving overhead, not for regular audits
+- **Audit after changes**: run after adding any agent, skill, or MCP server to catch creep early

@@ -1,13 +1,12 @@
 ---
 name: agent-harness-construction
-description: Design and optimize AI agent action spaces, tool definitions, and observation formatting for higher completion rates.
-metadata:
-  origin: ECC
+description: Use when designing or optimizing an AI agent's action space, tool schemas, observation formatting, error recovery contracts, and context budgeting so the agent plans, calls tools, recovers from errors, and completes tasks more reliably.
+origin: ECC
 ---
 
 # Agent Harness Construction
 
-Use this skill when you are improving how an agent plans, calls tools, recovers from errors, and converges on completion.
+Use this skill when improving how an agent plans, calls tools, recovers from errors, and converges on completion.
 
 ## Core Model
 

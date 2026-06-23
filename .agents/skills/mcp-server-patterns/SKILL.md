@@ -1,66 +1,50 @@
 ---
 name: mcp-server-patterns
-description: Build MCP servers with Node/TypeScript SDK — tools, resources, prompts, Zod validation, stdio vs Streamable HTTP. Use Context7 or official MCP docs for latest API.
+description: 'Build MCP servers with Node/TypeScript SDK — tools, resources, prompts,
+  Zod validation, stdio vs Streamable HTTP. Use Context7 or official MCP docs for
+  latest API. DO NOT USE FOR: questions unrelated to mcp-server-patterns creating
+  projects or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # MCP Server Patterns
 
-The Model Context Protocol (MCP) lets AI assistants call tools, read resources, and use prompts from your server. Use this skill when building or maintaining MCP servers. The SDK API evolves; check Context7 (query-docs for "MCP") or the official MCP documentation for current method names and signatures.
+**UTILITY SKILL**
 
-## When to Use
+## USE FOR
 
-Use when: implementing a new MCP server, adding tools or resources, choosing stdio vs HTTP, upgrading the SDK, or debugging MCP registration and transport issues.
+- Requests about mcp server patterns.
+- Workflows described in this skill.
+- Operator tasks within this scope.
 
-## How It Works
 
-### Core concepts
+## DO NOT USE FOR
 
-- **Tools**: Actions the model can invoke (e.g. search, run a command). Register with `registerTool()` or `tool()` depending on SDK version.
-- **Resources**: Read-only data the model can fetch (e.g. file contents, API responses). Register with `registerResource()` or `resource()`. Handlers typically receive a `uri` argument.
-- **Prompts**: Reusable, parameterised prompt templates the client can surface (e.g. in Claude Desktop). Register with `registerPrompt()` or equivalent.
-- **Transport**: stdio for local clients (e.g. Claude Desktop); Streamable HTTP is preferred for remote (Cursor, cloud). Legacy HTTP/SSE is for backward compatibility.
+- questions unrelated to mcp-server-patterns.
+- creating projects or architecture from scratch.
 
-The Node/TypeScript SDK may expose `tool()` / `resource()` or `registerTool()` / `registerResource()`; the official SDK has changed over time. Always verify against the current [MCP docs](https://modelcontextprotocol.io) or Context7.
 
-### Connecting with stdio
+## Workflow
 
-For local clients, create a stdio transport and pass it to your server’s connect method. The exact API varies by SDK version (e.g. constructor vs factory). See the official MCP documentation or query Context7 for "MCP stdio server" for the current pattern.
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
 
-Keep server logic (tools + resources) independent of transport so you can plug in stdio or HTTP in the entrypoint.
 
-### Remote (Streamable HTTP)
+## Critical rules
 
-For Cursor, cloud, or other remote clients, use **Streamable HTTP** (single MCP HTTP endpoint per current spec). Support legacy HTTP/SSE only when backward compatibility is required.
+- Prefer canonical sources.
+- Require evidence before claiming success.
 
-## Examples
 
-### Install and server setup
+## Example
 
-```bash
-npm install @modelcontextprotocol/sdk zod
-```
+**Input:** a request.
+**Output:** a concise response.
 
-```typescript
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
 
-const server = new McpServer({ name: "my-server", version: "1.0.0" });
-```
+## Troubleshooting
 
-Register tools and resources using the API your SDK version provides: some versions use `server.tool(name, description, schema, handler)` (positional args), others use `server.tool({ name, description, inputSchema }, handler)` or `registerTool()`. Same for resources — include a `uri` in the handler when the API provides it. Check the official MCP docs or Context7 for the current `@modelcontextprotocol/sdk` signatures to avoid copy-paste errors.
-
-Use **Zod** (or the SDK’s preferred schema format) for input validation.
-
-## Best Practices
-
-- **Schema first**: Define input schemas for every tool; document parameters and return shape.
-- **Errors**: Return structured errors or messages the model can interpret; avoid raw stack traces.
-- **Idempotency**: Prefer idempotent tools where possible so retries are safe.
-- **Rate and cost**: For tools that call external APIs, consider rate limits and cost; document in the tool description.
-- **Versioning**: Pin SDK version in package.json; check release notes when upgrading.
-
-## Official SDKs and Docs
-
-- **JavaScript/TypeScript**: `@modelcontextprotocol/sdk` (npm). Use Context7 with library name "MCP" for current registration and transport patterns.
-- **Go**: Official Go SDK on GitHub (`modelcontextprotocol/go-sdk`).
-- **C#**: Official C# SDK for .NET.
+- Unclear scope → ask.
+- Missing context → state assumptions.

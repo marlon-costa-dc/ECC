@@ -1,11 +1,17 @@
 ---
 name: bun-runtime
-description: Bun as runtime, package manager, bundler, and test runner. When to choose Bun vs Node, migration notes, and Vercel support.
+description: 'Use this skill to bun as runtime, package manager, bundler, and test
+  runner. When to choose Bun vs Node, migration notes, and Vercel support. Bun is
+  a fast all-in-one JavaScript runtime and toolkit: runtime, package manager, bundler,
+  and test runner. DO NOT USE FOR: questions unrelated to bun-runtime creating projects
+  or architecture from scratch'
+license: MIT
+metadata:
+  version: 1.0.0
 ---
-
 # Bun Runtime
 
-Bun is a fast all-in-one JavaScript runtime and toolkit: runtime, package manager, bundler, and test runner.
+**UTILITY SKILL**
 
 ## When to Use
 
@@ -14,70 +20,55 @@ Bun is a fast all-in-one JavaScript runtime and toolkit: runtime, package manage
 
 Use when: adopting Bun, migrating from Node, writing or debugging Bun scripts/tests, or configuring Bun on Vercel or other platforms.
 
-## How It Works
-
-- **Runtime**: Drop-in Node-compatible runtime (built on JavaScriptCore, implemented in Zig).
-- **Package manager**: `bun install` is significantly faster than npm/yarn. Lockfile is `bun.lock` (text) by default in current Bun; older versions used `bun.lockb` (binary).
-- **Bundler**: Built-in bundler and transpiler for apps and libraries.
-- **Test runner**: Built-in `bun test` with Jest-like API.
-
-**Migration from Node**: Replace `node script.js` with `bun run script.js` or `bun script.js`. Run `bun install` in place of `npm install`; most packages work. Use `bun run` for npm scripts; `bun x` for npx-style one-off runs. Node built-ins are supported; prefer Bun APIs where they exist for better performance.
-
-**Vercel**: Set runtime to Bun in project settings. Build: `bun run build` or `bun build ./src/index.ts --outdir=dist`. Install: `bun install --frozen-lockfile` for reproducible deploys.
-
 ## Examples
 
 ### Run and install
 
-```bash
-# Install dependencies (creates/updates bun.lock or bun.lockb)
-bun install
-
-# Run a script or file
-bun run dev
-bun run src/index.ts
-bun src/index.ts
-```
 
 ### Scripts and env
 
-```bash
-bun run --env-file=.env dev
-FOO=bar bun run script.ts
-```
 
 ### Testing
 
-```bash
-bun test
-bun test --watch
-```
 
-```typescript
-// test/example.test.ts
-import { expect, test } from "bun:test";
-
-test("add", () => {
-  expect(1 + 2).toBe(3);
-});
-```
 
 ### Runtime API
 
-```typescript
-const file = Bun.file("package.json");
-const json = await file.json();
-
-Bun.serve({
-  port: 3000,
-  fetch(req) {
-    return new Response("Hello");
-  },
-});
-```
 
 ## Best Practices
 
 - Commit the lockfile (`bun.lock` or `bun.lockb`) for reproducible installs.
 - Prefer `bun run` for scripts. For TypeScript, Bun runs `.ts` natively.
 - Keep dependencies up to date; Bun and the ecosystem evolve quickly.
+
+## USE FOR
+
+- Requests about bun runtime.
+- Workflows described in this skill.
+- Operator tasks within this scope.
+
+## DO NOT USE FOR
+
+- questions unrelated to bun-runtime.
+- creating projects or architecture from scratch.
+
+## Workflow
+
+1. **Understand** intent and constraints.
+2. **Execute** the canonical approach.
+3. **Validate** with native checks.
+
+## Critical rules
+
+- Prefer canonical sources.
+- Require evidence before claiming success.
+
+## Example
+
+**Input:** a request.
+**Output:** a concise response.
+
+## Troubleshooting
+
+- Unclear scope → ask.
+- Missing context → state assumptions.

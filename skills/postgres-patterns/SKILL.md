@@ -1,13 +1,11 @@
 ---
 name: postgres-patterns
-description: PostgreSQL database patterns for query optimization, schema design, indexing, and security. Based on Supabase best practices.
-metadata:
-  origin: ECC
+description: Use when working on PostgreSQL schema design, query optimization, indexing, Row Level Security, connection pooling, or production configuration. Provides canonical patterns and anti-patterns for PostgreSQL backends.
 ---
 
 # PostgreSQL Patterns
 
-Quick reference for PostgreSQL best practices. For detailed guidance, use the `database-reviewer` agent.
+Quick reference for PostgreSQL best practices. For full diagnostics, configuration template, and extended examples, see `references/postgres-patterns.md` and use the `database-reviewer` agent.
 
 ## When to Activate
 
@@ -17,132 +15,41 @@ Quick reference for PostgreSQL best practices. For detailed guidance, use the `d
 - Implementing Row Level Security
 - Setting up connection pooling
 
-## Quick Reference
+## Index Patterns
 
-### Index Cheat Sheet
+- Equality: `CREATE INDEX idx ON t (col)`
+- Composite equality + range: `CREATE INDEX idx ON t (a, b)`
+- JSONB: `CREATE INDEX idx ON t USING gin (col)`
+- Time-series: `CREATE INDEX idx ON t USING brin (col)`
+- Covering: `CREATE INDEX idx ON users (email) INCLUDE (name, created_at)`
+- Partial: `CREATE INDEX idx ON users (email) WHERE deleted_at IS NULL`
 
-| Query Pattern | Index Type | Example |
-|--------------|------------|---------|
-| `WHERE col = value` | B-tree (default) | `CREATE INDEX idx ON t (col)` |
-| `WHERE col > value` | B-tree | `CREATE INDEX idx ON t (col)` |
-| `WHERE a = x AND b > y` | Composite | `CREATE INDEX idx ON t (a, b)` |
-| `WHERE jsonb @> '{}'` | GIN | `CREATE INDEX idx ON t USING gin (col)` |
-| `WHERE tsv @@ query` | GIN | `CREATE INDEX idx ON t USING gin (col)` |
-| Time-series ranges | BRIN | `CREATE INDEX idx ON t USING brin (col)` |
+## Data Types
 
-### Data Type Quick Reference
+Prefer `bigint` for IDs, `text` for strings, `timestamptz` for timestamps, and `numeric` for money. Avoid `int` PKs, `varchar(255)` defaults, `timestamp` without zone, and `float` for exact values.
 
-| Use Case | Correct Type | Avoid |
-|----------|-------------|-------|
-| IDs | `bigint` | `int`, random UUID |
-| Strings | `text` | `varchar(255)` |
-| Timestamps | `timestamptz` | `timestamp` |
-| Money | `numeric(10,2)` | `float` |
-| Flags | `boolean` | `varchar`, `int` |
+## Common Patterns
 
-### Common Patterns
-
-**Composite Index Order:**
 ```sql
--- Equality columns first, then range columns
-CREATE INDEX idx ON orders (status, created_at);
--- Works for: WHERE status = 'pending' AND created_at > '2024-01-01'
-```
+-- RLS policy (wrap auth call in SELECT)
+CREATE POLICY policy ON orders USING ((SELECT auth.uid()) = user_id);
 
-**Covering Index:**
-```sql
-CREATE INDEX idx ON users (email) INCLUDE (name, created_at);
--- Avoids table lookup for SELECT email, name, created_at
-```
+-- UPSERT
+INSERT INTO settings (user_id, key, value) VALUES (123, 'theme', 'dark')
+ON CONFLICT (user_id, key) DO UPDATE SET value = EXCLUDED.value;
 
-**Partial Index:**
-```sql
-CREATE INDEX idx ON users (email) WHERE deleted_at IS NULL;
--- Smaller index, only includes active users
-```
-
-**RLS Policy (Optimized):**
-```sql
-CREATE POLICY policy ON orders
-  USING ((SELECT auth.uid()) = user_id);  -- Wrap in SELECT!
-```
-
-**UPSERT:**
-```sql
-INSERT INTO settings (user_id, key, value)
-VALUES (123, 'theme', 'dark')
-ON CONFLICT (user_id, key)
-DO UPDATE SET value = EXCLUDED.value;
-```
-
-**Cursor Pagination:**
-```sql
+-- Cursor pagination
 SELECT * FROM products WHERE id > $last_id ORDER BY id LIMIT 20;
--- O(1) vs OFFSET which is O(n)
-```
 
-**Queue Processing:**
-```sql
+-- Queue processing
 UPDATE jobs SET status = 'processing'
-WHERE id = (
-  SELECT id FROM jobs WHERE status = 'pending'
-  ORDER BY created_at LIMIT 1
-  FOR UPDATE SKIP LOCKED
-) RETURNING *;
-```
-
-### Anti-Pattern Detection
-
-```sql
--- Find unindexed foreign keys
-SELECT conrelid::regclass, a.attname
-FROM pg_constraint c
-JOIN pg_attribute a ON a.attrelid = c.conrelid AND a.attnum = ANY(c.conkey)
-WHERE c.contype = 'f'
-  AND NOT EXISTS (
-    SELECT 1 FROM pg_index i
-    WHERE i.indrelid = c.conrelid AND a.attnum = ANY(i.indkey)
-  );
-
--- Find slow queries
-SELECT query, mean_exec_time, calls
-FROM pg_stat_statements
-WHERE mean_exec_time > 100
-ORDER BY mean_exec_time DESC;
-
--- Check table bloat
-SELECT relname, n_dead_tup, last_vacuum
-FROM pg_stat_user_tables
-WHERE n_dead_tup > 1000
-ORDER BY n_dead_tup DESC;
-```
-
-### Configuration Template
-
-```sql
--- Connection limits (adjust for RAM)
-ALTER SYSTEM SET max_connections = 100;
-ALTER SYSTEM SET work_mem = '8MB';
-
--- Timeouts
-ALTER SYSTEM SET idle_in_transaction_session_timeout = '30s';
-ALTER SYSTEM SET statement_timeout = '30s';
-
--- Monitoring
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-
--- Security defaults
-REVOKE ALL ON SCHEMA public FROM public;
-
-SELECT pg_reload_conf();
+WHERE id = (SELECT id FROM jobs WHERE status = 'pending'
+            ORDER BY created_at LIMIT 1 FOR UPDATE SKIP LOCKED)
+RETURNING *;
 ```
 
 ## Related
 
-- Agent: `database-reviewer` - Full database review workflow
-- Skill: `clickhouse-io` - ClickHouse analytics patterns
-- Skill: `backend-patterns` - API and backend patterns
-
----
-
-*Based on Supabase Agent Skills (credit: Supabase team) (MIT License)*
+- Agent: `database-reviewer`
+- Skill: `clickhouse-io`
+- Reference: `references/postgres-patterns.md`

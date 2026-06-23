@@ -83,6 +83,14 @@ function runTests() {
     assert.ok(source.includes('node - "$file"'), 'extract_context7_key should use Node-based parsing');
   })) passed++; else failed++;
 
+  if (test('supports skipping MCP merge for central AI sync ownership', () => {
+    assert.ok(source.includes('--skip-mcp'), 'sync script should expose --skip-mcp');
+    assert.ok(
+      source.includes('Skipping ECC MCP merge because central MCP sync owns Codex MCP config'),
+      'sync script should document central MCP ownership when skipped'
+    );
+  })) passed++; else failed++;
+
   console.log(`\nResults: Passed: ${passed}, Failed: ${failed}`);
   process.exit(failed > 0 ? 1 : 0);
 }

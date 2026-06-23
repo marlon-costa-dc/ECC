@@ -268,7 +268,7 @@ function runTests() {
   if (test('component catalog includes skill: family entries', () => {
     const components = listInstallComponents({ family: 'skill' });
     assert.ok(components.length > 0, 'Should have at least one skill component');
-    assert.ok(components.some(c => c.id === 'skill:continuous-learning'), 'Should have skill:continuous-learning');
+    assert.ok(!components.some(c => c.id === 'skill:continuous-learning'), 'Should not expose legacy skill:continuous-learning');
     assert.ok(components.some(c => c.id === 'skill:continuous-learning-v2'), 'Should have skill:continuous-learning-v2');
   })) passed++; else failed++;
 
@@ -447,13 +447,14 @@ function runTests() {
       'Should include agents-core module from agent:security-reviewer');
   })) passed++; else failed++;
 
-  if (test('--with skill: component includes the parent skill module', () => {
-    const plan = resolveInstallPlan({
-      includeComponentIds: ['skill:continuous-learning'],
-      target: 'claude',
-    });
-    assert.ok(plan.selectedModuleIds.includes('workflow-quality'),
-      'Should include workflow-quality module from skill:continuous-learning');
+  if (test('--with legacy skill:continuous-learning is not accepted', () => {
+    assert.throws(
+      () => resolveInstallPlan({
+        includeComponentIds: ['skill:continuous-learning'],
+        target: 'claude',
+      }),
+      /Unknown install component: skill:continuous-learning/
+    );
   })) passed++; else failed++;
 
   if (test('--with skill:continuous-learning-v2 installs only that skill module', () => {

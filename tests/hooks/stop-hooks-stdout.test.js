@@ -105,7 +105,6 @@ const STOP_HOOKS = [
   ['stop:format-typecheck', 'scripts/hooks/stop-format-typecheck.js'],
   ['stop:check-console-log', 'scripts/hooks/check-console-log.js'],
   ['stop:session-end', 'scripts/hooks/session-end.js'],
-  ['stop:evaluate-session', 'scripts/hooks/evaluate-session.js'],
   ['stop:cost-tracker', 'scripts/hooks/cost-tracker.js']
   // stop:desktop-notify is excluded from the valid-payload run because a
   // successful run() fires a real OS notification; its truncation path is

@@ -1,13 +1,50 @@
+const fs = require('fs');
 const path = require('path');
 
 const {
   createInstallTargetAdapter,
+  createManagedOperation,
   createRemappedOperation,
   isForeignPlatformPath,
+  listRelativeFiles,
   normalizeRelativePath,
 } = require('./helpers');
 
 const CLAUDE_ECC_NAMESPACE = 'ecc';
+
+function planLocalOverlay(repoRoot, projectRoot) {
+  const operations = [];
+  const localDir = path.join(repoRoot || '', 'local');
+
+  if (!repoRoot || !fs.existsSync(localDir) || !fs.statSync(localDir).isDirectory()) {
+    return operations;
+  }
+
+  const effectiveProjectRoot = projectRoot || repoRoot;
+  const targetRoot = path.join(effectiveProjectRoot, '.claude');
+
+  const rulesFiles = listRelativeFiles(path.join(localDir, 'rules'));
+  for (const file of rulesFiles) {
+    operations.push(createManagedOperation({
+      moduleId: 'local-overlay',
+      sourceRelativePath: normalizeRelativePath(path.join('local', 'rules', file)),
+      destinationPath: path.join(targetRoot, 'rules', file),
+      strategy: 'preserve-relative-path',
+    }));
+  }
+
+  const commandsFiles = listRelativeFiles(path.join(localDir, 'commands'));
+  for (const file of commandsFiles) {
+    operations.push(createManagedOperation({
+      moduleId: 'local-overlay',
+      sourceRelativePath: normalizeRelativePath(path.join('local', 'commands', file)),
+      destinationPath: path.join(targetRoot, 'commands', file),
+      strategy: 'preserve-relative-path',
+    }));
+  }
+
+  return operations;
+}
 
 function getClaudeManagedDestinationPath(adapter, sourceRelativePath, input) {
   const normalizedSourcePath = normalizeRelativePath(sourceRelativePath);
@@ -63,7 +100,7 @@ module.exports = createInstallTargetAdapter({
       homeDir: input.homeDir,
     };
 
-    return modules.flatMap(module => {
+    const baseOperations = modules.flatMap(module => {
       const paths = Array.isArray(module.paths) ? module.paths : [];
       return paths
         .filter(p => !isForeignPlatformPath(p, 'claude'))
@@ -87,5 +124,8 @@ module.exports = createInstallTargetAdapter({
           return adapter.createScaffoldOperation(module.id, sourceRelativePath, planningInput);
         });
     });
+
+    const overlayOperations = planLocalOverlay(input.repoRoot, input.projectRoot);
+    return [...baseOperations, ...overlayOperations];
   },
 });

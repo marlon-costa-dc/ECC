@@ -14,32 +14,17 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '../..');
-const TARGETS = [
-  'README.md',
-  'skills',
-  'commands',
-  'agents',
-  'docs',
-  '.opencode/commands',
-];
+const TARGETS = ['README.md', 'skills', 'commands', 'agents', 'docs', '.opencode/commands'];
 
-const EXEMPT_PREFIXES = [
-  'docs/fixes/',
-];
+const EXEMPT_PREFIXES = ['docs/fixes/'];
 
-const PLACEHOLDER_USERNAMES = new Set([
-  'example',
-  'me',
-  'user',
-  'username',
-  'you',
-  'yourname',
-  'yourusername',
-  'your-username',
-]);
+const PLACEHOLDER_USERNAMES = new Set(['alice', 'bob', 'example', 'me', 'user', 'username', 'you', 'yourname', 'yourusername', 'your-username']);
 
 const POSIX_USER_RE = /\/Users\/([a-zA-Z][a-zA-Z0-9._-]*)/g;
 const WIN_USER_RE = /C:\\Users\\([a-zA-Z][a-zA-Z0-9._-]*)/gi;
+// Linux home paths (e.g. /home/marlonsc) — the exact shape behind the
+// .ai-hub ADR-0001 portability defect; keep the placeholder allowlist applied.
+const LINUX_USER_RE = /\/home\/([a-zA-Z][a-zA-Z0-9._-]*)/g;
 
 function repoRelative(file) {
   return path.relative(ROOT, file).split(path.sep).join('/');
@@ -53,7 +38,7 @@ function isExempt(file) {
 function findLeaks(content) {
   const leaks = [];
 
-  for (const pattern of [POSIX_USER_RE, WIN_USER_RE]) {
+  for (const pattern of [POSIX_USER_RE, WIN_USER_RE, LINUX_USER_RE]) {
     pattern.lastIndex = 0;
     let match;
 

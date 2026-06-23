@@ -6,6 +6,8 @@ description: Sync documentation from source-of-truth files such as scripts, sche
 
 Sync documentation with the codebase, generating from source-of-truth files.
 
+> Configs emitidos aqui ficam portáveis (${HOME}/relativo, nunca caminho absoluto); empurrar governança/self-config a repos externos exige autorização explícita do operador (AGENTS.md R10 / .ai-hub ADR-0001) — guardrail nunca contornado.
+
 ## Step 1: Identify Sources of Truth
 
 | Source | Generates |

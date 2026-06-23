@@ -942,6 +942,25 @@ function isClaudeSettingsPath(filePath) {
   return /(^|\/)\.claude\/settings(?:\.[^/]+)?\.json$/.test(normalized);
 }
 
+/**
+ * Scratch/non-project paths the fact-forcing Edit/Write gate should skip:
+ *   - System temp dirs (/tmp, /var/tmp, /private/tmp, /private/var/tmp) —
+ *     ephemeral working files, never project source.
+ *   - Claude auto-memory scratch (~/.claude/projects/<proj>/memory/) — the
+ *     agent's own index/topic notes, not callable code with importers.
+ * The gate still fires for every real repository file. Narrowing it here
+ * removes friction on scratch writes without weakening enforcement on code.
+ *
+ * @param {string} filePath
+ * @returns {boolean}
+ */
+function isScratchPath(filePath) {
+  const normalized = normalizeForMatch(filePath);
+  if (/^\/+(?:private\/)?(?:var\/)?tmp\//.test(normalized)) return true;
+  if (/\/\.claude\/projects\/[^/]+\/memory\//.test(normalized)) return true;
+  return false;
+}
+
 function isReadOnlyGitIntrospection(command) {
   const trimmed = String(command || '').trim();
   if (!trimmed || /[\r\n;&|><`$()]/.test(trimmed)) {
@@ -1151,7 +1170,7 @@ function run(rawInput) {
 
   if (toolName === 'Edit' || toolName === 'Write') {
     const filePath = toolInput.file_path || '';
-    if (!filePath || isClaudeSettingsPath(filePath)) {
+    if (!filePath || isClaudeSettingsPath(filePath) || isScratchPath(filePath)) {
       return rawInput; // allow
     }
 
@@ -1182,7 +1201,7 @@ function run(rawInput) {
     const edits = toolInput.edits || [];
     for (const edit of edits) {
       const filePath = edit.file_path || '';
-      if (filePath && !isClaudeSettingsPath(filePath) && !isChecked(filePath)) {
+      if (filePath && !isClaudeSettingsPath(filePath) && !isScratchPath(filePath) && !isChecked(filePath)) {
         const { ok, denials } = markCheckedAndCountDenial(filePath);
         if (!ok) {
           return allowWithStateWarning();

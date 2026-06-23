@@ -1,0 +1,13 @@
+# Code Examples
+
+## Example 1
+
+```json
+"codescene": {
+  "command": "npx",
+  "args": ["-y", "@codescene/codehealth-mcp"],
+  "env": {
+    "CS_ACCESS_TOKEN": "YOUR_CS_ACCESS_TOKEN_HERE"
+  }
+}
+```

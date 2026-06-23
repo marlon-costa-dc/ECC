@@ -1,28 +1,23 @@
 ---
 name: security-bounty-hunter
-description: Hunt for exploitable, bounty-worthy security issues in repositories. Focuses on remotely reachable vulnerabilities that qualify for real reports instead of noisy local-only findings.
-metadata:
-  origin: ECC direct-port adaptation
+description: Use when scanning a repository for exploitable, bounty-worthy, remotely reachable security issues or preparing responsible disclosure and bounty submissions.
+origin: ECC direct-port adaptation
 version: "1.0.0"
 ---
 
 # Security Bounty Hunter
 
-Use this when the goal is practical vulnerability discovery for responsible disclosure or bounty submission, not a broad best-practices review.
+Focus on remotely reachable, user-controlled attack paths worth real bounty reports, not broad best-practices review.
+
+> Sujeito à lei no-bypass (AGENTS.md §0 / ADR-001 resolver-nunca-esconder): corrigir na raiz, verificar verde com evidência fresca, nunca mascarar/pular/adiar-como-pronto.
 
 ## When to Use
 
 - Scanning a repository for exploitable vulnerabilities
 - Preparing a Huntr, HackerOne, or similar bounty submission
-- Triage where the question is "does this actually pay?" rather than "is this theoretically unsafe?"
-
-## How It Works
-
-Bias toward remotely reachable, user-controlled attack paths and throw away patterns that platforms routinely reject as informative or out of scope.
+- Triage where the question is "does this actually pay?"
 
 ## In-Scope Patterns
-
-These are the kinds of issues that consistently matter:
 
 | Pattern | CWE | Typical impact |
 | --- | --- | --- |
@@ -36,65 +31,18 @@ These are the kinds of issues that consistently matter:
 
 ## Skip These
 
-These are usually low-signal or out of bounty scope unless the program says otherwise:
-
-- Local-only `pickle.loads`, `torch.load`, or equivalent with no remote path
-- `eval()` or `exec()` in CLI-only tooling
-- `shell=True` on fully hardcoded commands
-- Missing security headers by themselves
-- Generic rate-limiting complaints without exploit impact
-- Self-XSS requiring the victim to paste code manually
-- CI/CD injection that is not part of the target program scope
-- Demo, example, or test-only code
+Local-only deserialization, `eval()` in CLI tools, `shell=True` on hardcoded commands, missing headers alone, rate-limit complaints, self-XSS, out-of-scope CI/CD injection, and demo/test code.
 
 ## Workflow
 
-1. Check scope first: program rules, SECURITY.md, disclosure channel, and exclusions.
-2. Find real entrypoints: HTTP handlers, uploads, background jobs, webhooks, parsers, and integration endpoints.
-3. Run static tooling where it helps, but treat it as triage input only.
-4. Read the real code path end to end.
+1. Check scope: program rules, SECURITY.md, disclosure channel, exclusions.
+2. Find entrypoints: HTTP handlers, uploads, background jobs, webhooks, parsers, integrations.
+3. Run static tooling as triage input only.
+4. Read the code path end to end.
 5. Prove user control reaches a meaningful sink.
-6. Confirm exploitability and impact with the smallest safe PoC possible.
+6. Confirm exploitability with the smallest safe PoC possible.
 7. Check for duplicates before drafting a report.
-
-## Example Triage Loop
-
-```bash
-semgrep --config=auto --severity=ERROR --severity=WARNING --json
-```
-
-Then manually filter:
-
-- drop tests, demos, fixtures, vendored code
-- drop local-only or non-reachable paths
-- keep only findings with a clear network or user-controlled route
-
-## Report Structure
-
-```markdown
-## Description
-[What the vulnerability is and why it matters]
-
-## Vulnerable Code
-[File path, line range, and a small snippet]
-
-## Proof of Concept
-[Minimal working request or script]
-
-## Impact
-[What the attacker can achieve]
-
-## Affected Version
-[Version, commit, or deployment target tested]
-```
 
 ## Quality Gate
 
-Before submitting:
-
-- The code path is reachable from a real user or network boundary
-- The input is genuinely user-controlled
-- The sink is meaningful and exploitable
-- The PoC works
-- The issue is not already covered by an advisory, CVE, or open ticket
-- The target is actually in scope for the bounty program
+Before submitting, confirm: reachable code path, user-controlled input, exploitable sink, working PoC, not a duplicate, in scope.

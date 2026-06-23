@@ -1,0 +1,18 @@
+# Code Examples
+
+## Example 1
+
+```
+Goal: Authenticated users can download dashboard data as a CSV file.
+In scope: Export of currently filtered rows; filename includes date.
+Out of scope: Scheduled exports, email delivery, Excel format.
+Assumptions: Max row count is under 10k; no PII in exported fields.
+
+AC-001: Export generates file with correct headers
+- Scenario: authenticated user, at least one data row visible
+- Action: click "Export CSV"
+- Expected: browser downloads file with columns [id, name, created_at]
+- Must not: expose internal fields or rows belonging to other users
+- Verification: automated integration test + manual schema spot-check
+- Priority: Required
+```

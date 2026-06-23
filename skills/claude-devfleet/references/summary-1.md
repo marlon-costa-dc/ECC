@@ -1,0 +1,7 @@
+- Always confirm the plan with the user before dispatching, unless they said to go ahead.
+- Include mission titles and IDs when reporting status.
+- If a mission fails, read its report before retrying.
+- Check `get_dashboard()` for agent slot availability before bulk dispatching.
+- Mission dependencies form a DAG — do not create circular dependencies.
+- Each agent runs in an isolated git worktree and auto-merges on completion. If a merge conflict occurs, the changes remain on the agent's worktree branch for manual resolution.
+- When manually creating missions, always set `auto_dispatch=true` if you want them to trigger automatically when dependencies complete. Without this flag, missions stay in `draft` status.

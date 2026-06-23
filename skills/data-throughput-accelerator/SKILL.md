@@ -1,56 +1,45 @@
 ---
 name: data-throughput-accelerator
-description: Use when large data ingestion, backfill, export, ETL, warehouse loading, manifest catch-up, or table synchronization needs to become much faster while preserving data correctness.
-metadata:
-  origin: ECC
-tools: Read, Write, Edit, Bash, Grep, Glob
+description: Use when large data ingestion, backfill, export, ETL, warehouse loading, manifest catch-up, or table synchronization must become faster while preserving correctness and producing auditable accounting of rows, files, and tail.
+origin: ECC
 ---
 
 # Data Throughput Accelerator
 
-Use this skill when the bottleneck is moving, transforming, or saving lots of
-data. The goal is not just speed. The goal is faster correct data landing in the
-right place with proof.
+Use this skill when the bottleneck is moving, transforming, or saving lots of data.
 
 ## First Distinction
 
-Separate these before optimizing:
+Separate before optimizing:
 
-- source extraction speed;
-- network transfer speed;
-- warehouse/load speed;
-- transform speed;
-- serving-table freshness;
-- live tail growth while the job runs.
-
-A pipeline can be "fast" and still appear behind if new data arrives faster
-than the final catch-up window.
+- source extraction speed
+- network transfer speed
+- warehouse/load speed
+- transform speed
+- serving-table freshness
+- live tail growth during the run
 
 ## Fast Path Heuristics
 
 - Move compute to where the data already is.
 - Prefer warehouse-native scans, joins, and appends for large landed files.
-- Use manifests or checkpoints so completed files/partitions are skipped.
-- Use partitioning and clustering that match the read and append pattern.
+- Use manifests or checkpoints to skip completed files/partitions.
+- Partition and cluster by read and append patterns.
 - Batch small files, requests, and writes.
-- Make writes idempotent through unique keys, manifests, or replaceable staging.
+- Make writes idempotent with unique keys, manifests, or replaceable staging.
 - Keep raw, derived, and serving tables separately accountable.
 
 ## Workflow
 
-1. Read the current source, target, and manifest contracts.
-2. Measure backlog: external files, manifest rows, raw rows, derived rows,
-   min/max timestamps, and unprocessed counts.
+1. Read source, target, and manifest contracts.
+2. Measure backlog: files, manifest rows, raw rows, derived rows, timestamps, unprocessed counts.
 3. Run a safe catch-up or sample benchmark.
-4. Compare variants: batch size, worker count, warehouse SQL, file grouping,
-   staging shape, and manifest update method.
+4. Compare variants: batch size, workers, warehouse SQL, file grouping, staging shape, manifest method.
 5. Promote only the fastest path that keeps counts and timestamps coherent.
-6. Codify the path as a CLI, scheduled job, workflow, or runbook.
-7. Rerun final accounting after the codified path executes.
+6. Codify the path as a CLI, job, workflow, or runbook.
+7. Rerun final accounting after execution.
 
 ## Accounting Output
-
-Use a hard accounting block:
 
 ```text
 Data throughput result:
@@ -68,6 +57,5 @@ Data throughput result:
 - Do not delete raw data to make a metric look better.
 - Do not skip failed files silently.
 - Do not mix historical backfill status with live-tail freshness.
-- Do not call a pipeline complete until the target tables and manifest agree.
-- For finance, healthcare, regulated, or customer-impacting data, preserve
-  replay evidence and approval gates.
+- Do not call a pipeline complete until target tables and manifest agree.
+- For regulated or customer-impacting data, preserve replay evidence and approval gates.

@@ -1,96 +1,36 @@
 ---
 name: google-workspace-ops
-description: Operate across Google Drive, Docs, Sheets, and Slides as one workflow surface for plans, trackers, decks, and shared documents. Use when the user needs to find, summarize, edit, migrate, or clean up Google Workspace assets without dropping to raw tool calls.
-metadata:
-  origin: ECC
+description: Use when the user needs to operate across Google Drive, Docs, Sheets, and Slides as one workflow surface to find, summarize, edit, migrate, or clean up shared plans, trackers, decks, and documents without dropping to raw tool calls.
+origin: ECC
 ---
 
 # Google Workspace Ops
 
-This skill is for operating shared docs, spreadsheets, and decks as working systems, not just editing one file in isolation.
+Operate shared docs, spreadsheets, and decks as working systems. Use Drive as the entry point, then the right specialist: Docs for text, Sheets for tabular data and formulas, Slides for decks and template migration.
 
 ## When to Use
 
-- User needs to find a doc, sheet, or deck and update it in place
-- Consolidating plans, trackers, notes, or customer lists stored in Google Drive
-- Cleaning or restructuring a shared spreadsheet
-- Importing, repairing, or reformatting a Google Slides deck
-- Producing summaries from Docs, Sheets, or Slides for decision-making
-
-## Preferred Tool Surface
-
-Use Google Drive as the entry point, then switch to the right specialist:
-
-- Google Docs for text-heavy docs
-- Google Sheets for tabular work, formulas, and charts
-- Google Slides for decks, imports, template migration, and cleanup
-
-Do not guess structure from filenames alone. Inspect first.
+- Find and update a doc, sheet, or deck in place.
+- Consolidate plans, trackers, notes, or customer lists in Drive.
+- Clean, restructure, or repair a spreadsheet or slide deck.
+- Produce summaries from Docs, Sheets, or Slides for decisions.
 
 ## Workflow
 
-### 1. Find the asset
-
-Start with the Drive search surface to locate:
-
-- the exact file
-- sibling assets
-- likely duplicates
-- recently modified versions
-
-If several documents look similar, confirm by title, owner, modified time, or folder.
-
-### 2. Inspect before editing
-
-Before making changes:
-
-- summarize current structure
-- identify tabs, headings, or slide count
-- detect whether the task is local cleanup or structural surgery
-
-Pick the smallest tool that can safely perform the work.
-
-### 3. Edit with precision
-
-- For Docs: use index-aware edits, not vague rewrites
-- For Sheets: operate on explicit tabs and ranges
-- For Slides: distinguish content edits from visual cleanup or template migration
-
-If the requested work is visual or layout-sensitive, iterate with inspection and verification instead of one giant blind update.
-
-### 4. Keep the working system clean
-
-When the file is part of a larger workflow, also surface:
-
-- duplicate trackers
-- outdated decks
-- stale docs vs canonical docs
-- whether the asset should be archived, merged, or renamed
+1. **Find.** Search Drive for the exact file, siblings, duplicates, and recent versions.
+2. **Inspect.** Summarize structure (tabs, headings, slide count) before editing.
+3. **Edit.** Use index-aware edits for Docs, explicit tabs/ranges for Sheets, and content-first changes for Slides.
+4. **Clean.** Surface duplicates, stale docs, and assets that should be archived, merged, or renamed.
 
 ## Output Format
 
-Use:
-
 ```text
-ASSET
-- file name
-- type
-- why this is the right file
-
-CURRENT STATE
-- structure summary
-- key problems or blockers
-
-ACTION
-- edits made or recommended
-
-FOLLOW-UPS
-- archive / merge / duplicate cleanup / next file to update
+ASSET — file name, type, and why it is the right file
+CURRENT STATE — structure summary and blockers
+ACTION — edits made or recommended
+FOLLOW-UPS — archive / merge / duplicate cleanup / next file
 ```
 
-## Good Use Cases
+## Related Skills
 
-- "Find the active planning doc and condense it"
-- "Clean up this customer spreadsheet and show me the churn-risk rows"
-- "Import this deck into Slides and make it presentable"
-- "Find the current tracker, not the stale duplicate"
+- `google-workspace-ops/references/workspace-patterns.md` for detailed patterns and common formulas

@@ -245,14 +245,13 @@
     {
       "id": "workflow-quality",
       "kind": "skills",
-      "description": "Evaluation, TDD, verification, compaction, and learning skills, including the legacy continuous-learning v1 path.",
+      "description": "Evaluation, TDD, verification, compaction, and the canonical continuous-learning-v2 instinct workflow.",
       "paths": [
         "skills/agent-sort",
         "skills/agent-introspection-debugging",
         "skills/ai-regression-testing",
         "skills/configure-ecc",
         "skills/code-tour",
-        "skills/continuous-learning",
         "skills/continuous-learning-v2",
         "skills/council",
         "skills/e2e-testing",

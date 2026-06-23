@@ -176,14 +176,14 @@ kimi plugin install .
 
 | ECC Feature | Kimi CLI Status |
 |-------------|-----------------|
-| 251 Skills | ✅ Full parity (SKILL.md compatible) |
-| 63 Agents | ⚠️ Mapped to 3 built-in subagents + skills |
-| 79 Commands | ⚠️ Converted to Skills |
-| Hooks | ✅ Full parity (via config.toml) |
-| Rules | ✅ Full parity (via sessionStart + AGENTS.md) |
-| MCP Servers | ✅ Full parity |
-| Session Start Context | ✅ Full parity |
-| Continuous Learning | ✅ Supported |
+| 251 Skills | PASS: Full parity (SKILL.md compatible) |
+| 63 Agents | WARNING: Mapped to 3 built-in subagents + skills |
+| 79 Commands | WARNING: Converted to Skills |
+| Hooks | PASS: Full parity (via config.toml) |
+| Rules | PASS: Full parity (via sessionStart + AGENTS.md) |
+| MCP Servers | PASS: Full parity |
+| Session Start Context | PASS: Full parity |
+| Continuous Learning | PASS: Supported |
 
 ## License
 

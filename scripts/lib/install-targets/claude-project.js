@@ -1,13 +1,71 @@
+const fs = require('fs');
 const path = require('path');
 
 const {
   createInstallTargetAdapter,
+  createManagedOperation,
   createRemappedOperation,
   isForeignPlatformPath,
   normalizeRelativePath,
 } = require('./helpers');
 
 const CLAUDE_ECC_NAMESPACE = 'ecc';
+
+function collectLocalFiles(dirPath, prefix = '') {
+  if (!fs.existsSync(dirPath)) {
+    return [];
+  }
+
+  const files = [];
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const entryPath = path.join(dirPath, entry.name);
+    const relativePath = prefix ? path.join(prefix, entry.name) : entry.name;
+
+    if (entry.isDirectory()) {
+      files.push(...collectLocalFiles(entryPath, relativePath));
+    } else if (entry.isFile()) {
+      files.push(relativePath);
+    }
+  }
+
+  return files;
+}
+
+function planLocalOverlay(repoRoot, projectRoot) {
+  const operations = [];
+  const localDir = path.join(repoRoot || '', 'local');
+
+  if (!repoRoot || !fs.existsSync(localDir) || !fs.statSync(localDir).isDirectory()) {
+    return operations;
+  }
+
+  const effectiveProjectRoot = projectRoot || repoRoot;
+  const targetRoot = path.join(effectiveProjectRoot, '.claude');
+
+  const rulesFiles = collectLocalFiles(path.join(localDir, 'rules'));
+  for (const file of rulesFiles) {
+    operations.push(createManagedOperation({
+      moduleId: 'local-overlay',
+      sourceRelativePath: normalizeRelativePath(path.join('local', 'rules', file)),
+      destinationPath: path.join(targetRoot, 'rules', file),
+      strategy: 'preserve-relative-path',
+    }));
+  }
+
+  const commandsFiles = collectLocalFiles(path.join(localDir, 'commands'));
+  for (const file of commandsFiles) {
+    operations.push(createManagedOperation({
+      moduleId: 'local-overlay',
+      sourceRelativePath: normalizeRelativePath(path.join('local', 'commands', file)),
+      destinationPath: path.join(targetRoot, 'commands', file),
+      strategy: 'preserve-relative-path',
+    }));
+  }
+
+  return operations;
+}
 
 function getClaudeManagedDestinationPath(adapter, sourceRelativePath, input) {
   const normalizedSourcePath = normalizeRelativePath(sourceRelativePath);
@@ -63,7 +121,7 @@ module.exports = createInstallTargetAdapter({
       homeDir: input.homeDir,
     };
 
-    return modules.flatMap(module => {
+    const baseOperations = modules.flatMap(module => {
       const paths = Array.isArray(module.paths) ? module.paths : [];
       return paths
         .filter(p => !isForeignPlatformPath(p, 'claude'))
@@ -87,5 +145,8 @@ module.exports = createInstallTargetAdapter({
           return adapter.createScaffoldOperation(module.id, sourceRelativePath, planningInput);
         });
     });
+
+    const overlayOperations = planLocalOverlay(input.repoRoot, input.projectRoot);
+    return [...baseOperations, ...overlayOperations];
   },
 });

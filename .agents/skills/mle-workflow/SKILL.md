@@ -36,5 +36,5 @@ Use only the lanes that fit the system in front of you. Do not assume every mode
 
 ## Task Simulations
 
-> **Extended guidance**: see [`references/summary-1.md`](references/summary-1.md) for the full content that exceeded the Waza token budget.
+> **Extended guidance**: see `references/summary-*.md` for the full content that exceeded the Waza token budget.
 

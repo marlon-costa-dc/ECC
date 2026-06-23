@@ -1,101 +1,77 @@
-Map intent + scope + tech stack (from Phase 0) to specific ECC components.
+# Prompt Optimizer
 
-#### By Intent Type
+Analyze a draft prompt, critique it, match it to ECC ecosystem components,
+and output a complete optimized prompt the user can paste and run.
 
-| Intent | Commands | Skills | Agents |
-|--------|----------|--------|--------|
-| New Feature | /plan, /tdd, /code-review, /verify | tdd-workflow, verification-loop | planner, tdd-guide, code-reviewer |
-| Bug Fix | /tdd, /build-fix, /verify | tdd-workflow | tdd-guide, build-error-resolver |
-| Refactor | /refactor-clean, /code-review, /verify | verification-loop | refactor-cleaner, code-reviewer |
-| Research | /plan | search-first, iterative-retrieval | — |
-| Testing | /tdd, /e2e, /test-coverage | tdd-workflow, e2e-testing | tdd-guide, e2e-runner |
-| Review | /code-review | security-review | code-reviewer, security-reviewer |
-| Documentation | /update-docs, /update-codemaps | — | doc-updater |
-| Infrastructure | /plan, /verify | docker-patterns, deployment-patterns, database-migrations | architect |
-| Design (MEDIUM-HIGH) | /plan | — | planner, architect |
-| Design (EPIC) | — | blueprint (invoke as skill) | planner, architect |
+## When to Use
 
-#### By Tech Stack
+- User says "optimize this prompt", "improve my prompt", "rewrite this prompt"
+- User says "help me write a better prompt for..."
+- User says "what's the best way to ask Claude Code to..."
+- User says "优化prompt", "改进prompt", "怎么写prompt", "帮我优化这个指令"
+- User pastes a draft prompt and asks for feedback or enhancement
+- User says "I don't know how to prompt for this"
+- User says "how should I use ECC for..."
+- User explicitly invokes `/prompt-optimize`
 
-| Tech Stack | Skills to Add | Agent |
-|------------|--------------|-------|
-| Python / Django | django-patterns, django-tdd, django-security, django-verification, python-patterns, python-testing | python-reviewer |
-| Go | golang-patterns, golang-testing | go-reviewer, go-build-resolver |
-| Spring Boot / Java | springboot-patterns, springboot-tdd, springboot-security, springboot-verification, java-coding-standards, jpa-patterns | java-reviewer |
-| Quarkus / Java | quarkus-patterns, quarkus-tdd, quarkus-security, quarkus-verification, java-coding-standards, jpa-patterns | java-reviewer |
-| Kotlin / Android | kotlin-coroutines-flows, compose-multiplatform-patterns, android-clean-architecture | kotlin-reviewer |
-| TypeScript / React | frontend-patterns, backend-patterns, coding-standards | code-reviewer |
-| Swift / iOS | swiftui-patterns, swift-concurrency-6-2, swift-actor-persistence, swift-protocol-di-testing | code-reviewer |
-| PostgreSQL | postgres-patterns, database-migrations | database-reviewer |
-| Perl | perl-patterns, perl-testing, perl-security | code-reviewer |
-| C++ | cpp-coding-standards, cpp-testing | code-reviewer |
-| Other / Unlisted | coding-standards (universal) | code-reviewer |
+### Do Not Use When
 
-### Phase 4: Missing Context Detection
+- User wants the task done directly (just execute it)
+- User says "优化代码", "优化性能", "optimize this code", "optimize performance" — these are refactoring tasks, not prompt optimization
+- User is asking about ECC configuration (use `configure-ecc` instead)
+- User wants a skill inventory (use `skill-stocktake` instead)
+- User says "just do it" or "直接做"
 
-Scan the prompt for missing critical information. Check each item and mark
-whether Phase 0 auto-detected it or the user must supply it:
+## How It Works
 
-- [ ] **Tech stack** — Detected in Phase 0, or must user specify?
-- [ ] **Target scope** — Files, directories, or modules mentioned?
-- [ ] **Acceptance criteria** — How to know the task is done?
-- [ ] **Error handling** — Edge cases and failure modes addressed?
-- [ ] **Security requirements** — Auth, input validation, secrets?
-- [ ] **Testing expectations** — Unit, integration, E2E?
-- [ ] **Performance constraints** — Load, latency, resource limits?
-- [ ] **UI/UX requirements** — Design specs, responsive, a11y? (if frontend)
-- [ ] **Database changes** — Schema, migrations, indexes? (if data layer)
-- [ ] **Existing patterns** — Reference files or conventions to follow?
-- [ ] **Scope boundaries** — What NOT to do?
+**Advisory only — do not execute the user's task.**
 
-**If 3+ critical items are missing**, ask the user up to 3 clarification
-questions before generating the optimized prompt. Then incorporate the
-answers into the optimized prompt.
+Do NOT write code, create files, run commands, or take any implementation
+action. Your ONLY output is an analysis plus an optimized prompt.
 
-### Phase 5: Workflow & Model Recommendation
+If the user says "just do it", "直接做", or "don't optimize, just execute",
+do not switch into implementation mode inside this skill. Tell the user this
+skill only produces optimized prompts, and instruct them to make a normal
+task request if they want execution instead.
 
-Determine where this prompt sits in the development lifecycle:
+Run this 6-phase pipeline sequentially. Present results using the Output Format below.
 
-```
-Research → Plan → Implement (TDD) → Review → Verify → Commit
-```
+### Analysis Pipeline
 
-For MEDIUM+ tasks, always start with /plan. For EPIC tasks, use blueprint skill.
+### Phase 0: Project Detection
 
-**Model recommendation** (include in output):
+Before analyzing the prompt, detect the current project context:
 
-| Scope | Recommended Model | Rationale |
-|-------|------------------|-----------|
-| TRIVIAL-LOW | Sonnet 4.6 | Fast, cost-efficient for simple tasks |
-| MEDIUM | Sonnet 4.6 | Best coding model for standard work |
-| HIGH | Sonnet 4.6 (main) + Opus 4.6 (planning) | Opus for architecture, Sonnet for implementation |
-| EPIC | Opus 4.6 (blueprint) + Sonnet 4.6 (execution) | Deep reasoning for multi-session planning |
+1. Check if a `CLAUDE.md` exists in the working directory — read it for project conventions
+2. Detect tech stack from project files:
+   - `package.json` → Node.js / TypeScript / React / Next.js
+   - `go.mod` → Go
+   - `pyproject.toml` / `requirements.txt` → Python
+   - `Cargo.toml` → Rust
+   - `build.gradle` / `pom.xml` → Java / Kotlin (then check for `quarkus` in build file → Quarkus, or `spring-boot` → Spring Boot)
+   - `Package.swift` → Swift
+   - `Gemfile` → Ruby
+   - `composer.json` → PHP
+   - `*.csproj` / `*.sln` → .NET
+   - `Makefile` / `CMakeLists.txt` → C / C++
+   - `cpanfile` / `Makefile.PL` → Perl
+3. Note detected tech stack for use in Phase 3 and Phase 4
 
-**Multi-prompt splitting** (for HIGH/EPIC scope):
+If no project files are found (e.g., the prompt is abstract or for a new project),
+skip detection and flag "tech stack unknown" in Phase 4.
 
-For tasks that exceed a single session, split into sequential prompts:
-- Prompt 1: Research + Plan (use search-first skill, then /plan)
-- Prompt 2-N: Implement one phase per prompt (each ends with /verify)
-- Final Prompt: Integration test + /code-review across all phases
-- Use /save-session and /resume-session to preserve context between sessions
+### Phase 1: Intent Detection
 
----
+Classify the user's task into one or more categories:
 
-## Output Format
+| Category | Signal Words | Example |
+|----------|-------------|---------|
+| New Feature | build, create, add, implement, 创建, 实现, 添加 | "Build a login page" |
+| Bug Fix | fix, broken, not working, error, 修复, 报错 | "Fix the auth flow" |
+| Refactor | refactor, clean up, restructure, 重构, 整理 | "Refactor the API layer" |
+| Research | how to, what is, explore, investigate, 怎么, 如何 | "How to add SSO" |
+| Testing | test, coverage, verify, 测试, 覆盖率 | "Add tests for the cart" |
+| Review | review, audit, check, 审查, 检查 | "Review my PR" |
+| Documentation | document, update docs, 文档 | "Update the API docs" |
 
-Present your analysis in this exact structure. Respond in the same language
-as the user's input.
-
-### Section 1: Prompt Diagnosis
-
-**Strengths:** List what the original prompt does well.
-
-**Issues:**
-
-| Issue | Impact | Suggested Fix |
-|-------|--------|---------------|
-| (problem) | (consequence) | (how to fix) |
-
----
-
-Continue in `summary-2.md`.
+> Continued in [`summary-2.md`](summary-2.md)

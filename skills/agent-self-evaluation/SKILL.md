@@ -47,5 +47,5 @@ Every score below 5 MUST cite specific evidence. A score of 3 cannot just say "c
 
 ### Step 1: Collect the Raw Material
 
-> **Extended guidance**: see [`references/summary-1.md`](references/summary-1.md) for the full content that exceeded the Waza token budget.
+> **Extended guidance**: see `references/summary-*.md` for the full content that exceeded the Waza token budget.
 

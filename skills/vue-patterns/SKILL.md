@@ -78,5 +78,5 @@ src/
 
 ### Presentational vs Container
 
-> **Extended guidance**: see [`references/summary-1.md`](references/summary-1.md) for the full content that exceeded the Waza token budget.
+> **Extended guidance**: see `references/summary-*.md` for the full content that exceeded the Waza token budget.
 

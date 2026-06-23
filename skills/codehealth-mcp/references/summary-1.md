@@ -1,52 +1,60 @@
-```md
-## Code Health (CodeScene MCP)
+# Code Health MCP (CodeScene)
 
-Before modifying any file: run `code_health_review`, note score and issues.
+Structural maintainability feedback for AI-assisted coding. Complements style/lint skills (`coding-standards`, `plankton-code-quality`) with **design-level** health scores and regression gates.
 
-- Score below 5: problematic range — scope changes narrowly.
-- Score 5–7: warning range — no broad refactors.
+**Upstream:** [codescene-oss/codescene-mcp-server](https://github.com/codescene-oss/codescene-mcp-server)
+**Package:** `@codescene/codehealth-mcp` (stdio via npx)
 
-After each change: run `code_health_score` to verify delta.
+## Security and boundaries
 
-- If score regressed: fix before continuing; never declare done if score dropped.
+**Opt-in (ECC):** The `codescene` block in `mcp-configs/mcp-servers.json` is a template only. ECC plugin installs do not auto-enable bundled MCP servers. Copy the entry into your config only if you want it. You can exclude it during ECC install/sync with `ECC_DISABLED_MCPS=codescene,...`.
 
-Before every commit: run `pre_commit_code_health_safeguard`.
+**Credentials:** No bundled token. Set `CS_ACCESS_TOKEN` yourself (see [getting-a-personal-access-token.md](https://github.com/codescene-oss/codescene-mcp-server/blob/main/docs/getting-a-personal-access-token.md) in the upstream repo). Never commit tokens to the repo.
 
-Before PR: run `analyze_change_set`.
-```
+**What the tools read:** When invoked, tools analyze files and git state **in the local repository** you point them at (paths you pass, plus branch context for `analyze_change_set`). They do not run by themselves. For standalone mode, follow upstream privacy docs: [codescene-mcp-server README](https://github.com/codescene-oss/codescene-mcp-server#frequently-asked-questions) and [CodeScene policies](https://codescene.com/policies). Do not use this skill for secrets, credentials, or paths you do not want analyzed.
 
-### Example: anti-patterns vs correct loop
+**If the MCP is unavailable (offline, bad token, server crash):** Do not invent Code Health scores. Tell the user the check was skipped. Continue only with explicit user approval. Prefer lint/tests/verification-loop for gating when MCP is down. Re-enable checks once the server connects.
 
-```markdown
-# BAD: Edit first, check later
-[large refactor without code_health_review]
+## When to Use
 
-# BAD: Ignore score drop
-"Tests pass" → mark task done while Code Health decreased
+- User asks to **review code quality**, **refactor** a file, or check if **AI changes degraded** maintainability
+- Before editing a **hotspot**, legacy module, or unfamiliar file
+- Before **commit** or **pull request** when you need a maintainability safeguard
+- After a large agent-written diff — verify Code Health did not regress
+- Pair with `verification-loop`, `tdd-workflow`, or `/quality-gate` as a structural check (not a replacement for tests/lint)
 
-# BAD: Broad refactor on red-score file (below 5)
-Drive-by cleanup across the module
+## When to Activate
 
-# GOOD: review → small change → score → commit safeguard → analyze_change_set
-```
+Same triggers as **When to Use** above — this heading is what ECC uses for skill auto-activation.
 
-## Pairing with ECC
+## How It Works
 
-| ECC skill / flow | Code Health MCP role |
-|------------------|----------------------|
-| `coding-standards` | Style/naming; Code Health = structure/complexity |
-| `plankton-code-quality` | Write-time lint/format; Code Health = pre/post edit structural gate |
-| `verification-loop` / `/quality-gate` | Add structural regression check before "done" |
-| `security-review` | Security vs maintainability — use both when relevant |
-| `tdd-workflow` | Tests pass ≠ healthy design — check score after refactors |
+### 1. Connect the MCP server
 
-**Context tip:** ECC recommends keeping MCP count low. Enable `codescene` when doing substantive edits; disable when not needed.
+Copy the `codescene` entry from `mcp-configs/mcp-servers.json` into your harness MCP config.
 
-## Related Skills
+**Claude Code** (`~/.claude.json` → `mcpServers`):
 
-- `coding-standards` — baseline conventions
-- `plankton-code-quality` — write-time lint/format hooks
-- `verification-loop` — build/test/lint gate
-- `tdd-workflow` — test-first development
-- `security-review` — security checklist
-- `documentation-lookup` — library docs via Context7 (orthogonal)
+[See code example 1 in `code-examples.md`]
+
+**Project-scoped:** merge the same block into `.mcp.json` at the repo root.
+
+Token setup is documented in the upstream repo (link above). Standalone mode does not require a paid CodeScene platform account for the four tools listed below. Restart the session and confirm the `codescene` server is connected before relying on scores.
+
+### 2. Call standalone tools only
+
+| Tool | When to use |
+|------|-------------|
+| `code_health_review` | Full structural analysis **before** modifying a file |
+| `code_health_score` | Quick numeric score after each change (delta check) |
+| `pre_commit_code_health_safeguard` | Block commits that introduce Code Health regressions |
+| `analyze_change_set` | Branch-level check **before** opening a PR |
+
+Do **not** call platform-only tools (e.g. repository-wide technical debt hotspot lists). Do **not** reference `delta_analysis` — not available on standalone.
+
+### 3. Interpret scores (1–10)
+
+| Range | Meaning | Agent behavior |
+|-------|---------|----------------|
+
+> Continued in [`summary-2.md`](summary-2.md)

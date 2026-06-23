@@ -1,154 +1,119 @@
-def click(self, spec):
-        self.wait_visible(spec); self._trace("click_before", spec)
-        spec.click_input();      self._trace("click_after",  spec)
-
-def type_text(self, spec, text):
-        self.wait_visible(spec); self._trace("type_before", spec, text)
-        # ... existing set_edit_text / keyboard fallback ...
-        self._trace("type_after", spec)
-```
-
-### Caveats
-
-- **PII / credentials**: `type_text` content is `<redacted>` by default. Never set `E2E_TRACE_INCLUDE_TEXT=1` on login or payment flows.
-- **Overhead**: ~50–200ms per action + one PNG per step on disk. Don't enable on the default CI matrix — only on a dedicated flake-repro job.
-- **Artifact bloat**: a long flow produces tens of MB; tune `retention-days` accordingly.
-- **Parallel/rerun hygiene**: this simple example appends to `trace.jsonl` and uses a class-level counter. Clear the artifact directory before reruns, and use per-worker artifact dirs for parallel tests.
-- **Coverage gap**: actions performed outside `BasePage` (raw `pywinauto` calls in test code) are not traced.
-
-## Flaky Test Handling
-
-```python
-# Quarantine — equivalent to Playwright's test.fixme()
-@pytest.mark.skip(reason="Flaky: animation race on slow CI. Issue #42")
-def test_animated_transition(self, app): ...
-
-# Skip in CI only
-@pytest.mark.skipif(os.environ.get("CI") == "true", reason="Flaky in CI #43")
-def test_heavy_load(self, app): ...
-```
-
-Common causes and fixes:
-
-| Cause | Fix |
-|-------|-----|
-| Control not ready | Replace `time.sleep` with `wait_visible` |
-| Window not focused | Add `win.set_focus()` before interactions |
-| Animation in progress | `wait_until(lambda: not loading_indicator.exists())` |
-| Dialog timing | `wait_window(title, timeout=15)` |
-| CI display not ready | Set `DISPLAY` or use virtual desktop in CI |
-| `set_edit_text` raises NotImplementedError | UIA ValuePattern missing (common on Qt 5.x) — `BasePage.type_text` already falls back to `keyboard.send_keys` |
-| Control exists but `wait_visible` times out | Window minimised or off-screen — call `win.restore()` + `win.set_focus()` before waiting |
-
-## Test Isolation & Sandbox
-
-Three tiers of isolation — use the lightest tier that satisfies your needs.
-
-### Tier 1 — Filesystem Isolation (default, always use)
-
-Each test gets its own `APPDATA` / `LOCALAPPDATA` / `TEMP` via `subprocess.Popen` and `Application.connect()`. pytest's `tmp_path` fixture handles cleanup automatically.
-
-```python
-# conftest.py — replace the basic `app` fixture with this
-import os, subprocess, pytest
-from pywinauto import Application
-from config import APP_PATH, APP_ARGS, APP_TITLE, LAUNCH_TIMEOUT, ACTION_TIMEOUT, ARTIFACT_DIR
-
-@pytest.fixture(scope="function")
-def app(request, tmp_path):
-    """Fresh process + isolated user-data dirs per test."""
-    if not APP_PATH:
-        pytest.exit("APP_PATH not set", returncode=1)
-
-# Redirect all per-user storage to an isolated tmp directory
-    sandbox_env = os.environ.copy()
-    sandbox_env["QT_ACCESSIBILITY"]  = "1"
-    sandbox_env["APPDATA"]           = str(tmp_path / "AppData" / "Roaming")
-    sandbox_env["LOCALAPPDATA"]      = str(tmp_path / "AppData" / "Local")
-    sandbox_env["TEMP"] = sandbox_env["TMP"] = str(tmp_path / "Temp")
-    for p in (sandbox_env["APPDATA"], sandbox_env["LOCALAPPDATA"], sandbox_env["TEMP"]):
-        os.makedirs(p, exist_ok=True)
-
-if not APP_TITLE:
-        pytest.exit("APP_TITLE environment variable is not set", returncode=1)
-
-# shlex.split handles quoted args with spaces; plain split() breaks on them
-    import shlex
-    # Launch via subprocess so we can pass env; connect pywinauto by PID
-    proc = subprocess.Popen(
-        [APP_PATH] + shlex.split(APP_ARGS),
-        env=sandbox_env,
-    )
-    pw_app = Application(backend="uia").connect(process=proc.pid, timeout=LAUNCH_TIMEOUT)
-    win    = pw_app.window(title=APP_TITLE)
-    win.wait("visible", timeout=LAUNCH_TIMEOUT)
-    yield win
-
-if getattr(getattr(request.node, "rep_call", None), "failed", False):
-        os.makedirs(ARTIFACT_DIR, exist_ok=True)
-        try:
-            win.capture_as_image().save(
-                os.path.join(ARTIFACT_DIR, f"FAIL_{request.node.name}.png")
-            )
-        except Exception:
-            pass
-    try:
-        win.close()
-        proc.wait(timeout=5)
-    except Exception:
-        proc.kill()
-    # tmp_path is cleaned up automatically by pytest
-
-@pytest.hookimpl(tryfirst=True, hookwrapper=True)
-def pytest_runtest_makereport(item, call):
-    outcome = yield
     setattr(item, f"rep_{outcome.get_result().when}", outcome.get_result())
 ```
 
-### Tier 2 — Windows Job Object (optional: process-lifetime containment)
-
-Attach the process to a Job Object so it is **automatically terminated** when
-the test fixture's job handle is GC'd. Also prevents the app from spawning
-child processes that escape fixture cleanup.
-
-> **Scope of isolation:** Job Objects do NOT virtualize filesystem access or
-> block network traffic. File-write and network isolation require AppContainer,
-> Windows Firewall rules, or Tier 3 (Windows Sandbox). Use Tier 2 only for
-> process-lifetime and child-process containment.
-
-Requires no extra dependencies.
+### config.py
 
 ```python
-import ctypes, ctypes.wintypes as wt
+import os
+APP_PATH          = os.environ.get("APP_PATH", "")           # set via env — no default path
+MAIN_WINDOW_TITLE = os.environ.get("APP_TITLE", "")
+LAUNCH_TIMEOUT    = int(os.environ.get("LAUNCH_TIMEOUT", "15"))
+ACTION_TIMEOUT    = int(os.environ.get("ACTION_TIMEOUT", "10"))
+ARTIFACT_DIR      = os.path.join(os.path.dirname(__file__), "artifacts")
+```
 
-def restrict_process(pid: int):
-    """
-    Attach the process to a Job Object that prevents it from:
-    - spawning processes outside the job (LIMIT_KILL_ON_JOB_CLOSE)
-    Does NOT block network — use Windows Firewall rules for that.
-    """
-    JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x00002000
-    # Minimal rights: SET_QUOTA (0x0100) | TERMINATE (0x0001)
-    PROCESS_SET_QUOTA_AND_TERMINATE    = 0x0101
+### pytest.ini
 
-kernel32 = ctypes.windll.kernel32
-    job   = kernel32.CreateJobObjectW(None, None)
-    hproc = kernel32.OpenProcess(PROCESS_SET_QUOTA_AND_TERMINATE, False, pid)
+```ini
+[pytest]
+testpaths = tests
+markers =
+    smoke: fast smoke tests for critical paths
+    flaky: known-unstable tests
+addopts = -v --tb=short --html=artifacts/report.html --self-contained-html
+```
 
-# Correct struct layout — LimitFlags is at offset +16, not +44
-    class JOBOBJECT_BASIC_LIMIT_INFORMATION(ctypes.Structure):
-        _fields_ = [
-            ("PerProcessUserTimeLimit", wt.LARGE_INTEGER),
-            ("PerJobUserTimeLimit",     wt.LARGE_INTEGER),
-            ("LimitFlags",             wt.DWORD),
-            ("MinimumWorkingSetSize",   ctypes.c_size_t),
-            ("MaximumWorkingSetSize",   ctypes.c_size_t),
-            ("ActiveProcessLimit",      wt.DWORD),
-            ("Affinity",               ctypes.c_size_t),
-            ("PriorityClass",          wt.DWORD),
-            ("SchedulingClass",        wt.DWORD),
-        ]
+## Locator Strategy
 
----
+```
+AutomationId  >  Name (text)  >  ClassName + index  >  XPath
+  (stable)         (readable)       (fragile)           (last resort)
+```
 
-Continue in `summary-3.md`.
+Inspect with Accessibility Insights → **Properties** pane → look for `AutomationId` first.
+
+```python
+# Inspect at runtime — paste into a REPL to explore the tree
+win.print_control_identifiers()
+# or narrow scope:
+win.child_window(auto_id="groupBox1").print_control_identifiers()
+```
+
+## Wait Patterns
+
+```python
+# Wait for control to appear
+page.wait_visible(page.by_id("statusLabel"))
+
+# Wait for control to disappear (e.g. loading spinner)
+page.wait_gone(page.by_id("spinnerOverlay"))
+
+# Wait for a dialog to pop up
+dlg = page.wait_window("Confirm Delete")
+
+# Custom condition (e.g. text changes)
+page.wait_until(lambda: page.get_text(page.by_id("lblStatus")) == "Ready")
+```
+
+**Never use `time.sleep()` as primary synchronization** — use `wait()` or `wait_until()`.
+
+## Artifact Management
+
+```python
+# Screenshot on demand
+page.screenshot("after_login")
+
+# Full-screen capture (when window is off-screen or minimised)
+import pyautogui
+pyautogui.screenshot("artifacts/fullscreen.png")
+
+# Screen recording with ffmpeg (start before test, stop after)
+import subprocess
+
+def start_recording(name):
+    return subprocess.Popen([
+        "ffmpeg", "-f", "gdigrab", "-framerate", "10",
+        "-i", "desktop", "-y", f"artifacts/videos/{name}.mp4"
+    ], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+def stop_recording(proc):
+    proc.stdin.write(b"q"); proc.stdin.flush(); proc.wait(timeout=10)
+```
+
+## Per-Step Trace (opt-in)
+
+The default failure screenshot is often too thin for diagnosing flaky tests. The step-level trace below is **off by default** — enable it only when reproducing a flaky case.
+
+### Enable
+
+```bash
+E2E_TRACE=1 pytest tests/test_login.py -v
+# Include typed text in the JSONL log (DO NOT use on tests that type credentials/PII):
+E2E_TRACE=1 E2E_TRACE_INCLUDE_TEXT=1 pytest ...
+```
+
+### Patch into BasePage
+
+```python
+import os, json, time
+TRACE_ENABLED      = os.environ.get("E2E_TRACE") == "1"
+TRACE_INCLUDE_TEXT = os.environ.get("E2E_TRACE_INCLUDE_TEXT") == "1"
+
+class BasePage:
+    _step = 0
+
+def _trace(self, action, spec=None, text=None):
+        if not TRACE_ENABLED:
+            return
+        BasePage._step += 1
+        idx = f"{BasePage._step:03d}"
+        os.makedirs(ARTIFACT_DIR, exist_ok=True)
+        try:
+            self.window.capture_as_image().save(
+                os.path.join(ARTIFACT_DIR, f"step_{idx}_{action}.png"))
+        except Exception:
+            pass  # capture failure must not break the test
+        rec = {
+            "ts": time.time(), "step": BasePage._step, "action": action,
+
+> Continued in [`summary-3.md`](summary-3.md)

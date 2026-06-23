@@ -1,29 +1,54 @@
-- [reference/api-reference.md](reference/api-reference.md) - Complete VideoDB Python SDK API reference
-- [reference/search.md](reference/search.md) - In-depth guide to video search (spoken word and scene-based)
-- [reference/editor.md](reference/editor.md) - Timeline editing, assets, and composition
-- [reference/streaming.md](reference/streaming.md) - HLS streaming and instant playback
-- [reference/generative.md](reference/generative.md) - AI-powered media generation (images, video, audio)
-- [reference/rtstream.md](reference/rtstream.md) - Live stream ingestion workflow (RTSP/RTMP)
-- [reference/rtstream-reference.md](reference/rtstream-reference.md) - RTStream SDK methods and AI pipelines
-- [reference/capture.md](reference/capture.md) - Desktop capture workflow
-- [reference/capture-reference.md](reference/capture-reference.md) - Capture SDK and WebSocket events
-- [reference/use-cases.md](reference/use-cases.md) - Common video processing patterns and examples
+- "Ingest this file and return a playable stream link."
+- "Index this folder and find every scene with people, return timestamps."
+- "Generate subtitles, burn them in, and add light background music."
+- "Connect this RTSP URL and alert when a person enters the zone."
 
-**Do not use ffmpeg, moviepy, or local encoding tools** when VideoDB supports the operation. The following are all handled server-side by VideoDB — trimming, combining clips, overlaying audio or music, adding subtitles, text/image overlays, transcoding, resolution changes, aspect-ratio conversion, resizing for platform requirements, transcription, and media generation. Only fall back to local tools for operations listed under Limitations in reference/editor.md (transitions, speed changes, crop/zoom, colour grading, volume mixing).
+### Screen Recording (Desktop Capture)
 
-### When to use what
+Use `ws_listener.py` to capture WebSocket events during recording sessions. Desktop capture supports **macOS** only.
 
-| Problem | VideoDB solution |
-|---------|-----------------|
-| Platform rejects video aspect ratio or resolution | `video.reframe()` or `conn.transcode()` with `VideoConfig` |
-| Need to resize video for Twitter/Instagram/TikTok | `video.reframe(target="vertical")` or `target="square"` |
-| Need to change resolution (e.g. 1080p → 720p) | `conn.transcode()` with `VideoConfig(resolution=720)` |
-| Need to overlay audio/music on video | `AudioAsset` on a `Timeline` |
-| Need to add subtitles | `video.add_subtitle()` or `CaptionAsset` |
-| Need to combine/trim clips | `VideoAsset` on a `Timeline` |
-| Need to generate voiceover, music, or SFX | `coll.generate_voice()`, `generate_music()`, `generate_sound_effect()` |
+#### Quick Start
 
-## Provenance
+1. **Choose state dir**: `STATE_DIR="${VIDEODB_EVENTS_DIR:-$HOME/.local/state/videodb}"`
+2. **Start listener**: `VIDEODB_EVENTS_DIR="$STATE_DIR" python scripts/ws_listener.py --clear "$STATE_DIR" &`
+3. **Get WebSocket ID**: `cat "$STATE_DIR/videodb_ws_id"`
+4. **Run capture code** (see reference/capture.md for the full workflow)
+5. **Events written to**: `$STATE_DIR/videodb_events.jsonl`
 
-Reference material for this skill is vendored locally under `skills/videodb/reference/`.
-Use the local copies above instead of following external repository links at runtime.
+Use `--clear` whenever you start a fresh capture run so stale transcript and visual events do not leak into the new session.
+
+#### Query Events
+
+```python
+import json
+import os
+import time
+from pathlib import Path
+
+events_dir = Path(os.environ.get("VIDEODB_EVENTS_DIR", Path.home() / ".local" / "state" / "videodb"))
+events_file = events_dir / "videodb_events.jsonl"
+events = []
+
+if events_file.exists():
+    with events_file.open(encoding="utf-8") as handle:
+        for line in handle:
+            try:
+                events.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+
+transcripts = [e["data"]["text"] for e in events if e.get("channel") == "transcript"]
+cutoff = time.time() - 300
+recent_visual = [
+    e for e in events
+    if e.get("channel") == "visual_index" and e["unix_ts"] > cutoff
+]
+```
+
+## Additional docs
+
+Reference documentation is in the `reference/` directory adjacent to this SKILL.md file. Use the Glob tool to locate it if needed.
+
+---
+
+Continue in `summary-2.md`.

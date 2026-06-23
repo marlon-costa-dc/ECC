@@ -6,6 +6,8 @@ description: Start a managed autonomous loop pattern with safety defaults and ex
 
 Start a managed autonomous loop pattern with safety defaults.
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 ## Usage
 
 `/loop-start [pattern] [--mode safe|fast]`

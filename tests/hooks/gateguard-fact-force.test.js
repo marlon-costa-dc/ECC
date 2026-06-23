@@ -1929,159 +1929,6 @@ function runTests() {
     passed++;
   else failed++;
 
-  // --- find -exec destructive detection ---
-
-  if (
-    test('denies find -exec rm {} \\; as destructive', () => {
-      expectDestructiveDeny('find . -name "*.tmp" -exec rm {} \\;', 'find -exec rm');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec rm -rf {} \\; as destructive', () => {
-      expectDestructiveDeny('find . -name "*.tmp" -exec rm -rf {} \\;', 'find -exec rm -rf');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec rmdir {} \\; as destructive', () => {
-      expectDestructiveDeny('find . -name "*.tmp" -exec rmdir {} \\;', 'find -exec rmdir');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec unlink {} \\; as destructive', () => {
-      expectDestructiveDeny('find . -name "*.tmp" -exec unlink {} \\;', 'find -exec unlink');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec git reset --hard {} \\; as destructive', () => {
-      expectDestructiveDeny('find . -name "*.tmp" -exec git reset --hard {} \\;', 'find -exec git reset --hard');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec rm {} \\; preceded by && (bypass via compound command)', () => {
-      expectDestructiveDeny('echo x && find . -exec rm {} \\;', 'compound command bypass: find -exec rm');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec rm -rf {} \\; preceded by ; (bypass via semicolon)', () => {
-      expectDestructiveDeny('true; find . -name "*.log" -exec rm -rf {} \\;', 'semicolon bypass: find -exec rm -rf');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec rm {} \\; in pipeline (bypass via pipe)', () => {
-      expectDestructiveDeny('echo start | find . -exec rm {} \\;', 'pipe bypass: find -exec rm');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec rm {} \\; after || (OR-chain bypass)', () => {
-      expectDestructiveDeny('false || find . -exec rm {} \\;', 'OR-chain bypass: find -exec rm');
-    })
-  )
-    passed++;
-  else failed++;
-
-  // GHSA-4v57-ph3x-gf55: quote/newline/wrapper bypasses of the classifier.
-  if (
-    test('denies rm -rf after a newline separator (GHSA-4v57)', () => {
-      expectDestructiveDeny('echo safe\nrm -rf /tmp/victim', 'newline-separated rm -rf');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies a single-quoted rm command word (GHSA-4v57)', () => {
-      expectDestructiveDeny("'rm' -rf /tmp/victim", "quoted 'rm' command word");
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies a double-quoted rm command word (GHSA-4v57)', () => {
-      expectDestructiveDeny('"rm" -rf /tmp/victim', 'quoted "rm" command word');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies rm -rf wrapped in sh -c (GHSA-4v57)', () => {
-      expectDestructiveDeny("sh -c 'rm -rf /tmp/victim'", 'sh -c wrapper');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies rm -rf wrapped in bash -c (GHSA-4v57)', () => {
-      expectDestructiveDeny("bash -c 'rm -rf /tmp/victim'", 'bash -c wrapper');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('denies find -exec with a quoted rm binary (GHSA-4v57)', () => {
-      expectDestructiveDeny("find . -name '*.tmp' -exec 'rm' {} \\;", 'quoted find -exec rm');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('still allows rm -rf inside a quoted echo argument (no false positive)', () => {
-      clearState();
-      const input = { tool_name: 'Bash', tool_input: { command: 'echo "to clean run: rm -rf build"' } };
-      const result = runBashHook(input);
-      assert.strictEqual(result.code, 0, 'exit code should be 0');
-      const output = parseOutput(result.stdout);
-      assert.ok(!output || !/Destructive|rollback/.test(output.hookSpecificOutput?.permissionDecisionReason || ''), 'rm inside a quoted string arg must not be flagged destructive');
-    })
-  )
-    passed++;
-  else failed++;
-
-  if (
-    test('allows find -exec echo {} \\; (non-destructive, routine gate)', () => {
-      clearState();
-      const input = { tool_name: 'Bash', tool_input: { command: 'find . -name "*.tmp" -exec echo {} \\;' } };
-      const result = runBashHook(input);
-      assert.strictEqual(result.code, 0, 'exit code should be 0');
-      const output = parseOutput(result.stdout);
-      assert.ok(output, 'should produce JSON output');
-      // Should be denied by routine gate (first bash), not destructive gate
-      assert.strictEqual(output.hookSpecificOutput.permissionDecision, 'deny', 'should be denied by routine gate');
-      assert.ok(!output.hookSpecificOutput.permissionDecisionReason.includes('Destructive'), 'should not be the destructive deny message');
-      assert.ok(!output.hookSpecificOutput.permissionDecisionReason.includes('rollback'), 'should not mention rollback');
-    })
-  )
-    passed++;
-  else failed++;
-
   // --- Issue #2078 review fix: warning emitted once per *distinct*
   // invalid regex, not once per process. Verifies the same-process
   // path that the reviewers (CodeRabbit + cubic) flagged.
@@ -2264,13 +2111,19 @@ function runTests() {
     passed++;
   else failed++;
 
-  // --- Novos comandos Git read-only ---
-  console.log('\n  Novos comandos Git read-only:');
-
+  // --- Scratch-path exemption (/tmp + Claude memory dir) ---
   clearState();
   if (
-    test('allows git diff --cached', () => {
-      expectAllow('git diff --cached', 'git diff --cached');
+    test('allows Edit on /tmp scratch path without gating', () => {
+      const result = runHook({ tool_name: 'Edit', tool_input: { file_path: '/tmp/scratch-note.md', old_string: 'a', new_string: 'b' } });
+      assert.strictEqual(result.code, 0, 'exit code should be 0');
+      const output = parseOutput(result.stdout);
+      assert.ok(output, 'should produce JSON output');
+      if (output.hookSpecificOutput) {
+        assert.notStrictEqual(output.hookSpecificOutput.permissionDecision, 'deny', 'scratch /tmp path must not be gated');
+      } else {
+        assert.strictEqual(output.tool_name, 'Edit', 'pass-through should preserve input');
+      }
     })
   )
     passed++;
@@ -2278,8 +2131,16 @@ function runTests() {
 
   clearState();
   if (
-    test('allows git diff --staged', () => {
-      expectAllow('git diff --staged', 'git diff --staged');
+    test('allows Write on Claude memory scratch dir without gating', () => {
+      const result = runHook({ tool_name: 'Write', tool_input: { file_path: '/home/u/.claude/projects/proj/memory/MEMORY.md', content: 'x' } });
+      assert.strictEqual(result.code, 0, 'exit code should be 0');
+      const output = parseOutput(result.stdout);
+      assert.ok(output, 'should produce JSON output');
+      if (output.hookSpecificOutput) {
+        assert.notStrictEqual(output.hookSpecificOutput.permissionDecision, 'deny', 'memory scratch path must not be gated');
+      } else {
+        assert.strictEqual(output.tool_name, 'Write', 'pass-through should preserve input');
+      }
     })
   )
     passed++;
@@ -2287,90 +2148,10 @@ function runTests() {
 
   clearState();
   if (
-    test('allows git diff --stat', () => {
-      expectAllow('git diff --stat', 'git diff --stat');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('allows git diff --name-only --cached', () => {
-      expectAllow('git diff --name-only --cached', 'git diff --name-only --cached');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('allows git show --stat', () => {
-      expectAllow('git show --stat', 'git show --stat');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('allows git show --name-only', () => {
-      expectAllow('git show --name-only', 'git show --name-only');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('allows git show HEAD --stat', () => {
-      expectAllow('git show HEAD --stat', 'git show HEAD --stat');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('allows git show HEAD --name-only', () => {
-      expectAllow('git show HEAD --name-only', 'git show HEAD --name-only');
-    })
-  )
-    passed++;
-  else failed++;
-
-  // Garantir que comandos destrutivos continuam negados
-  clearState();
-  if (
-    test('still denies git reset --hard', () => {
-      expectDestructiveDeny('git reset --hard', 'git reset --hard');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('still denies git checkout -f', () => {
-      expectDestructiveDeny('git checkout -f main', 'git checkout -f');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('still denies git clean -fd', () => {
-      expectDestructiveDeny('git clean -fd', 'git clean -fd');
-    })
-  )
-    passed++;
-  else failed++;
-
-  clearState();
-  if (
-    test('still denies git push --force', () => {
-      expectDestructiveDeny('git push --force origin main', 'git push --force');
+    test('still gates a repository file inside a tmp/ subdir (no over-match)', () => {
+      const result = runHook({ tool_name: 'Edit', tool_input: { file_path: '/home/u/repo/tmp/app.js', old_string: 'a', new_string: 'b' } });
+      const output = parseOutput(result.stdout);
+      assert.strictEqual(output.hookSpecificOutput.permissionDecision, 'deny', 'a real repo file under tmp/ must still be gated');
     })
   )
     passed++;

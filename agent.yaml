@@ -41,7 +41,6 @@ skills:
   - content-hash-cache-pattern
   - context-budget
   - continuous-agent-loop
-  - continuous-learning
   - continuous-learning-v2
   - cost-aware-llm-pipeline
   - cpp-coding-standards

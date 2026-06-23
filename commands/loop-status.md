@@ -6,6 +6,8 @@ description: Inspect active loop state, progress, failure signals, and recommend
 
 Inspect active loop state, progress, and failure signals.
 
+> Trabalho multi-passo/paralelo coordena por beads (bd) como SSOT: reivindicar bead in_progress antes de edição não-trivial, nunca reverter trabalho de outro agente (AGENTS.md §12 / openclaw ADR-0001).
+
 This slash command can only run after the current session dequeues it. If you
 need to inspect a wedged or sibling session, run the packaged CLI from another
 terminal:

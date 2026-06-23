@@ -6,32 +6,11 @@ const {
   createManagedOperation,
   createRemappedOperation,
   isForeignPlatformPath,
+  listRelativeFiles,
   normalizeRelativePath,
 } = require('./helpers');
 
 const CLAUDE_ECC_NAMESPACE = 'ecc';
-
-function collectLocalFiles(dirPath, prefix = '') {
-  if (!fs.existsSync(dirPath)) {
-    return [];
-  }
-
-  const files = [];
-  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-
-  for (const entry of entries) {
-    const entryPath = path.join(dirPath, entry.name);
-    const relativePath = prefix ? path.join(prefix, entry.name) : entry.name;
-
-    if (entry.isDirectory()) {
-      files.push(...collectLocalFiles(entryPath, relativePath));
-    } else if (entry.isFile()) {
-      files.push(relativePath);
-    }
-  }
-
-  return files;
-}
 
 function planLocalOverlay(repoRoot, projectRoot) {
   const operations = [];
@@ -44,7 +23,7 @@ function planLocalOverlay(repoRoot, projectRoot) {
   const effectiveProjectRoot = projectRoot || repoRoot;
   const targetRoot = path.join(effectiveProjectRoot, '.claude');
 
-  const rulesFiles = collectLocalFiles(path.join(localDir, 'rules'));
+  const rulesFiles = listRelativeFiles(path.join(localDir, 'rules'));
   for (const file of rulesFiles) {
     operations.push(createManagedOperation({
       moduleId: 'local-overlay',
@@ -54,7 +33,7 @@ function planLocalOverlay(repoRoot, projectRoot) {
     }));
   }
 
-  const commandsFiles = collectLocalFiles(path.join(localDir, 'commands'));
+  const commandsFiles = listRelativeFiles(path.join(localDir, 'commands'));
   for (const file of commandsFiles) {
     operations.push(createManagedOperation({
       moduleId: 'local-overlay',

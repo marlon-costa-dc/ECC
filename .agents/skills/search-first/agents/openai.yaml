@@ -1,0 +1,7 @@
+interface:
+  display_name: "Search First"
+  short_description: "Research existing tools/libraries before writing custom code"
+  brand_color: "#3B82F6"
+  default_prompt: "Use $search-first to find existing solutions before implementing."
+policy:
+  allow_implicit_invocation: true

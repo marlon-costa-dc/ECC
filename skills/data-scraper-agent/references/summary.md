@@ -25,15 +25,15 @@ Batch API calls (e.g., 5 items per call) to stay inside free-tier rate limits.
 ## Workflow
 
 1. **Understand the goal**: source, fields, storage, enrichment, frequency.
-2. **Design architecture**: see [references/architecture.md](references/architecture.md).
-3. **Build scraper source**: REST, HTML, RSS, pagination, JS-rendered patterns in [references/scraper-patterns.md](references/scraper-patterns.md).
-4. **Build Gemini client**: fallback and JSON parsing in [references/ai-client.md](references/ai-client.md).
-5. **Build AI pipeline**: batch scoring, summaries, filtering in [references/ai-pipeline.md](references/ai-pipeline.md).
-6. **Add feedback learning**: positive/negative history in [references/feedback-memory.md](references/feedback-memory.md).
-7. **Add storage layer**: deduplicate and push items in [references/storage.md](references/storage.md).
-8. **Orchestrate**: wire scraper, AI, storage in `main.py` in [references/orchestration.md](references/orchestration.md).
-9. **Schedule**: GitHub Actions cron workflow in [references/deployment.md](references/deployment.md).
-10. **Configure**: `config.yaml`, `.env.example`, `requirements.txt` in [references/deployment.md](references/deployment.md).
+2. **Design architecture**: see [references/architecture.md](architecture.md).
+3. **Build scraper source**: REST, HTML, RSS, pagination, JS-rendered patterns in [references/scraper-patterns.md](scraper-patterns.md).
+4. **Build Gemini client**: fallback and JSON parsing in [references/ai-client.md](ai-client.md).
+5. **Build AI pipeline**: batch scoring, summaries, filtering in [references/ai-pipeline.md](ai-pipeline.md).
+6. **Add feedback learning**: positive/negative history in [references/feedback-memory.md](feedback-memory.md).
+7. **Add storage layer**: deduplicate and push items in [references/storage.md](storage.md).
+8. **Orchestrate**: wire scraper, AI, storage in `main.py` in [references/orchestration.md](orchestration.md).
+9. **Schedule**: GitHub Actions cron workflow in [references/deployment.md](deployment.md).
+10. **Configure**: `config.yaml`, `.env.example`, `requirements.txt` in [references/deployment.md](deployment.md).
 
 ## Anti-Patterns
 
@@ -47,11 +47,11 @@ Batch API calls (e.g., 5 items per call) to stay inside free-tier rate limits.
 
 ## References
 
-- [references/architecture.md](references/architecture.md) — project directory structure
-- [references/scraper-patterns.md](references/scraper-patterns.md) — source templates and scraping patterns
-- [references/ai-client.md](references/ai-client.md) — Gemini REST client with fallback
-- [references/ai-pipeline.md](references/ai-pipeline.md) — batch AI analysis pipeline
-- [references/feedback-memory.md](references/feedback-memory.md) — feedback learning
-- [references/storage.md](references/storage.md) — Notion sync example
-- [references/orchestration.md](references/orchestration.md) — `main.py` orchestrator
-- [references/deployment.md](references/deployment.md) — GitHub Actions, config, requirements, checklist, examples
+- [references/architecture.md](architecture.md) — project directory structure
+- [references/scraper-patterns.md](scraper-patterns.md) — source templates and scraping patterns
+- [references/ai-client.md](ai-client.md) — Gemini REST client with fallback
+- [references/ai-pipeline.md](ai-pipeline.md) — batch AI analysis pipeline
+- [references/feedback-memory.md](feedback-memory.md) — feedback learning
+- [references/storage.md](storage.md) — Notion sync example
+- [references/orchestration.md](orchestration.md) — `main.py` orchestrator
+- [references/deployment.md](deployment.md) — GitHub Actions, config, requirements, checklist, examples

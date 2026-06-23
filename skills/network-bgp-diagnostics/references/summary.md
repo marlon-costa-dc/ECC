@@ -18,7 +18,7 @@ Use this skill when a BGP session is down, flapping, established with missing ro
 4. Check route policy references with `show ip prefix-list`, `show route-map`, and `show running-config | section router bgp`.
 5. Compare advertised, received, and installed routes where supported.
 
-Use platform-specific address-family commands when the device uses VRFs, IPv6, VPNv4, or EVPN. Do not assume global IPv4 unicast. See [references/bgp-commands.md](references/bgp-commands.md) for the full command list.
+Use platform-specific address-family commands when the device uses VRFs, IPv6, VPNv4, or EVPN. Do not assume global IPv4 unicast. See [references/bgp-commands.md](bgp-commands.md) for the full command list.
 
 ## State Interpretation
 

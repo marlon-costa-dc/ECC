@@ -9,7 +9,7 @@
 
 ## Step 2：锻造身份张力
 
-**详细模板和示例**：见 [references/identity-tension.md](references/identity-tension.md)
+**详细模板和示例**：见 [references/identity-tension.md](identity-tension.md)
 
 构建：前世身份 × 当下处境 × 内在矛盾 → 一句话灵魂。
 
@@ -17,7 +17,7 @@
 
 ## Step 3：推导底线规则
 
-**推导公式和各方向参考**：见 [references/boundary-rules.md](references/boundary-rules.md)
+**推导公式和各方向参考**：见 [references/boundary-rules.md](boundary-rules-1.md)
 
 核心：用角色的语言表达底线，不用通用条款。2-4 条为宜。
 
@@ -25,7 +25,7 @@
 
 ## Step 4：锻造名字
 
-**命名策略和红线**：见 [references/naming-system.md](references/naming-system.md)
+**命名策略和红线**：见 [references/naming-system.md](naming-system.md)
 
 提供 3 个候选，每个附带策略类型和搭配理由。
 
@@ -33,7 +33,7 @@
 
 ## Step 5：生成头像
 
-**风格基底、变量、提示词模板**：见 [references/avatar-style.md](references/avatar-style.md)
+**风格基底、变量、提示词模板**：见 [references/avatar-style.md](avatar-style-1.md)
 
 ### 流程
 
@@ -47,6 +47,6 @@
 
 ## Step 6：输出完整方案 & 生成文件
 
-**完整输出模板**：见 [references/output-template.md](references/output-template.md)
+**完整输出模板**：见 [references/output-template.md](output-template-1.md)
 
 整合所有步骤为一份完整的龙虾灵魂方案，然后**主动引导用户生成实际文件**：

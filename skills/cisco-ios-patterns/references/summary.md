@@ -19,7 +19,7 @@ Prefer this workflow: capture current state with read-only commands, review the 
 
 ## Read-Only Collection
 
-Collect the specific section you need instead of dumping full config into a ticket when the config may contain secrets, customer names, or private topology. See [references/ios-commands.md](references/ios-commands.md) for the full command list, wildcard mask reference, interface hygiene example, and change-window verification commands.
+Collect the specific section you need instead of dumping full config into a ticket when the config may contain secrets, customer names, or private topology. See [references/ios-commands.md](ios-commands.md) for the full command list, wildcard mask reference, interface hygiene example, and change-window verification commands.
 
 ## ACL Placement Review
 

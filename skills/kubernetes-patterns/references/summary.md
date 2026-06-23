@@ -23,4 +23,4 @@
 
 ## References
 
-- Full YAML patterns, probes, Services/Ingress, ConfigMaps/Secrets, RBAC, HPA, PDB, Jobs, kubectl cheatsheet, anti-patterns, and checklist: [references/kubernetes-patterns-reference.md](references/kubernetes-patterns-reference.md)
+- Full YAML patterns, probes, Services/Ingress, ConfigMaps/Secrets, RBAC, HPA, PDB, Jobs, kubectl cheatsheet, anti-patterns, and checklist: [references/kubernetes-patterns-reference.md](kubernetes-patterns-reference-1.md)

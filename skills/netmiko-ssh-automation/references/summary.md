@@ -24,7 +24,7 @@ Use this skill for Python automation that connects to routers, switches, or fire
 
 Open a `ConnectHandler` with explicit timeouts and handle `NetmikoAuthenticationException`, `NetmikoTimeoutException`, and `ReadTimeout`. Use `send_command()` for read-only collection, `ThreadPoolExecutor` with low `max_workers` for batches, and `use_textfsm=True` with `raise_parsing_error=False` for structured parsing. Keep raw output alongside parsed results. Use documentation-range addresses in examples; keep real inventory in an ignored local file or secrets-managed system.
 
-Put config changes behind an explicit operator flag. In dry-run mode, print candidate commands. In apply mode, capture `show running-config` before and after, push with `send_config_set()`, and verify behavior before saving startup config. See [references/examples.md](references/examples.md) for concrete code.
+Put config changes behind an explicit operator flag. In dry-run mode, print candidate commands. In apply mode, capture `show running-config` before and after, push with `send_config_set()`, and verify behavior before saving startup config. See [references/examples.md](examples.md) for concrete code.
 
 ## Review Checklist
 

@@ -14,7 +14,7 @@ Use this skill when a network symptom might be caused by a physical link, switch
 
 Interface counters are evidence, but the trend matters more than the absolute number. Capture a baseline, wait a measurement interval, capture again, then compare increments.
 
-On IOS use `show interfaces <interface>`, `show interfaces <interface> status`, and `show logging | include <interface>|changed state|line protocol`. On Linux use `ip -s link show <interface>`, `ethtool <interface>`, and `ethtool -S <interface>`. See [references/counter-reference.md](references/counter-reference.md) for counter meanings and common causes.
+On IOS use `show interfaces <interface>`, `show interfaces <interface> status`, and `show logging | include <interface>|changed state|line protocol`. On Linux use `ip -s link show <interface>`, `ethtool <interface>`, and `ethtool -S <interface>`. See [references/counter-reference.md](counter-reference.md) for counter meanings and common causes.
 
 ## Diagnosis Flow
 

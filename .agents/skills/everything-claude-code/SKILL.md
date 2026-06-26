@@ -1,9 +1,11 @@
 ---
 name: everything-claude-code
-description: 'Use this skill to development conventions and patterns for everything-claude-code.
-  JavaScript project with conventional commits. ] Generated from [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code)
-  on 2026-03-20. DO NOT USE FOR: questions unrelated to everything-claude-code creating
-  projects or architecture from scratch'
+description: >-
+  Development conventions and patterns for everything-claude-code.
+  JavaScript project with conventional commits. Generated from
+  affaan-m/everything-claude-code on 2026-03-20. Do not use for questions
+  unrelated to everything-claude-code, or for creating projects or architecture
+  from scratch.
 license: MIT
 metadata:
   version: 1.0.0

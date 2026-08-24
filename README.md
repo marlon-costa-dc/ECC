@@ -284,6 +284,25 @@ Cursor installs agent definitions under `.cursor/agents/ecc-*.md`. Cursor-native
 Deep per-harness notes (feature parity, hook adapters, limitations) live in [Platform Support](#platform-support) below.
 </details>
 
+### Local AI sync automation
+
+If you run Claude, Codex, and Kimi from a centralized local AI tool setup, use
+ECC's AI sync command instead of copying this repository into each tool home:
+
+```bash
+node scripts/ecc.js ai-sync --json
+node scripts/ecc.js ai-sync --apply --target kimi --skip-mcp
+node scripts/ecc.js ai-sync --apply --target codex
+```
+
+This generates audit artifacts under `~/.ai-hub/ecc/generated/`, keeps Kimi
+pointing at this checkout through generated symlinks, and invokes Codex through
+the existing `scripts/sync-ecc-to-codex.sh` flow. MCP stays owned by your
+central registry: `~/.agents/mcp/servers.json` plus `mcp-sync` /
+`mcp-sync-apply`. This fork's canonical sync source is
+`https://github.com/marlon-costa-dc/ECC`.
+
+
 ## Advanced Install Options
 
 The options stay here, directly under the main install paths, so you do not have to hunt through the README when the default setup is not the right fit.

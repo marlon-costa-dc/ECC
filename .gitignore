@@ -111,3 +111,18 @@ assets/images/security/badrudi-exploit.mp4
 *.db
 .beads-credential-key
 .beads/proxieddb/
+# --- ai-hub workspace local environment cache ---
+.direnv/
+
+# AI / Agent — runtime data (never version-controlled)
+.claude/
+.claude
+.cursor/
+.mcp.json
+.waza.yaml
+AGENTS.md
+CLAUDE.md
+.code-review-graphignore
+.mise.toml
+.envrc
+.direnv/

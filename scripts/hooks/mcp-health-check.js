@@ -44,6 +44,23 @@ function envNumber(name, fallback) {
   return Number.isFinite(value) && value >= 0 ? value : fallback;
 }
 
+// Claude Code expands ${VAR} in MCP command/args when it launches the real server,
+// but this probe re-derives the command from config and spawns it directly. Without
+// the same expansion, servers configured with ${HOME}/... paths (the bridge servers)
+// get the literal string and fail with "No such file or directory" — a false negative
+// that blocks a healthy server. Replicate ${VAR} / ${VAR:-default} brace expansion.
+// Bare $VAR is intentionally left untouched (its only use is inside bash -c "...$HOME...",
+// where bash itself expands it). Undefined vars with no default stay literal so we never
+// invent an empty path.
+function expandEnvVars(value, env) {
+  if (typeof value !== 'string') return value;
+  return value.replace(/\$\{([A-Za-z_][A-Za-z0-9_]*)(?::-([^}]*))?\}/g, (match, name, def) => {
+    const v = env[name];
+    if (v !== undefined && v !== '') return v;
+    return def !== undefined ? def : match;
+  });
+}
+
 function stateFilePath() {
   if (process.env.ECC_MCP_HEALTH_STATE_PATH) {
     return path.resolve(process.env.ECC_MCP_HEALTH_STATE_PATH);
@@ -300,13 +317,13 @@ function requestHttp(urlString, headers, timeoutMs) {
 
 function probeCommandServer(serverName, config) {
   return new Promise(resolve => {
-    const command = config.command;
-    const args = Array.isArray(config.args) ? config.args.map(arg => String(arg)) : [];
     const timeoutMs = envNumber('ECC_MCP_HEALTH_TIMEOUT_MS', DEFAULT_TIMEOUT_MS);
     const mergedEnv = {
       ...process.env,
       ...(config.env && typeof config.env === 'object' && !Array.isArray(config.env) ? config.env : {})
     };
+    const command = expandEnvVars(config.command, mergedEnv);
+    const args = Array.isArray(config.args) ? config.args.map(arg => expandEnvVars(String(arg), mergedEnv)) : [];
 
     let done = false;
 
